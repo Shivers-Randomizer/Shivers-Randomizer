@@ -44,7 +44,7 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="archipelago.multiclient.net" Version="6.3.1" />
+    <PackageReference Include="archipelago.multiclient.net" Version="6.6.0" />
     <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
     <PackageReference Include="System.Data.DataSetExtensions" Version="4.5.0" />
     <PackageReference Include="Microsoft.Windows.Compatibility" Version="6.0.8" />
