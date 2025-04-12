@@ -6,6 +6,7 @@ using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Runtime.Serialization;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Media;
@@ -15,6 +16,7 @@ namespace Shivers_Randomizer.utils;
 internal static class AppHelpers
 {
     [DllImport("user32.dll")] public static extern bool GetWindowRect(UIntPtr hWnd, ref RectSpecial rectangle);
+    [DllImport("user32.dll")] public static extern bool GetClientRect(UIntPtr hWnd, ref RectSpecial rectangle);
     [DllImport("user32.dll")] public static extern bool PostMessage(UIntPtr hWnd, uint Msg, int wParam, int lParam);
     [DllImport("user32.dll")][return: MarshalAs(UnmanagedType.Bool)] public static extern bool IsIconic(UIntPtr hWnd);
     [DllImport("user32.dll")][return: MarshalAs(UnmanagedType.Bool)] public static extern void BlockInput([In, MarshalAs(UnmanagedType.Bool)] bool fBlockIt);

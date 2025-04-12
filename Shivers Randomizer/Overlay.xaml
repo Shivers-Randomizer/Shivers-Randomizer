@@ -13,7 +13,18 @@
         Topmost="False"
         ShowInTaskbar="False"
         ResizeMode="NoResize">
-    <Grid Margin="10,10,0,0">
-        <Label Name="labelOverlay" Content="Test Overlay Text"  HorizontalAlignment="Center" VerticalAlignment="Top" Foreground="Lime"/>
-    </Grid>
+
+    <Canvas Width="1920" Height="1080" >
+        <!-- Existing Label -->
+        <Label Name="labelOverlay" Content="Test Overlay Text" Canvas.Left="10" Canvas.Top="10" Foreground="Lime"/>
+
+        <Grid Name="overlayGrid" Canvas.Left="120" Canvas.Top="90">
+            <!-- White Square -->
+            <Rectangle Name="overlayRectangle" Width="320" Height="250" Fill="White" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+
+            <!-- Text Inside the White Square (Centered) -->
+            <TextBlock Name="overlayText" Text="GEOFFREY" Foreground="Black" FontSize="14"
+               HorizontalAlignment="Center" VerticalAlignment="Center" />
+        </Grid>
+    </Canvas>
 </Window>

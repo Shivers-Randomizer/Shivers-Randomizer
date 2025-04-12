@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Reflection;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Interop;
 using System.Windows.Media;
 
@@ -79,5 +80,46 @@ public partial class Overlay : Window
         {
             labelOverlay.Content = "Not connected to Archipelago";
         }
+    }
+
+    public void GeoffreyPuzzleSolution(bool visible, double gameWidth, double gameHeight)
+    {
+        if(visible)
+        {
+            overlayGrid.Visibility = Visibility.Visible;
+
+            double scaleWidth = (double)gameWidth / 320;
+            double scaleHeight = (double)gameHeight / 200;
+
+            //Calculate border size and window scale
+            double borderWidth = 0;
+            double borderHeight = 0;
+            double windowRatio = gameWidth / gameHeight;
+            if (windowRatio > 1.3333)
+            {
+                borderWidth = (gameWidth - (gameHeight * 1.3333)) / 2;
+                scaleWidth = (gameWidth - borderWidth * 2) / 320;
+            }
+            else
+            {
+                borderHeight = (gameHeight - (gameWidth / 1.3333)) / 2;
+                scaleHeight = (gameHeight - borderHeight * 2) / 200;
+            }
+
+            //Move overlay rectangle and scale it
+            overlayGrid.SetValue(Canvas.LeftProperty, borderWidth + scaleWidth * 120);
+            overlayGrid.SetValue(Canvas.TopProperty, borderHeight + scaleHeight * 91);
+            overlayRectangle.Width = 85 * scaleWidth;
+            overlayRectangle.Height = 54 * scaleHeight;
+
+
+            // Scale the font size of overlayText based on the rectangle size
+            overlayText.FontSize = overlayRectangle.Width / 6;
+        }
+        else
+        {
+            overlayGrid.Visibility = Visibility.Hidden;
+        }
+
     }
 }

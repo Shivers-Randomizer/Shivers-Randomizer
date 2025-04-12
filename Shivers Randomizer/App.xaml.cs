@@ -36,6 +36,7 @@ public partial class App : Application
     };
 
     private RectSpecial ShiversWindowDimensions = new();
+    private RectSpecial ShiversClientWindowDimensions = new();
 
     public UIntPtr processHandle;
     public UIntPtr MyAddress;
@@ -785,13 +786,18 @@ public partial class App : Application
         CheckAttachState();
 
         var windowExists = GetWindowRect((UIntPtr)(long)(shiversProcess?.MainWindowHandle ?? IntPtr.Zero), ref ShiversWindowDimensions);
+        var clientWindow = GetClientRect((UIntPtr)(long)(shiversProcess?.MainWindowHandle ?? IntPtr.Zero), ref ShiversClientWindowDimensions);
         var windowIconic = IsIconic((UIntPtr)(long)(shiversProcess?.MainWindowHandle ?? IntPtr.Zero));
 
         overlay.Left = ShiversWindowDimensions.Left;
         overlay.Top = ShiversWindowDimensions.Top + (int)SystemParameters.WindowCaptionHeight;
         overlay.labelOverlay.Foreground = windowExists && windowIconic ? overlay.brushTransparent : overlay.brushLime;
 
-        if(shiversProcess?.MainWindowHandle != null)
+        int gameWidth = ShiversClientWindowDimensions.Right;
+        int gameHeight = ShiversClientWindowDimensions.Bottom;
+        
+
+        if (shiversProcess?.MainWindowHandle != null)
         {
             UIntPtr aboveGameHandle = GetWindow((UIntPtr)(long)shiversProcess?.MainWindowHandle, 3);
 
@@ -884,6 +890,15 @@ public partial class App : Application
         if (settingsUnlockEntrance)
         {
             SetKthBitMemoryOneByte(381, 0, roomNumber == 1550 || roomNumber == 9670);
+        }
+
+        if(roomNumber == 34040)
+        {
+            overlay.GeoffreyPuzzleSolution(true, (double)gameWidth, (double)gameHeight);
+        }
+        else
+        {
+            overlay.GeoffreyPuzzleSolution(false, (double)gameWidth, (double)gameHeight);
         }
 
         int healthTemp = ReadMemory(-40, 1);
