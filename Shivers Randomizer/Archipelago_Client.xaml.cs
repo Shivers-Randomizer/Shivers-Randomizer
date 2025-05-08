@@ -684,7 +684,9 @@ public partial class Archipelago_Client : Window
 
         int numItemsReceived = await session.DataStorage[Scope.Slot, "NumItemsReceived"].GetAsync<int?>() ?? 0;
         List<int> items = GetItemsFromArchipelagoServer();
+        List<int> itemClassifications = GetItemsClassifications();
         Brush plumBrush = new SolidColorBrush(System.Windows.Media.Color.FromRgb(175, 153, 239));
+        Brush slateblueBrush = new SolidColorBrush(System.Windows.Media.Color.FromRgb(109, 139, 232));
 
         if (numItemsReceived < items.Count)
         {
@@ -695,15 +697,28 @@ public partial class Archipelago_Client : Window
                 {
                     string itemName = GetItemName(items[i]) ?? "Error Retrieving Item";
                     string message = $"{itemName} {Environment.NewLine}";
-
-                    if (items[i] < ARCHIPELAGO_BASE_ITEM_ID + 90)
-                    {
-                        ServerMessageBox.AppendTextWithColor(message, plumBrush);
-                    }
-                    else
+                    
+                    if (itemClassifications[i] == 0) //Filler Items
                     {
                         ServerMessageBox.AppendTextWithColor(message, Brushes.Cyan);
                     }
+                    else if (itemClassifications[i] == 1) //Progression Items
+                    {
+                        ServerMessageBox.AppendTextWithColor(message, plumBrush);
+                    }
+                    else if (itemClassifications[i] == 2) //Useful Items
+                    {
+                        ServerMessageBox.AppendTextWithColor(message, slateblueBrush);
+                    }
+                    else if (itemClassifications[i] == 4) //Trap Items
+                    {
+                        ServerMessageBox.AppendTextWithColor(message, Brushes.Salmon);
+                    }
+                    else
+                    {
+                        ServerMessageBox.AppendTextWithColor($"Unsupported item classification detected for: {itemName}. Please contact GodlFire for fix. {Environment.NewLine}", Brushes.Red);
+                    }
+                    
                 }
 
                 ScrollMessages();
@@ -745,6 +760,12 @@ public partial class Archipelago_Client : Window
     private string GetItemName(int itemID)
     {
         return session?.Items.GetItemName(itemID) ?? "Error retrieving item";
+    }
+
+    public List<int> GetItemsClassifications()
+    {
+        ReadOnlyCollection<ItemInfo> networkItems = session?.Items.AllItemsReceived ?? new ReadOnlyCollection<ItemInfo>(new List<ItemInfo>());
+        return (from ItemInfo item in networkItems select (int)item.Flags).ToList();
     }
 
     private void ScrollMessages()
