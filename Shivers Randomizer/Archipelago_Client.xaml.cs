@@ -9,6 +9,7 @@ using Shivers_Randomizer.utils;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.DirectoryServices.Protocols;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
@@ -774,5 +775,11 @@ public partial class Archipelago_Client : Window
         {
             ServerMessageBox.ScrollToEnd();
         }
+    }
+
+    private void ButtonSettings_Click(object sender, RoutedEventArgs e)
+    {
+        var colorPicker = new ColorPicker();
+        colorPicker.ShowDialog();
     }
 }
