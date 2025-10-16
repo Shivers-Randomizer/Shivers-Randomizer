@@ -175,6 +175,7 @@ public partial class MainWindow : Window
         app.settingsFirstToTheOnlyFive = checkBoxFirstToTheOnlyFive.IsChecked == true;
         app.settingsUnlockEntrance = checkBoxUnlockEntrance.IsChecked == true;
         app.settingsAnywhereLightning = checkBoxAnywhereLightning.IsChecked == true;
+        app.settingsFlashTravel = checkBoxFlashTravel.IsChecked == true;
         app.SetFlagset();
     }
 
@@ -221,6 +222,8 @@ public partial class MainWindow : Window
             checkBoxUnlockEntrance.IsChecked = false;
             checkBoxAnywhereLightning.IsEnabled = false;
             checkBoxAnywhereLightning.IsChecked = false;
+            checkBoxFlashTravel.IsEnabled = false;
+            checkBoxFlashTravel.IsChecked = false;
         }
         else
         {
@@ -244,6 +247,7 @@ public partial class MainWindow : Window
             checkBoxFullPots.IsEnabled = true;
             checkBoxFirstToTheOnlyFive.IsEnabled = true;
             checkBoxUnlockEntrance.IsEnabled = true;
+            checkBoxFlashTravel.IsEnabled = true;
         }
 
         UpdateFlagset(sender, e);

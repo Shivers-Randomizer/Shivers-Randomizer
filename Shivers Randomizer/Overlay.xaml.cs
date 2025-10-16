@@ -45,6 +45,7 @@ public partial class Overlay : Window
         if (app.settingsFullPots) { flagset += "F"; }
         if (app.settingsUnlockEntrance) { flagset += "U"; }
         if (app.settingsAnywhereLightning) { flagset += "L"; }
+        if (app.settingsFlashTravel){ flagset += "T"; }
         if (flagset == " ") { flagset = ""; }
     }
 

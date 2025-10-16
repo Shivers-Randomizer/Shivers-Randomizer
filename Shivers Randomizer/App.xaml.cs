@@ -82,6 +82,7 @@ public partial class App : Application
     public bool settingsElevatorsStaySolved;
     public bool settingsUnlockEntrance;
     public bool settingsAnywhereLightning;
+    public bool settingsFlashTravel;
 
     public bool currentlyTeleportingPlayer = false;
     public RoomTransition? lastTransitionUsed;
@@ -884,6 +885,12 @@ public partial class App : Application
         if (settingsUnlockEntrance)
         {
             SetKthBitMemoryOneByte(381, 0, roomNumber == 1550 || roomNumber == 9670);
+        }
+
+        //Flash Travel
+        if (settingsFlashTravel)
+        {
+            FlashTravel();
         }
 
         int healthTemp = ReadMemory(-40, 1);
@@ -1756,6 +1763,11 @@ public partial class App : Application
             WriteMemory(361, SetKthBit(generatorByte, 5, true)); // Turn switch byte back on in memory
             archipelagoGeneratorSwitchScreenRefreshed = false; // Turn off refresh flag
         }
+    }
+
+    private void FlashTravel()
+    {
+        SetKthBitMemoryOneByte(0x170, 2, false);
     }
 
     private void ArchipelagoRemoveCapturedIxupi()

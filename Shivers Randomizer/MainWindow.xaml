@@ -225,6 +225,7 @@
                     </StackPanel>
                     <CheckBox x:Name="checkBoxUnlockEntrance" Content="Unlock Entrance" ToolTip="Unlocks the museum entrance." Click="UpdateFlagset"/>
                     <CheckBox x:Name="checkBoxAnywhereLightning" Content="Lightning Capturable Anywhere" IsEnabled="false" ToolTip="Allows lightning to be captured in the UFO room and the Torture room." Click="UpdateFlagset"/>
+                    <CheckBox x:Name="checkBoxFlashTravel" Content="Flash Travel" IsEnabled="True" ToolTip="Allows flash backs to be used for fast travel." Click="UpdateFlagset"/>
                 </StackPanel>
             </StackPanel>
 
