@@ -157,6 +157,9 @@ public partial class Archipelago_Client : Window
 
                     // Grab goal ixupi capture option
                     slotDataIxupiCapturesNeeded = TryGetIntSetting(jsonObject, "IxupiCapturesNeeded", 10);
+
+                    //Enable YAML Settings button
+                    buttonYAMLSettings.Visibility = Visibility.Visible;
                     finishedConnecting = true;
                 }
                 else
@@ -362,6 +365,7 @@ public partial class Archipelago_Client : Window
             {
                 buttonConnect.Content = "Connect";
                 buttonConnect.IsDefault = true;
+                buttonYAMLSettings.Visibility = Visibility.Hidden;
             });
 
             app.StopArchipelago();
@@ -774,5 +778,15 @@ public partial class Archipelago_Client : Window
         {
             ServerMessageBox.ScrollToEnd();
         }
+    }
+
+    private void buttonYAMLSettings_Click(object sender, RoutedEventArgs e)
+    {
+        new Message(
+            $"YAML Settings" +
+            "\n\nIxupi Captures needed for Goal: " + slotDataIxupiCapturesNeeded +
+            "\nIxupi Captures needed for Beth: " + (slotDataSettingEarlyBeth ? 0 : slotDataIxupiCapturesNeeded - 1) +
+            "\nIxupi Captures needed to capture Lightning: " + (slotDataEarlyLightning ? 0 : slotDataIxupiCapturesNeeded - 1)
+        ).ShowDialog();
     }
 }
