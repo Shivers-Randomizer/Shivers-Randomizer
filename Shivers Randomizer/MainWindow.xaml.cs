@@ -103,6 +103,8 @@ public partial class MainWindow : Window
             checkBoxFullPots.IsChecked = false;
             checkBoxFirstToTheOnlyFive.IsEnabled = false;
             checkBoxFirstToTheOnlyFive.IsChecked = false;
+            checkBoxRedHerrings.IsEnabled = false;
+            checkBoxRedHerrings.IsChecked = false;
             checkBoxUnlockEntrance.IsEnabled = false;
             checkBoxUnlockEntrance.IsChecked = false;
             checkBoxAnywhereLightning.IsEnabled = false;
@@ -176,6 +178,7 @@ public partial class MainWindow : Window
         app.settingsSolvedLyre = checkBoxSolvedLyre.IsChecked == true;
         app.settingsFullPots = checkBoxFullPots.IsChecked == true;
         app.settingsFirstToTheOnlyFive = checkBoxFirstToTheOnlyFive.IsChecked == true;
+        app.settingsRedHerrings = checkBoxRedHerrings.IsChecked == true;
         app.settingsUnlockEntrance = checkBoxUnlockEntrance.IsChecked == true;
         app.settingsAnywhereLightning = checkBoxAnywhereLightning.IsChecked == true;
         app.settingsFlashTravel = checkBoxFlashTravel.IsChecked == true;
@@ -221,6 +224,8 @@ public partial class MainWindow : Window
             checkBoxFullPots.IsChecked = false;
             checkBoxFirstToTheOnlyFive.IsEnabled = false;
             checkBoxFirstToTheOnlyFive.IsChecked = false;
+            checkBoxRedHerrings.IsEnabled = false;
+            checkBoxRedHerrings.IsChecked = false;
             checkBoxUnlockEntrance.IsEnabled = false;
             checkBoxUnlockEntrance.IsChecked = false;
             checkBoxAnywhereLightning.IsEnabled = false;
@@ -441,6 +446,20 @@ public partial class MainWindow : Window
             checkBoxIncludeElevators.IsChecked = false;
         }
 
+        UpdateFlagset(sender, e);
+    }
+
+    private void checkBoxFirstToTheOnlyFive_Click(object sender, RoutedEventArgs e)
+    {
+        if (checkBoxFirstToTheOnlyFive.IsChecked == true)
+        {
+            checkBoxRedHerrings.IsEnabled = true;
+        }
+        else
+        {
+            checkBoxRedHerrings.IsEnabled = false;
+            checkBoxRedHerrings.IsChecked = false;
+        }
         UpdateFlagset(sender, e);
     }
 

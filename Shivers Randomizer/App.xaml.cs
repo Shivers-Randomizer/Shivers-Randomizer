@@ -46,7 +46,6 @@ public partial class App : Application
     public int Seed;
     public bool setSeedUsed;
     private Random rng;
-    public int ScrambleCount;
     private IxupiPot[] Locations = new IxupiPot[POT_LOCATIONS.Count];
     public int roomNumber;
     public int roomNumberPrevious;
@@ -75,6 +74,7 @@ public partial class App : Application
     public bool settingsRedDoor;
     public bool settingsFullPots;
     public bool settingsFirstToTheOnlyFive;
+    public bool settingsRedHerrings;
     public bool settingsRoomShuffle;
     public bool settingsIncludeElevators;
     public bool settingsMultiplayer;
@@ -498,6 +498,8 @@ public partial class App : Application
                 }
 
                 // Next select from the remaining sets available
+                bool oilSelected = false;
+                bool clothSelected = false;
                 while (numberOfRemainingPots > 0)
                 {
                     int setSelected = rng.Next(0, setsAvailable.Count);
@@ -515,6 +517,41 @@ public partial class App : Application
 
                     numberOfRemainingPots -= 2;
                     setsAvailable.RemoveAt(setSelected);
+
+                    //set flags for if oil and cloth were selected for impossible scramble logic check
+                    if(ixupiSelected == Ixupi.OIL)
+                    {
+                        oilSelected = true;
+                    }
+                    if(ixupiSelected == Ixupi.CLOTH)
+                    {
+                        clothSelected = true;
+                    }    
+
+                }
+
+                //Add Red Herrings
+                if(settingsRedHerrings && !settingsFullPots)
+                {
+                    while (setsAvailable.Count > 0)
+                    {
+                        int setSelected = rng.Next(0, setsAvailable.Count);
+                        Ixupi ixupiSelected = setsAvailable[setSelected];
+
+                        //Roll for if red herring is tops or bottoms
+                        if(rng.Next(0, 2) == 0)
+                        {
+                            piecesNeededToBePlaced.Add((IxupiPot)((int)ixupiSelected + POT_BOTTOM_OFFSET));
+                            piecesNeededToBePlaced.Add((IxupiPot)((int)ixupiSelected + POT_BOTTOM_OFFSET));
+                        }
+                        else
+                        {
+                            piecesNeededToBePlaced.Add((IxupiPot)((int)ixupiSelected + POT_TOP_OFFSET));
+                            piecesNeededToBePlaced.Add((IxupiPot)((int)ixupiSelected + POT_TOP_OFFSET));
+                        }
+
+                        setsAvailable.RemoveAt(setSelected);
+                    }
                 }
 
                 PotLocation randomLocation;
@@ -547,8 +584,8 @@ public partial class App : Application
                 if (OIL_POTS.Contains(Locations[(int)PotLocation.TAR_RIVER]) ||
                     CLOTH_POTS.Contains(Locations[(int)PotLocation.JANITOR_CLOSET]) ||
                     OIL_POTS.Contains(Locations[(int)PotLocation.JANITOR_CLOSET]) && CLOTH_POTS.Contains(Locations[(int)PotLocation.TAR_RIVER]) ||
-                    Locations[(int)PotLocation.TAR_RIVER] != 0 && !Locations.Any(pot => OIL_POTS.Contains(pot)) ||
-                    Locations[(int)PotLocation.JANITOR_CLOSET] != 0 && !Locations.Any(pot => CLOTH_POTS.Contains(pot)))
+                    Locations[(int)PotLocation.TAR_RIVER] != 0 && !oilSelected ||
+                    Locations[(int)PotLocation.JANITOR_CLOSET] != 0 && !clothSelected)
                 {
                     goto Scramble;
                 }
@@ -607,8 +644,6 @@ public partial class App : Application
             useFastTimer = false;
         }
 
-        ScrambleCount += 1;
-        mainWindow.label_ScrambleFeedback.Content = $"Scramble Number: {ScrambleCount}";
         overlay.SetInfo();
         mainWindow.label_Flagset.Content = $"Flagset: {overlay.flagset}";
 

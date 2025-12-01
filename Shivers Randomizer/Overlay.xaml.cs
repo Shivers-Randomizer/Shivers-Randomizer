@@ -43,6 +43,7 @@ public partial class Overlay : Window
         if (app.settingsRoomShuffle) { flagset += "R"; }
         if (app.settingsIncludeElevators) { flagset += "E"; }
         if (app.settingsFullPots) { flagset += "F"; }
+        if (app.settingsRedHerrings) { flagset += "H"; }
         if (app.settingsUnlockEntrance) { flagset += "U"; }
         if (app.settingsAnywhereLightning) { flagset += "L"; }
         if (app.settingsFlashTravel){ flagset += "T"; }
