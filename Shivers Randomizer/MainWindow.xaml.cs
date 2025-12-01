@@ -56,6 +56,7 @@ public partial class MainWindow : Window
             checkBoxFullPots.IsEnabled = true;
             checkBoxFirstToTheOnlyFive.IsEnabled = true;
             checkBoxUnlockEntrance.IsEnabled = true;
+            checkBoxFlashTravel.IsEnabled = true;
 
             button_Scramble.IsEnabled = true;
         });
@@ -106,6 +107,8 @@ public partial class MainWindow : Window
             checkBoxUnlockEntrance.IsChecked = false;
             checkBoxAnywhereLightning.IsEnabled = false;
             checkBoxAnywhereLightning.IsChecked = false;
+            checkBoxFlashTravel.IsEnabled = false;
+            checkBoxFlashTravel.IsChecked = false;
 
             button_Scramble.IsEnabled = false;
         });
