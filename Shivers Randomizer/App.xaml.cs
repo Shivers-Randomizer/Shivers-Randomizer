@@ -581,9 +581,9 @@ public partial class App : Application
                 // Check if oil behind cloth AND cloth behind oil
                 // Check if a piece behind oil with no oil pot available
                 // Check if a piece behind cloth with no cloth pot available
-                if (OIL_POTS.Contains(Locations[(int)PotLocation.TAR_RIVER]) ||
-                    CLOTH_POTS.Contains(Locations[(int)PotLocation.JANITOR_CLOSET]) ||
-                    OIL_POTS.Contains(Locations[(int)PotLocation.JANITOR_CLOSET]) && CLOTH_POTS.Contains(Locations[(int)PotLocation.TAR_RIVER]) ||
+                if (OIL_POTS.Contains(Locations[(int)PotLocation.TAR_RIVER]) && oilSelected ||
+                    CLOTH_POTS.Contains(Locations[(int)PotLocation.JANITOR_CLOSET]) && clothSelected ||
+                    OIL_POTS.Contains(Locations[(int)PotLocation.JANITOR_CLOSET]) && CLOTH_POTS.Contains(Locations[(int)PotLocation.TAR_RIVER]) && (oilSelected || clothSelected) ||
                     Locations[(int)PotLocation.TAR_RIVER] != 0 && !oilSelected ||
                     Locations[(int)PotLocation.JANITOR_CLOSET] != 0 && !clothSelected)
                 {
