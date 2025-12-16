@@ -1354,7 +1354,15 @@ public partial class App : Application
         //If game mode is release disabled then prevent explore museum mode (Which sends checks automatically) by sending player to front gate to continue exploring.
         if (roomNumber == 923 && archipelagoReleaseDisabled)
         {
-            WriteMemory(-424, 1012);
+            if(archipelago_Client?.dataStorage != null)
+            {
+                WriteMemory(-424, archipelago_Client.dataStorage.PlayerLocation);
+            }
+            else
+            {
+                WriteMemory(-424, 1012);
+            }
+
         }
     }
 
