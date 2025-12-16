@@ -126,6 +126,7 @@ public partial class App : Application
     private bool archipelagoElevatorSettings;
     private CollectBehavior archipelagoCollectBehavior = CollectBehavior.PREVENT_OUT_OF_LOGIC_ACCESS;
     readonly List<int> archipelagoChecksReadyToSend = new();
+    public bool archipelagoReleaseDisabled = false;
 
     public App()
     {
@@ -1253,13 +1254,16 @@ public partial class App : Application
                     // Check for victory
                     if (finalCutsceneTriggered)
                     {
-                        archipelago_Client?.SendCheck(116);
+                        archipelago_Client?.SendCheck(ARCHIPELAGO_BASE_LOCATION_ID + 116);
                         archipelago_Client?.Send_completion();
                     }
 
                     archipelagoTimerTick = false;
                     archipelagoRunningTick = false;
                 }
+
+                //Check if release mode disabled. If so prevent explore mode. This is specifically outside of the tick event so that it is checked quickly.
+                ArchipelagoReleaseDisabled();
 
                 // Allow outside access
                 OutsideAccess();
@@ -1342,6 +1346,15 @@ public partial class App : Application
         else
         {
             archipelago_Client?.CheckConnection();
+        }
+    }
+
+    private void ArchipelagoReleaseDisabled()
+    {
+        //If game mode is release disabled then prevent explore museum mode (Which sends checks automatically) by sending player to front gate to continue exploring.
+        if (roomNumber == 923 && archipelagoReleaseDisabled)
+        {
+            WriteMemory(-424, 1012);
         }
     }
 
@@ -2191,6 +2204,12 @@ public partial class App : Application
 
         // Early beth setting
         SetKthBitMemoryOneByte(381, 7, archipelago_Client?.slotDataSettingEarlyBeth ?? true);
+
+        // Check if slot has already goaled, if so prevent final cutscene from playing again
+        if(archipelago_Client != null)
+        {
+            finalCutsceneTriggered = archipelago_Client.CheckSlotGoalStatus();
+        }
     }
 
     private void ArchipelagoPlacePieces()

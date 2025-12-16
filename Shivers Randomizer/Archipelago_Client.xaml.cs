@@ -161,6 +161,9 @@ public partial class Archipelago_Client : Window
                     //Enable YAML Settings button
                     buttonYAMLSettings.Visibility = Visibility.Visible;
                     finishedConnecting = true;
+
+                    //If release is disabled set flag to prevent exploring museum
+                    app.archipelagoReleaseDisabled = (session.RoomState.ReleasePermissions == Permissions.Disabled);
                 }
                 else
                 {
@@ -738,6 +741,17 @@ public partial class Archipelago_Client : Window
             ServerMessageBox.AppendTextWithColor($"Please press New Game in Shivers.{Environment.NewLine}", Brushes.Red);
             ScrollMessages();
         });
+    }
+
+    public bool CheckSlotGoalStatus()
+    {
+        //If slot has goaled prevent final cutscene from triggering second time
+        if (session?.DataStorage.GetClientStatus() == ArchipelagoClientState.ClientGoal)
+        {
+            return true;
+        }
+
+        return false;
     }
 
     private void ServerMessageBox_ScrollChanged(object sender, ScrollChangedEventArgs e)
