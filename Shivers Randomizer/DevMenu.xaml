@@ -1,0 +1,116 @@
+﻿<Window x:Class="Shivers_Randomizer.DevMenu"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d"
+        Title="Dev Menu"
+        SizeToContent="WidthAndHeight"
+        Icon="/resources/Shivers-Icon.ico"
+        Background="#00052A"
+        BorderBrush="#FC7C1A"
+        BorderThickness="3"
+        ResizeMode="NoResize">
+
+    <Window.Resources>
+
+        <!-- Label Style -->
+        <Style TargetType="Label">
+            <Setter Property="Foreground" Value="#FC7C1A" />
+            <Setter Property="FontSize" Value="14" />
+            <Setter Property="VerticalContentAlignment" Value="Center" />
+            <Setter Property="Padding" Value="0" />
+        </Style>
+
+        <!-- Button Style -->
+        <Style TargetType="Button">
+            <Setter Property="OverridesDefaultStyle" Value="True" />
+            <Setter Property="Cursor" Value="Hand" />
+            <Setter Property="Foreground" Value="#FC7C1A" />
+            <Setter Property="FontSize" Value="18" />
+            <Setter Property="FontWeight" Value="Bold" />
+            <Setter Property="BorderThickness" Value="0" />
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="Effect">
+                <Setter.Value>
+                    <DropShadowEffect BlurRadius="0"
+                                      Color="#794109"
+                                      ShadowDepth="5" />
+                </Setter.Value>
+            </Setter>
+
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <ContentPresenter />
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+
+            <Style.Triggers>
+
+                <!-- Disabled -->
+                <Trigger Property="IsEnabled" Value="False">
+                    <Setter Property="Foreground" Value="#733100" />
+                </Trigger>
+
+                <!-- Pressed -->
+                <Trigger Property="IsPressed" Value="True">
+                    <Setter Property="Foreground" Value="#A54D0A" />
+                    <Setter Property="Effect">
+                        <Setter.Value>
+                            <DropShadowEffect BlurRadius="0"
+                                              ShadowDepth="0"
+                                              Opacity="0" />
+                        </Setter.Value>
+                    </Setter>
+                    <Setter Property="RenderTransform">
+                        <Setter.Value>
+                            <TranslateTransform X="2" Y="2" />
+                        </Setter.Value>
+                    </Setter>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+    </Window.Resources>
+
+    <Grid Height="Auto">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <StackPanel Grid.Row="0" Margin="20,20,20,20">
+            <Button x:Name="button_MainMenu" Content="Main Menu" HorizontalAlignment="Left" VerticalAlignment="Center" Tag="910" Click="button_Teleport_Click"/>
+            <Button x:Name="button_Anansi" Content="Anansi" HorizontalAlignment="Left" VerticalAlignment="Center" Tag="24410" Click="button_Teleport_Click"/>
+            <Button x:Name="button_Bedroom" Content="Bedroom" HorizontalAlignment="Left" VerticalAlignment="Center" Tag="37010" Click="button_Teleport_Click"/>
+            <Button x:Name="button_BlueHallways" Content="Blue Hallways" HorizontalAlignment="Left" VerticalAlignment="Center" Tag="27070" Click="button_Teleport_Click"/>
+            <Button x:Name="button_Burial" Content="Burial" HorizontalAlignment="Left" VerticalAlignment="Center" Tag="21190" Click="button_Teleport_Click"/>
+            <Button x:Name="button_ClockTower" Content="Clock Tower" HorizontalAlignment="Left" VerticalAlignment="Center" Tag="35110" Click="button_Teleport_Click"/>
+            <Button x:Name="button_Egypt" Content="Egypt" HorizontalAlignment="Left" VerticalAlignment="Center" Tag="20060" Click="button_Teleport_Click"/>
+            <Button x:Name="button_FortuneTeller" Content="Fortune Teller" HorizontalAlignment="Left" VerticalAlignment="Center" Tag="28000" Click="button_Teleport_Click"/>
+            <Button x:Name="button_Generator" Content="Generator" HorizontalAlignment="Left" VerticalAlignment="Center" Tag="39010" Click="button_Teleport_Click"/>
+            <Button x:Name="button_Gods" Content="Gods" HorizontalAlignment="Left" VerticalAlignment="Center" Tag="23800" Click="button_Teleport_Click"/>
+            <Button x:Name="button_Greenhouse" Content="Greenhouse" HorizontalAlignment="Left" VerticalAlignment="Center" Tag="19040" Click="button_Teleport_Click"/>
+            <Button x:Name="button_Inventions" Content="Inventions" HorizontalAlignment="Left" VerticalAlignment="Center" Tag="30170" Click="button_Teleport_Click"/>
+            <Button x:Name="button_JanitorCloset" Content="Janitor Closet" HorizontalAlignment="Left" VerticalAlignment="Center" Tag="25010" Click="button_Teleport_Click"/>
+            <Button x:Name="button_Library" Content="Library" HorizontalAlignment="Left" VerticalAlignment="Center" Tag="8000" Click="button_Teleport_Click"/>
+            <Button x:Name="button_Lobby" Content="Lobby" HorizontalAlignment="Left" VerticalAlignment="Center" Tag="9020" Click="button_Teleport_Click"/>
+            <Button x:Name="button_Ocean" Content="Ocean" HorizontalAlignment="Left" VerticalAlignment="Center" Tag="12010" Click="button_Teleport_Click"/>
+            <Button x:Name="button_Office" Content="Office" HorizontalAlignment="Left" VerticalAlignment="Center" Tag="6130" Click="button_Teleport_Click"/>
+            <Button x:Name="button_Outside" Content="Outside" HorizontalAlignment="Left" VerticalAlignment="Center" Tag="1012" Click="button_Teleport_Click"/>
+            <Button x:Name="button_Prehistoric" Content="Prehistoric" HorizontalAlignment="Left" VerticalAlignment="Center" Tag="11020" Click="button_Teleport_Click"/>
+            <Button x:Name="button_Projector" Content="Projector" HorizontalAlignment="Left" VerticalAlignment="Center" Tag="17010" Click="button_Teleport_Click"/>
+            <Button x:Name="button_Puzzle" Content="Puzzle" HorizontalAlignment="Left" VerticalAlignment="Center" Tag="31020" Click="button_Teleport_Click"/>
+            <Button x:Name="button_Shaman" Content="Shaman" HorizontalAlignment="Left" VerticalAlignment="Center" Tag="22020" Click="button_Teleport_Click"/>
+            <Button x:Name="button_SubterraneanMaze" Content="Subterranean Maze" HorizontalAlignment="Left" VerticalAlignment="Center" Tag="13012" Click="button_Teleport_Click"/>
+            <Button x:Name="button_TarRiver" Content="Tar River" HorizontalAlignment="Left" VerticalAlignment="Center" Tag="13344" Click="button_Teleport_Click"/>
+            <Button x:Name="button_Theater" Content="Theater" HorizontalAlignment="Left" VerticalAlignment="Center" Tag="16000" Click="button_Teleport_Click"/>
+            <Button x:Name="button_Torture" Content="Torture" HorizontalAlignment="Left" VerticalAlignment="Center" Tag="32010" Click="button_Teleport_Click"/>
+            <Button x:Name="button_UFO" Content="UFO" HorizontalAlignment="Left" VerticalAlignment="Center" Tag="29010" Click="button_Teleport_Click"/>
+            <Button x:Name="button_UndergroundLake" Content="Underground Lake" HorizontalAlignment="Left" VerticalAlignment="Center" Tag="3020" Click="button_Teleport_Click"/>
+            <Button x:Name="button_UndergroundTunnel" Content="Underground Tunnel" HorizontalAlignment="Left" VerticalAlignment="Center" Tag="2010" Click="button_Teleport_Click"/>
+            <Button x:Name="button_Workshop" Content="Workshop" HorizontalAlignment="Left" VerticalAlignment="Center" Tag="7010" Click="button_Teleport_Click"/>
+        </StackPanel>
+    </Grid>
+
+</Window>

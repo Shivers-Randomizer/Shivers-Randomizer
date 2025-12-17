@@ -549,8 +549,10 @@ public partial class MainWindow : Window
         //app.WriteMemory(-424, 39150);
     }
 
-    private void Button_teleportMenu_Click(object sender, RoutedEventArgs e)
+    private void Button_devMenu_Click(object sender, RoutedEventArgs e)
     {
-        app.WriteMemory(-424, 922);
+            app.dev_Menu = new(app);
+            app.dev_Menu.Show();
+
     }
 }

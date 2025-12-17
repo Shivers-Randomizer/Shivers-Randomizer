@@ -272,8 +272,8 @@
                     <Label Visibility="{x:Static utils:DebugSettings.Visibility}" x:Name="label_room" Content="Label" Margin="10,0,0,0" />
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
-                    <Button Visibility="{x:Static utils:DebugSettings.Visibility}" x:Name="button_teleportMenu" Content="Menu"
-                            HorizontalAlignment="Left" Width="110" Click="Button_teleportMenu_Click" IsEnabled="True"/>
+                    <Button Visibility="{x:Static utils:DebugSettings.Visibility}" x:Name="button_devMenu" Content="Dev Menu"
+                            HorizontalAlignment="Left" Width="110" Click="Button_devMenu_Click" IsEnabled="True"/>
                     <Label Visibility="{x:Static utils:DebugSettings.Visibility}" x:Name="label_ixupidNumber" Content="Label" Margin="10,0,0,0" />
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">

@@ -30,6 +30,7 @@ public partial class App : Application
     public LiveSplit? liveSplit = null;
     public Multiplayer_Client? multiplayer_Client = null;
     public Archipelago_Client? archipelago_Client = null;
+    public DevMenu? dev_Menu = null;
     private DispatcherTimer appTimer = new()
     {
         Interval = TimeSpan.FromMilliseconds(1)
@@ -1351,7 +1352,7 @@ public partial class App : Application
 
     private void ArchipelagoReleaseDisabled()
     {
-        //If game mode is release disabled then prevent explore museum mode (Which sends checks automatically) by sending player to front gate to continue exploring.
+        //If game mode is release disabled then prevent explore museum mode (Which sends checks automatically) by sending player to last know location to continue exploring.
         if (roomNumber == 923 && archipelagoReleaseDisabled)
         {
             if(archipelago_Client?.dataStorage != null)
