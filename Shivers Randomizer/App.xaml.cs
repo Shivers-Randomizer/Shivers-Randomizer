@@ -17,6 +17,7 @@ using System.Windows.Media;
 using System.Windows.Threading;
 using static Shivers_Randomizer.utils.AppHelpers;
 using static Shivers_Randomizer.utils.Constants;
+using static Shivers_Randomizer.utils.MemoryMap;
 
 namespace Shivers_Randomizer;
 
@@ -177,13 +178,13 @@ public partial class App : Application
         // If player was on the boat move to pause menu screen and then to main menu, else move straight to main menu. This clears the boat state flag
         if (roomNumber >= 3120 && roomNumber <= 3320)
         {
-            WriteMemory(-424, 990); // Move to pause menu
+            WriteMemory(Addresses.PLAYER_LOCATION, 990); // Move to pause menu
             Thread.Sleep(500);
-            WriteMemory(-424, 910); // Move to main menu
+            WriteMemory(Addresses.PLAYER_LOCATION, 910); // Move to main menu
         }
         else
         {
-            WriteMemory(-424, 910); // Move to main menu
+            WriteMemory(Addresses.PLAYER_LOCATION, 910); // Move to main menu
         }
         
         archipelagoHealCountPrevious = 0;
@@ -609,19 +610,19 @@ public partial class App : Application
         // Set bytes for red door, beth, and lyre
         if (!settingsVanilla)
         {
-            SetKthBitMemoryOneByte(364, 7, settingsRedDoor);
-            SetKthBitMemoryOneByte(381, 7, settingsEarlyBeth);
-            SetKthBitMemoryOneByte(365, 0, settingsSolvedLyre);
+            SetKthBitMemoryOneByte(Flags.PuzzleSolvedRedDoor, settingsRedDoor);
+            SetKthBitMemoryOneByte(Flags.BethElectricalPanelAvailable, settingsEarlyBeth);
+            SetKthBitMemoryOneByte(Flags.PuzzleSolvedLyre, settingsSolvedLyre);
         }
 
         // Set ixupi captured number
         if (settingsFirstToTheOnlyFive)
         {
-            WriteMemory(1712, 10 - firstToTheOnlyXNumber);
+            WriteMemory(Addresses.IXUPI_CAPTURED_NUMBER, 10 - firstToTheOnlyXNumber);
         }
         else // Set to 0 if not running First to The Only X
         {
-            WriteMemory(1712, 0);
+            WriteMemory(Addresses.IXUPI_CAPTURED_NUMBER, 0);
         }
 
         if (settingsRoomShuffle)
@@ -630,7 +631,7 @@ public partial class App : Application
         }
 
         // Sets crawlspace in lobby
-        SetKthBitMemoryOneByte(368, 6, settingsRoomShuffle);
+        SetKthBitMemoryOneByte(Flags.LobbyTarRiverCrawlspaceAvailable, settingsRoomShuffle);
 
         // Start fast timer for room shuffle
         if (settingsRoomShuffle)
@@ -880,7 +881,7 @@ public partial class App : Application
         #endif
 
         // Label for ixupi captured number
-        int numberIxupiCapturedTemp = ReadMemory(1712, 1);
+        int numberIxupiCapturedTemp = ReadMemory(Addresses.IXUPI_CAPTURED_NUMBER, 1);
         if (numberIxupiCapturedTemp > numberIxupiCaptured)
         {
             numberIxupiCaptured = numberIxupiCapturedTemp;
@@ -921,7 +922,7 @@ public partial class App : Application
         // Locks/Unlocks entrance
         if (settingsUnlockEntrance)
         {
-            SetKthBitMemoryOneByte(381, 0, roomNumber == 1550 || roomNumber == 9670);
+            SetKthBitMemoryOneByte(Flags.ExploreMode, roomNumber == 1550 || roomNumber == 9670);
         }
 
         //Flash Travel
@@ -1141,7 +1142,7 @@ public partial class App : Application
                         if (ScreenRedrawAllowed)
                         {
                             multiplayerScreenRedrawNeeded = false;
-                            WriteMemory(-432, 922);
+                            WriteMemory(Addresses.PLAYER_PREVIOUS_LOCATION, 922);
                         }
                     }
 
@@ -1289,12 +1290,12 @@ public partial class App : Application
                 {
                     if (archipelagoReceivedItems?.Contains((int)APItemID.KEYS.FRONT_DOOR) ?? false)
                     {
-                        SetKthBitMemoryOneByte(381, 0, true);
+                        SetKthBitMemoryOneByte(Flags.ExploreMode, true);
                     }
                 }
                 else
                 {
-                    SetKthBitMemoryOneByte(381, 0, false);
+                    SetKthBitMemoryOneByte(Flags.ExploreMode, false);
                 }
 
                 // Set flags for checks that are sent based on room number. These need captured immediately and not on the send checks timer
@@ -1357,11 +1358,11 @@ public partial class App : Application
         {
             if(archipelago_Client?.dataStorage != null)
             {
-                WriteMemory(-424, archipelago_Client.dataStorage.PlayerLocation);
+                WriteMemory(Addresses.PLAYER_LOCATION, archipelago_Client.dataStorage.PlayerLocation);
             }
             else
             {
-                WriteMemory(-424, 1012);
+                WriteMemory(Addresses.PLAYER_LOCATION, 1012);
             }
 
         }
@@ -1455,7 +1456,7 @@ public partial class App : Application
                 (roomNumber == 20160 && roomNumberPrevious == 27023 && !(archipelagoReceivedItems?.Contains((int)APItemID.ABILITIES.CRAWLING) ?? false))    // Egypt Crawl Space from Blue Halls Side
             )
             {
-                WriteMemory(-424, roomNumberPrevious);
+                WriteMemory(Addresses.PLAYER_LOCATION, roomNumberPrevious);
             }
         }
     }
@@ -1483,11 +1484,11 @@ public partial class App : Application
         // Load player location
         if (dataStorage.PlayerLocation >= 1000 && archipelagoCompleteScriptList.Contains(dataStorage.PlayerLocation))
         {
-            WriteMemory(-424, dataStorage.PlayerLocation);
+            WriteMemory(Addresses.PLAYER_LOCATION, dataStorage.PlayerLocation);
         }
         else
         {
-            WriteMemory(-424, 1012);
+            WriteMemory(Addresses.PLAYER_LOCATION, 1012);
         }
 
         // Load skull dials
@@ -1500,13 +1501,13 @@ public partial class App : Application
         if (dataStorage.Jukebox)
         {
             // Check not obtained but jukebox was set
-            ArchipelagoSetFlagBit(377, 5); // Jukebox Set
+            ArchipelagoSetFlagBit(Flags.JukeboxSet); // Jukebox Set
         }
 
         // Load Tar River Shortcut flag
         if (dataStorage.TarRiverShortcut)
         {
-            ArchipelagoSetFlagBit(368, 6); // Tar River Shortcut open flag set
+            ArchipelagoSetFlagBit(Flags.LobbyTarRiverCrawlspaceAvailable); // Tar River Shortcut open flag set
         }
 
         // Load Player Health and ixupi damage
@@ -1518,7 +1519,7 @@ public partial class App : Application
                 WriteMemory(184 + i * 8, 0); // Set Ixupi damage to 0
             }
 
-            WriteMemory(-424, 1012);
+            WriteMemory(Addresses.PLAYER_LOCATION, 1012);
         }
         else
         {
@@ -1550,13 +1551,13 @@ public partial class App : Application
         WriteMemory(-60, ixupiCapturedStates);
 
         // Set ixupi captured amount in memory, and local variable
-        WriteMemory(1712, ixupiCapturedAmount);
+        WriteMemory(Addresses.IXUPI_CAPTURED_NUMBER, ixupiCapturedAmount);
         numberIxupiCaptured = ixupiCapturedAmount;
 
         // Remove Captured Ixupi
         ArchipelagoRemoveCapturedIxupi();
 
-        WriteMemory(-432, 922); // Refresh screen to redraw inventory
+        WriteMemory(Addresses.PLAYER_PREVIOUS_LOCATION, 922); // Refresh screen to redraw inventory
 
         archipelagoCurrentlyLoadingData = false;
     }
@@ -1617,30 +1618,30 @@ public partial class App : Application
                 IxupiCapturedStates = ReadMemory(-60, 2),
                 PuzzlesSolved = dataStorage.PuzzlesSolved with
                 {
-                    CombinationLock = dataStorage.PuzzlesSolved.CombinationLock || IsKthBitSet(byte372, 1),
-                    Gears = dataStorage.PuzzlesSolved.Gears || IsKthBitSet(byte361, 7),
-                    Stonehenge = dataStorage.PuzzlesSolved.Stonehenge || IsKthBitSet(byte361, 6),
-                    WorkshopDrawers = dataStorage.PuzzlesSolved.WorkshopDrawers || IsKthBitSet(byte377, 7),
-                    LibraryStatue = dataStorage.PuzzlesSolved.LibraryStatue || IsKthBitSet(byte368, 7),
-                    TheaterDoor = dataStorage.PuzzlesSolved.TheaterDoor || IsKthBitSet(byte364, 3),
-                    ClockTowerDoor = dataStorage.PuzzlesSolved.ClockTowerDoor || IsKthBitSet(byte364, 1),
-                    ClockChains = dataStorage.PuzzlesSolved.ClockChains || IsKthBitSet(byte380, 5),
-                    Atlantis = dataStorage.PuzzlesSolved.Atlantis || IsKthBitSet(byte360, 5),
-                    Organ = dataStorage.PuzzlesSolved.Organ || IsKthBitSet(byte360, 6),
-                    MazeDoor = dataStorage.PuzzlesSolved.MazeDoor || IsKthBitSet(byte364, 0),
-                    ColumnsOfRA = dataStorage.PuzzlesSolved.ColumnsOfRA || IsKthBitSet(byte365, 6),
-                    BurialDoor = dataStorage.PuzzlesSolved.BurialDoor || IsKthBitSet(byte365, 5),
-                    ChineseSolitaire = dataStorage.PuzzlesSolved.ChineseSolitaire || IsKthBitSet(byte381, 4),
-                    ShamanDrums = dataStorage.PuzzlesSolved.ShamanDrums || IsKthBitSet(byte365, 1),
-                    Lyre = dataStorage.PuzzlesSolved.Lyre || IsKthBitSet(byte365, 0),
-                    RedDoor = dataStorage.PuzzlesSolved.RedDoor || IsKthBitSet(byte364, 7),
-                    FortuneTellerDoor = dataStorage.PuzzlesSolved.FortuneTellerDoor || IsKthBitSet(byte364, 5),
-                    Alchemy = dataStorage.PuzzlesSolved.Alchemy || IsKthBitSet(byte372, 5),
-                    UFOSymbols = dataStorage.PuzzlesSolved.UFOSymbols || IsKthBitSet(byte377, 3),
-                    AnansiMusicBoc = dataStorage.PuzzlesSolved.AnansiMusicBoc || IsKthBitSet(byte380, 7),
-                    Gallows = dataStorage.PuzzlesSolved.Gallows || IsKthBitSet(byte381, 6),
-                    Mastermind = dataStorage.PuzzlesSolved.Mastermind || IsKthBitSet(byte377, 6),
-                    MarblePinball = dataStorage.PuzzlesSolved.MarblePinball || IsKthBitSet(byte360, 4),
+                    CombinationLock = dataStorage.PuzzlesSolved.CombinationLock || IsKthBitSet(byte372, Flags.PuzzleSolvedComboLock.Bit),
+                    Gears = dataStorage.PuzzlesSolved.Gears || IsKthBitSet(byte361, Flags.PuzzleSolvedGears.Bit),
+                    Stonehenge = dataStorage.PuzzlesSolved.Stonehenge || IsKthBitSet(byte361, Flags.PuzzleSolvedStonehenge.Bit),
+                    WorkshopDrawers = dataStorage.PuzzlesSolved.WorkshopDrawers || IsKthBitSet(byte377, Flags.PuzzleSolvedWorkshopDrawers.Bit),
+                    LibraryStatue = dataStorage.PuzzlesSolved.LibraryStatue || IsKthBitSet(byte368, Flags.PuzzleSolvedLibraryStatue.Bit),
+                    TheaterDoor = dataStorage.PuzzlesSolved.TheaterDoor || IsKthBitSet(byte364, Flags.PuzzleSolvedTheaterDoor.Bit),
+                    ClockTowerDoor = dataStorage.PuzzlesSolved.ClockTowerDoor || IsKthBitSet(byte364, Flags.PuzzleSolvedClocktowerDoor.Bit),
+                    ClockChains = dataStorage.PuzzlesSolved.ClockChains || IsKthBitSet(byte380, Flags.PuzzleSolvedClockChains.Bit),
+                    Atlantis = dataStorage.PuzzlesSolved.Atlantis || IsKthBitSet(byte360, Flags.PuzzleSolvedAtlantis.Bit),
+                    Organ = dataStorage.PuzzlesSolved.Organ || IsKthBitSet(byte360, Flags.PuzzleSolvedOrgan.Bit),
+                    MazeDoor = dataStorage.PuzzlesSolved.MazeDoor || IsKthBitSet(byte364, Flags.PuzzleSolvedMazeDoor.Bit),
+                    ColumnsOfRA = dataStorage.PuzzlesSolved.ColumnsOfRA || IsKthBitSet(byte365, Flags.PuzzleSolvedColumnsOfRA.Bit),
+                    BurialDoor = dataStorage.PuzzlesSolved.BurialDoor || IsKthBitSet(byte365, Flags.PuzzleSolvedBurialDoor.Bit),
+                    ChineseSolitaire = dataStorage.PuzzlesSolved.ChineseSolitaire || IsKthBitSet(byte381, Flags.PuzzleSolvedChineseSolitaire.Bit),
+                    ShamanDrums = dataStorage.PuzzlesSolved.ShamanDrums || IsKthBitSet(byte365, Flags.PuzzleSolvedShamanDrums.Bit),
+                    Lyre = dataStorage.PuzzlesSolved.Lyre || IsKthBitSet(byte365, Flags.PuzzleSolvedLyre.Bit),
+                    RedDoor = dataStorage.PuzzlesSolved.RedDoor || IsKthBitSet(byte364, Flags.PuzzleSolvedRedDoor.Bit),
+                    FortuneTellerDoor = dataStorage.PuzzlesSolved.FortuneTellerDoor || IsKthBitSet(byte364, Flags.PuzzleSolvedFortuneTellerDoor.Bit),
+                    Alchemy = dataStorage.PuzzlesSolved.Alchemy || IsKthBitSet(byte372, Flags.PuzzleSolvedAlchemy.Bit),
+                    UFOSymbols = dataStorage.PuzzlesSolved.UFOSymbols || IsKthBitSet(byte377, Flags.PuzzleSolvedUFO.Bit),
+                    AnansiMusicBoc = dataStorage.PuzzlesSolved.AnansiMusicBoc || IsKthBitSet(byte380, Flags.AnansiMusicBoxOpen.Bit),
+                    Gallows = dataStorage.PuzzlesSolved.Gallows || IsKthBitSet(byte381, Flags.PuzzleSolvedGallows.Bit),
+                    Mastermind = dataStorage.PuzzlesSolved.Mastermind || IsKthBitSet(byte377, Flags.PuzzleSolvedMasermind.Bit),
+                    MarblePinball = dataStorage.PuzzlesSolved.MarblePinball || IsKthBitSet(byte360, Flags.PuzzleSolvedMarblePinball.Bit),
                     SkullDialDoor = dataStorage.PuzzlesSolved.SkullDialDoor || IsKthBitSet(ReadMemory(376, 1), 1),
                     OfficeElevator = dataStorage.PuzzlesSolved.OfficeElevator || elevatorOfficeSolved,
                     BedroomElevator = dataStorage.PuzzlesSolved.BedroomElevator || elevatorBedroomSolved,
@@ -1660,15 +1661,15 @@ public partial class App : Application
         {
             if (roomNumberPrevious != 0) // There is a previous room number
             {
-                WriteMemory(-424, roomNumberPrevious);
+                WriteMemory(Addresses.PLAYER_LOCATION, roomNumberPrevious);
             }
             else // If no previous room number, that means the player attached after already being on the screen
                  // This means we can go ahead and move them to title screen
             {
-                WriteMemory(-424, 910); // Set room to title
+                WriteMemory(Addresses.PLAYER_LOCATION, 910); // Set room to title
                 
             }
-            WriteMemory(-432, roomNumber); // Set previous room number in memory to restart the title music if that is the screen the player was on
+            WriteMemory(Addresses.PLAYER_PREVIOUS_LOCATION, roomNumber); // Set previous room number in memory to restart the title music if that is the screen the player was on
         }
     }
 
@@ -1811,7 +1812,7 @@ public partial class App : Application
             {
                 WriteMemory(361, SetKthBit(generatorByte, 5, false)); // Turn off switch in memory
                 
-                WriteMemory(-432, 990); // Refresh screen
+                WriteMemory(Addresses.PLAYER_PREVIOUS_LOCATION, 990); // Refresh screen
                 archipelagoGeneratorSwitchScreenRefreshed = true; // Set refresh flag
             }
         }
@@ -1824,7 +1825,7 @@ public partial class App : Application
 
     private void FlashTravel()
     {
-        SetKthBitMemoryOneByte(0x170, 2, false);
+        SetKthBitMemoryOneByte(Flags.FlashbackMenuActive, false);
     }
 
     private void ArchipelagoRemoveCapturedIxupi()
@@ -1880,6 +1881,10 @@ public partial class App : Application
         tempValue = SetKthBit(tempValue, bitNumber, true);
         WriteMemory(offset, tempValue);
     }
+    private void ArchipelagoSetFlagBit(FlagBit flag)
+    {
+        ArchipelagoSetFlagBit(flag.Offset, flag.Bit);
+    }
 
     private void ArchipelagoLoadFlags()
     {
@@ -1895,7 +1900,7 @@ public partial class App : Application
             if (archipelagoCollectBehavior != CollectBehavior.SOLVE_NONE ||
                 dataStorage?.PuzzlesSolved.CombinationLock == true)
             {
-                ArchipelagoSetFlagBit(372, 1);
+                ArchipelagoSetFlagBit(Flags.PuzzleSolvedComboLock);
             }
         }
         if (LocationsChecked.Contains(ARCHIPELAGO_BASE_LOCATION_ID)) // Puzzle Solved Gears +169 Bit 8
@@ -1903,7 +1908,7 @@ public partial class App : Application
             if (archipelagoCollectBehavior != CollectBehavior.SOLVE_NONE ||
                 dataStorage?.PuzzlesSolved.Gears == true)
             {
-                ArchipelagoSetFlagBit(361, 7);
+                ArchipelagoSetFlagBit(Flags.PuzzleSolvedGears);
             }
         }
         if (LocationsChecked.Contains(ARCHIPELAGO_BASE_LOCATION_ID + 1)) // Puzzle Solved Stonehenge +169 Bit 7
@@ -1911,8 +1916,8 @@ public partial class App : Application
             if (archipelagoCollectBehavior != CollectBehavior.SOLVE_NONE ||
                 dataStorage?.PuzzlesSolved.Stonehenge == true)
             {
-                ArchipelagoSetFlagBit(361, 6); // Stonehenge Solved
-                ArchipelagoSetFlagBit(361, 5); // Generator Switch
+                ArchipelagoSetFlagBit(Flags.PuzzleSolvedStonehenge); // Stonehenge Solved
+                ArchipelagoSetFlagBit(Flags.GeneratorSwitch); // Generator Switch
             }
         }
         if (LocationsChecked.Contains(ARCHIPELAGO_BASE_LOCATION_ID + 2)) // Puzzle Solved Workshop Drawers +179 Bit 8
@@ -1920,8 +1925,8 @@ public partial class App : Application
             if (archipelagoCollectBehavior != CollectBehavior.SOLVE_NONE ||
                 dataStorage?.PuzzlesSolved.WorkshopDrawers == true)
             {
-                ArchipelagoSetFlagBit(377, 7); // Puzzle Solved
-                ArchipelagoSetFlagBit(360, 7); // Drawer Open
+                ArchipelagoSetFlagBit(Flags.PuzzleSolvedWorkshopDrawers); // Puzzle Solved
+                ArchipelagoSetFlagBit(Flags.WorkshopDrawersOpen); // Drawer Open
             }
         }
         if (LocationsChecked.Contains(ARCHIPELAGO_BASE_LOCATION_ID + 3)) // Puzzle Solved Library Statue +170 Bit 8
@@ -1929,7 +1934,7 @@ public partial class App : Application
             if (archipelagoCollectBehavior != CollectBehavior.SOLVE_NONE ||
                 dataStorage?.PuzzlesSolved.LibraryStatue == true)
             {
-                ArchipelagoSetFlagBit(368, 7);
+                ArchipelagoSetFlagBit(Flags.PuzzleSolvedLibraryStatue);
             }
         }
         if (LocationsChecked.Contains(ARCHIPELAGO_BASE_LOCATION_ID + 4)) // Puzzle Solved Theater Door +16C Bit 4
@@ -1937,7 +1942,7 @@ public partial class App : Application
             if (archipelagoCollectBehavior != CollectBehavior.SOLVE_NONE ||
                 dataStorage?.PuzzlesSolved.TheaterDoor == true)
             {
-                ArchipelagoSetFlagBit(364, 3);
+                ArchipelagoSetFlagBit(Flags.PuzzleSolvedTheaterDoor);
             }
         }
         if (LocationsChecked.Contains(ARCHIPELAGO_BASE_LOCATION_ID + 5)) // Puzzle Solved Clock Tower Door +16C Bit 2
@@ -1945,7 +1950,7 @@ public partial class App : Application
             if (archipelagoCollectBehavior != CollectBehavior.SOLVE_NONE ||
                 dataStorage?.PuzzlesSolved.ClockTowerDoor == true)
             {
-                ArchipelagoSetFlagBit(364, 1);
+                ArchipelagoSetFlagBit(Flags.PuzzleSolvedClocktowerDoor);
             }
         }
         if (LocationsChecked.Contains(ARCHIPELAGO_BASE_LOCATION_ID + 6)) // Puzzle Solved Clock Chains +17C Bit 6
@@ -1953,7 +1958,7 @@ public partial class App : Application
             if (archipelagoCollectBehavior != CollectBehavior.SOLVE_NONE ||
                 dataStorage?.PuzzlesSolved.ClockChains == true)
             {
-                ArchipelagoSetFlagBit(380, 5);  // Puzzle Solved
+                ArchipelagoSetFlagBit(Flags.PuzzleSolvedClockChains);  // Puzzle Solved
                 WriteMemoryTwoBytes(1708, 530); // Set clock tower time
             }
         }
@@ -1962,7 +1967,7 @@ public partial class App : Application
             if (archipelagoCollectBehavior != CollectBehavior.SOLVE_NONE ||
                 dataStorage?.PuzzlesSolved.Atlantis == true)
             {
-                ArchipelagoSetFlagBit(360, 5);
+                ArchipelagoSetFlagBit(Flags.PuzzleSolvedAtlantis);
             }
         }
         if (LocationsChecked.Contains(ARCHIPELAGO_BASE_LOCATION_ID + 8)) // Puzzle Solved Organ +168 Bit 7
@@ -1970,7 +1975,7 @@ public partial class App : Application
             if (archipelagoCollectBehavior != CollectBehavior.SOLVE_NONE ||
                 dataStorage?.PuzzlesSolved.Organ == true)
             {
-                ArchipelagoSetFlagBit(360, 6);
+                ArchipelagoSetFlagBit(Flags.PuzzleSolvedOrgan);
             }
         }
         if (LocationsChecked.Contains(ARCHIPELAGO_BASE_LOCATION_ID + 9)) // Puzzle Solved Maze Door +16C Bit 1
@@ -1978,7 +1983,7 @@ public partial class App : Application
             if (archipelagoCollectBehavior != CollectBehavior.SOLVE_NONE ||
                 dataStorage?.PuzzlesSolved.MazeDoor == true)
             {
-                ArchipelagoSetFlagBit(364, 0);
+                ArchipelagoSetFlagBit(Flags.PuzzleSolvedMazeDoor);
             }
         }
         if (LocationsChecked.Contains(ARCHIPELAGO_BASE_LOCATION_ID + 10)) // Puzzle Solved Columns of RA +16D Bit 7
@@ -1986,7 +1991,7 @@ public partial class App : Application
             if (archipelagoCollectBehavior != CollectBehavior.SOLVE_NONE ||
                 dataStorage?.PuzzlesSolved.ColumnsOfRA == true)
             {
-                ArchipelagoSetFlagBit(365, 6);
+                ArchipelagoSetFlagBit(Flags.PuzzleSolvedColumnsOfRA);
             }
         }
         if (LocationsChecked.Contains(ARCHIPELAGO_BASE_LOCATION_ID + 11)) // Puzzle Solved Burial Door +16D Bit 6
@@ -1994,7 +1999,7 @@ public partial class App : Application
             if (archipelagoCollectBehavior != CollectBehavior.SOLVE_NONE ||
                 dataStorage?.PuzzlesSolved.BurialDoor == true)
             {
-                ArchipelagoSetFlagBit(365, 5);
+                ArchipelagoSetFlagBit(Flags.PuzzleSolvedBurialDoor);
             }
         }
         if (LocationsChecked.Contains(ARCHIPELAGO_BASE_LOCATION_ID + 12)) // Puzzle Solved Chinese Solitaire +17D Bit 5
@@ -2002,8 +2007,8 @@ public partial class App : Application
             if (archipelagoCollectBehavior != CollectBehavior.SOLVE_NONE ||
                 dataStorage?.PuzzlesSolved.ChineseSolitaire == true)
             {
-                ArchipelagoSetFlagBit(381, 4); // Puzzle Solved
-                ArchipelagoSetFlagBit(365, 2); // Drawer Open
+                ArchipelagoSetFlagBit(Flags.PuzzleSolvedChineseSolitaire); // Puzzle Solved
+                ArchipelagoSetFlagBit(Flags.ChineseSolitaireDrawersOpen); // Drawer Open
             }
         }
         if (LocationsChecked.Contains(ARCHIPELAGO_BASE_LOCATION_ID + 13)) // Puzzle Solved Shaman Drums +16D Bit 2
@@ -2011,7 +2016,7 @@ public partial class App : Application
             if (archipelagoCollectBehavior != CollectBehavior.SOLVE_NONE ||
                 dataStorage?.PuzzlesSolved.ShamanDrums == true)
             {
-                ArchipelagoSetFlagBit(365, 1);
+                ArchipelagoSetFlagBit(Flags.PuzzleSolvedShamanDrums);
             }
         }
         if (LocationsChecked.Contains(ARCHIPELAGO_BASE_LOCATION_ID + 14)) // Puzzle Solved Lyre +16D Bit 1
@@ -2019,7 +2024,7 @@ public partial class App : Application
             if (archipelagoCollectBehavior != CollectBehavior.SOLVE_NONE ||
                 dataStorage?.PuzzlesSolved.Lyre == true)
             {
-                ArchipelagoSetFlagBit(365, 0);
+                ArchipelagoSetFlagBit(Flags.PuzzleSolvedLyre);
             }
         }
         if (LocationsChecked.Contains(ARCHIPELAGO_BASE_LOCATION_ID + 15)) // Puzzle Solved Red Door +16C Bit 8
@@ -2027,7 +2032,7 @@ public partial class App : Application
             if (archipelagoCollectBehavior == CollectBehavior.SOLVE_ALL ||
                 dataStorage?.PuzzlesSolved.RedDoor == true)
             {
-                ArchipelagoSetFlagBit(364, 7);
+                ArchipelagoSetFlagBit(Flags.PuzzleSolvedRedDoor);
             }
         }
         if (LocationsChecked.Contains(ARCHIPELAGO_BASE_LOCATION_ID + 16)) // Puzzle Solved Fortune Teller Door +16C Bit 6
@@ -2035,7 +2040,7 @@ public partial class App : Application
             if (archipelagoCollectBehavior != CollectBehavior.SOLVE_NONE ||
                 dataStorage?.PuzzlesSolved.FortuneTellerDoor == true)
             {
-                ArchipelagoSetFlagBit(364, 5);
+                ArchipelagoSetFlagBit(Flags.PuzzleSolvedFortuneTellerDoor);
             }
         }
         if (LocationsChecked.Contains(ARCHIPELAGO_BASE_LOCATION_ID + 17)) // Puzzle Solved Alchemy +174 Bit 6
@@ -2043,8 +2048,8 @@ public partial class App : Application
             if (archipelagoCollectBehavior != CollectBehavior.SOLVE_NONE ||
                 dataStorage?.PuzzlesSolved.Alchemy == true)
             {
-                ArchipelagoSetFlagBit(372, 5); // Puzzle Solved
-                ArchipelagoSetFlagBit(381, 2); // Box Open
+                ArchipelagoSetFlagBit(Flags.PuzzleSolvedAlchemy); // Puzzle Solved
+                ArchipelagoSetFlagBit(Flags.AlchemyShippingBoxOpen); // Box Open
             }
         }
         if (LocationsChecked.Contains(ARCHIPELAGO_BASE_LOCATION_ID + 18)) // Puzzle Solved UFO Symbols +179 Bit 4
@@ -2052,7 +2057,7 @@ public partial class App : Application
             if (archipelagoCollectBehavior != CollectBehavior.SOLVE_NONE ||
                 dataStorage?.PuzzlesSolved.UFOSymbols == true)
             {
-                ArchipelagoSetFlagBit(377, 3);
+                ArchipelagoSetFlagBit(Flags.PuzzleSolvedUFO);
             }
         }
         if (LocationsChecked.Contains(ARCHIPELAGO_BASE_LOCATION_ID + 19)) // Puzzle Solved Anansi Music Box +17C Bit 8
@@ -2060,8 +2065,8 @@ public partial class App : Application
             if (archipelagoCollectBehavior != CollectBehavior.SOLVE_NONE ||
                 dataStorage?.PuzzlesSolved.AnansiMusicBoc == true)
             {
-                ArchipelagoSetFlagBit(380, 7); // Music Box Open
-                ArchipelagoSetFlagBit(377, 5); // Jukebox Set
+                ArchipelagoSetFlagBit(Flags.AnansiMusicBoxOpen); // Music Box Open
+                ArchipelagoSetFlagBit(Flags.JukeboxSet); // Jukebox Set
             }
         }
         if (LocationsChecked.Contains(ARCHIPELAGO_BASE_LOCATION_ID + 20)) // Puzzle Solved Gallows +17D Bit 7
@@ -2069,7 +2074,7 @@ public partial class App : Application
             if (archipelagoCollectBehavior != CollectBehavior.SOLVE_NONE ||
                 dataStorage?.PuzzlesSolved.Gallows == true)
             {
-                ArchipelagoSetFlagBit(381, 6);
+                ArchipelagoSetFlagBit(Flags.PuzzleSolvedGallows);
             }
         }
         if (LocationsChecked.Contains(ARCHIPELAGO_BASE_LOCATION_ID + 21)) // Puzzle Solved Mastermind +179 Bit 7
@@ -2077,7 +2082,7 @@ public partial class App : Application
             if (archipelagoCollectBehavior != CollectBehavior.SOLVE_NONE ||
                 dataStorage?.PuzzlesSolved.Mastermind == true)
             {
-                ArchipelagoSetFlagBit(377, 6);
+                ArchipelagoSetFlagBit(Flags.PuzzleSolvedMasermind);
             }
         }
         if (LocationsChecked.Contains(ARCHIPELAGO_BASE_LOCATION_ID + 22)) // Puzzle Solved Marble Pinball +168 Bit 5
@@ -2085,7 +2090,7 @@ public partial class App : Application
             if (archipelagoCollectBehavior != CollectBehavior.SOLVE_NONE ||
                 dataStorage?.PuzzlesSolved.MarblePinball == true)
             {
-                ArchipelagoSetFlagBit(360, 4);
+                ArchipelagoSetFlagBit(Flags.PuzzleSolvedMarblePinball);
             }
         }
         if (LocationsChecked.Contains(ARCHIPELAGO_BASE_LOCATION_ID + 23)) // Puzzle Solved Skull Dial Door +178 Bit 2
@@ -2093,7 +2098,7 @@ public partial class App : Application
             if (archipelagoCollectBehavior == CollectBehavior.SOLVE_ALL ||
                 dataStorage?.PuzzlesSolved.SkullDialDoor == true)
             {
-                ArchipelagoSetFlagBit(376, 1);
+                ArchipelagoSetFlagBit(Flags.PuzzleSolvedSkullDialDoor);
             }
         }
         if (LocationsChecked.Contains(ARCHIPELAGO_BASE_LOCATION_ID + 110)) // Puzzle Solved Office Elevator
@@ -2123,84 +2128,84 @@ public partial class App : Application
 
         if (LocationsChecked.Contains(ARCHIPELAGO_BASE_LOCATION_ID + 24)) // Flashback Memory Obtained Beth's Ghost +16C Bit 3
         {
-            ArchipelagoSetFlagBit(364, 2);
+            ArchipelagoSetFlagBit(Flags.FlashbackBethGhost);
         }
         if (LocationsChecked.Contains(ARCHIPELAGO_BASE_LOCATION_ID + 25)) // Flashback Memory Obtained Merrick's Ghost +16C Bit 5
         {
-            ArchipelagoSetFlagBit(364, 4);
+            ArchipelagoSetFlagBit(Flags.FlashbackMerrickGhost);
         }
         if (LocationsChecked.Contains(ARCHIPELAGO_BASE_LOCATION_ID + 26)) // Flashback Memory Obtained Windlenot's Ghost +169 Bit 3
         {
-            ArchipelagoSetFlagBit(361, 2);
+            ArchipelagoSetFlagBit(Flags.FlashbackWindlenotGhost);
         }
         if (LocationsChecked.Contains(ARCHIPELAGO_BASE_LOCATION_ID + 27)) // Flashback Memory Obtained Ancient Astrology +170 Bit 2
         {
-            ArchipelagoSetFlagBit(368, 1);
+            ArchipelagoSetFlagBit(Flags.FlashbackAncientAstrology);
         }
         if (LocationsChecked.Contains(ARCHIPELAGO_BASE_LOCATION_ID + 28)) // Flashback Memory Obtained Scrapbook +170 Bit 1
         {
-            ArchipelagoSetFlagBit(368, 0);
+            ArchipelagoSetFlagBit(Flags.FlashbackScrapbook);
         }
         if (LocationsChecked.Contains(ARCHIPELAGO_BASE_LOCATION_ID + 29)) // Flashback Memory Obtained Museum Brochure +175 Bit 8
         {
-            ArchipelagoSetFlagBit(373, 7);
+            ArchipelagoSetFlagBit(Flags.FlashbackMuseumBrochure);
         }
         if (LocationsChecked.Contains(ARCHIPELAGO_BASE_LOCATION_ID + 30)) // Flashback Memory Obtained In Search of the Unexplained +178 Bit 6
         {
-            ArchipelagoSetFlagBit(376, 5);
+            ArchipelagoSetFlagBit(Flags.FlashbackInSearchOfTheUnexplained);
         }
         if (LocationsChecked.Contains(ARCHIPELAGO_BASE_LOCATION_ID + 31)) // Flashback Memory Obtained Egyptian Hieroglyphics Explained +169 Bit 4
         {
-            ArchipelagoSetFlagBit(361, 3);
+            ArchipelagoSetFlagBit(Flags.FlashbackEgyptionHieroglyphics);
         }
         if (LocationsChecked.Contains(ARCHIPELAGO_BASE_LOCATION_ID + 32)) // Flashback Memory Obtained South American Pictographs +175 Bit 7
         {
-            ArchipelagoSetFlagBit(373, 6);
+            ArchipelagoSetFlagBit(Flags.FlashbackSouthAmericanPictographs);
         }
         if (LocationsChecked.Contains(ARCHIPELAGO_BASE_LOCATION_ID + 33)) // Flashback Memory Obtained Mythology of the Stars +175 Bit 6
         {
-            ArchipelagoSetFlagBit(373, 5);
+            ArchipelagoSetFlagBit(Flags.FlashbackMythologyOfTheStars);
         }
         if (LocationsChecked.Contains(ARCHIPELAGO_BASE_LOCATION_ID + 34)) // Flashback Memory Obtained Black Book +175 Bit 5
         {
-            ArchipelagoSetFlagBit(373, 4);
+            ArchipelagoSetFlagBit(Flags.FlashbackBlackBook);
         }
         if (LocationsChecked.Contains(ARCHIPELAGO_BASE_LOCATION_ID + 35)) // Flashback Memory Obtained Theater Movie +175 Bit 4
         {                                                              // Theater Curtain Open flag +168 Bit 3
-            ArchipelagoSetFlagBit(373, 3); // Flashback
-            ArchipelagoSetFlagBit(360, 2); // Curtain Open
+            ArchipelagoSetFlagBit(Flags.FlashbackTheaterMovie); // Flashback
+            ArchipelagoSetFlagBit(Flags.TheaterCurtainOpen); // Curtain Open
         }
         if (LocationsChecked.Contains(ARCHIPELAGO_BASE_LOCATION_ID + 36)) // Flashback Memory Obtained Museum Blueprints +175 Bit 3
         {
-            ArchipelagoSetFlagBit(373, 2);
+            ArchipelagoSetFlagBit(Flags.FlashbackMuseumBlueprints);
         }
         if (LocationsChecked.Contains(ARCHIPELAGO_BASE_LOCATION_ID + 37)) // Flashback Memory Obtained Beth's Address Book +175 Bit 2
         {
-            ArchipelagoSetFlagBit(373, 1);
+            ArchipelagoSetFlagBit(Flags.FlashbackBethAddressBook);
         }
         if (LocationsChecked.Contains(ARCHIPELAGO_BASE_LOCATION_ID + 38)) // Flashback Memory Obtained Merrick's Notebook +175 Bit 1
         {
-            ArchipelagoSetFlagBit(373, 0);
+            ArchipelagoSetFlagBit(Flags.FlashbackMerrickNotebook);
         }
         if (LocationsChecked.Contains(ARCHIPELAGO_BASE_LOCATION_ID + 39)) // Flashback Memory Obtained Professor Windlenot's Diary +174 Bit 8
         {
-            ArchipelagoSetFlagBit(372, 7);
+            ArchipelagoSetFlagBit(Flags.FlashbackWindlenotDiary);
         }
         if (LocationsChecked.Contains(ARCHIPELAGO_BASE_LOCATION_ID + 49)) // Final Riddle: Final Riddle: Fortune Teller +179 Bit 3
         {
-            ArchipelagoSetFlagBit(377, 2);
+            ArchipelagoSetFlagBit(Flags.FinalRiddleFortuneTeller);
         }
         if (LocationsChecked.Contains(ARCHIPELAGO_BASE_LOCATION_ID + 50)) // Final Riddle: Final Riddle: Planets Aligned +179 Bit 2
         {
-            ArchipelagoSetFlagBit(377, 1);
+            ArchipelagoSetFlagBit(Flags.FinalRiddlePlanetsAligned);
         }
         if (LocationsChecked.Contains(ARCHIPELAGO_BASE_LOCATION_ID + 52)) // Final Riddle: Final Riddle: Beth's Body Page 17 +178 Bit 8
         {
-            ArchipelagoSetFlagBit(376, 7);
+            ArchipelagoSetFlagBit(Flags.FinalRiddleBethBodyPage17);
         }
         if (LocationsChecked.Contains(ARCHIPELAGO_BASE_LOCATION_ID + 53)) // Final Riddle: Guillotine Dropped +178 Bit 7
         {
-            ArchipelagoSetFlagBit(376, 6);
+            ArchipelagoSetFlagBit(Flags.FinalRiddleGuillotine);
         }
         if (LocationsChecked.Contains(ARCHIPELAGO_BASE_LOCATION_ID + 113)) // Ixupi Captured Lightning
         {
@@ -2212,7 +2217,7 @@ public partial class App : Application
         WriteMemory(916, 1);
 
         // Early beth setting
-        SetKthBitMemoryOneByte(381, 7, archipelago_Client?.slotDataSettingEarlyBeth ?? true);
+        SetKthBitMemoryOneByte(Flags.BethElectricalPanelAvailable, archipelago_Client?.slotDataSettingEarlyBeth ?? true);
 
         // Check if slot has already goaled, if so prevent final cutscene from playing again
         if(archipelago_Client != null)
@@ -2316,9 +2321,9 @@ public partial class App : Application
         foreach (var tuple in flagMemoryList)
         {
             int archipelagoID = ARCHIPELAGO_BASE_LOCATION_ID + tuple.Item1;
-            int MemoryOffset = tuple.Item2;
-            int Bit = tuple.Item3;
-            int Size = tuple.Item4;
+            int MemoryOffset = tuple.Item2.Offset;
+            int Bit = tuple.Item2.Bit;
+            int Size = tuple.Item3;
 
             if (!LocationsChecked.Contains(archipelagoID) && IsKthBitSet(ReadMemory(MemoryOffset, Size), Bit))
             {
@@ -2347,8 +2352,8 @@ public partial class App : Application
         // Checks based on information plaque memory
         foreach (var tuple in informationPlaqueMemoryList)
         {
-            int plaqueMemoryOffset = tuple.Item1;
-            int archipelagoID = ARCHIPELAGO_BASE_LOCATION_ID + tuple.Item2;
+            int archipelagoID = ARCHIPELAGO_BASE_LOCATION_ID + tuple.Item1;
+            int plaqueMemoryOffset = tuple.Item2;
 
             if (!LocationsChecked.Contains(archipelagoID) && ReadMemory(plaqueMemoryOffset, 2) == 0)
             {
@@ -2436,64 +2441,64 @@ public partial class App : Application
         
     }
 
-    static readonly List<(int, int, int, int)> flagMemoryList = new() // (Archipelago ID, Memory offset, Bit, Size)
+    static readonly List<(int, FlagBit, int)> flagMemoryList = new() // (Archipelago ID, Memory offset, Bit, Size)
     {
-        (0, 361, 7, 1), // Puzzle Solved Gears +169 Bit 8
-        (1, 361, 6, 1), // Puzzle Solved Stonehenge +169 Bit 7
-        (2, 377, 7, 1), // Puzzle Solved Workshop Drawers +179 Bit 8
-        (3, 368, 7, 1), // Puzzle Solved Library Statue +170 Bit 8
-        (4, 364, 3, 1), // Puzzle Solved Theater Door +16C Bit 4
-        (5, 364, 1, 1), // Puzzle Solved Clock Tower Door +16C Bit 2
-        (6, 380, 5, 1), // Puzzle Solved Clock Chains +17C Bit 6
-        (7, 360, 5, 1), // Puzzle Solved Atlantis +168 Bit 6
-        (8, 360, 6, 1), // Puzzle Solved Organ +168 Bit 7
-        (9, 364, 0, 1), // Puzzle Solved Maze Door +16C Bit 1
-        (10, 365, 6, 1), // Puzzle Solved Columns of RA +16D Bit 7
-        (11, 365, 5, 1), // Puzzle Solved Burial Door +16D Bit 
-        (12, 381, 4, 1), // Puzzle Solved Chinese Solitaire +17D Bit 5
-        (13, 365, 1, 1), // Puzzle Solved Shaman Drums +16D Bit 2
-        (14, 365, 0, 1), // Puzzle Solved Lyre +16D Bit 1
-        (15, 364, 7, 1), // Puzzle Solved Red Door +16C Bit 8
-        (16, 364, 5, 1), // Puzzle Solved Fortune Teller Door +16C Bit 6
-        (17, 372, 5, 1), // Puzzle Solved Alchemy +174 Bit 6
-        (18, 377, 3, 1), // Puzzle Solved UFO Symbols +179 Bit 4
-        (19, 380, 7, 1), // Puzzle Solved Anansi Music Box +17C Bit 8
-        (20, 381, 6, 1), // Puzzle Solved Gallows +17D Bit 7
-        (21, 377, 6, 1), // Puzzle Solved Mastermind +179 Bit 7
-        (22, 360, 4, 1), // Puzzle Solved Marble Pinball +168 Bit 5
-        (23, 376, 1, 1), // Puzzle Solved Skull Dial Door +178 Bit 2
-        (24, 364, 2, 1), // Flashback Memory Obtained Beth's Ghost +16C Bit 3
-        (25, 364, 4, 1), // Flashback Memory Obtained Merrick's Ghost +16C Bit 5
-        (26, 361, 2, 1), // Flashback Memory Obtained Windlenot's Ghost +169 Bit 3
-        (27, 368, 1, 1), // Flashback Memory Obtained Ancient Astrology +170 Bit 2
-        (28, 368, 0, 1), // Flashback Memory Obtained Scrapbook +170 Bit 1
-        (29, 373, 7, 1), // Flashback Memory Obtained Museum Brochure +175 Bit 8
-        (30, 376, 5, 1), // Flashback Memory Obtained In Search of the Unexplained +178 Bit 6
-        (31, 361, 3, 1), // Flashback Memory Obtained Egyptian Hieroglyphics Explained +169 Bit 4
-        (32, 373, 6, 1), // Flashback Memory Obtained South American Pictographs +175 Bit 7
-        (33, 373, 5, 1), // Flashback Memory Obtained Mythology of the Stars +175 Bit 6
-        (34, 373, 4, 1), // Flashback Memory Obtained Black Book +175 Bit 5
-        (35, 373, 3, 1), // Flashback Memory Obtained Theater Movie +175 Bit 4
-        (36, 373, 2, 1), // Flashback Memory Obtained Museum Blueprints +175 Bit 3
-        (37, 373, 1, 1), // Flashback Memory Obtained Beth's Address Book +175 Bit 2
-        (38, 373, 0, 1), // Flashback Memory Obtained Merrick's Notebook +175 Bit 1
-        (39, 372, 7, 1), // Flashback Memory Obtained Professor Windlenot's Diary +174 Bit 8
-        (40, -60, 7, 2), // Ixupi Captured Water -3B Bit 8
-        (41, -60, 9, 2), // Ixupi Captured Wax -3B Bit 10
-        (42, -60, 6, 2), // Ixupi Captured Ash -3B Bit 7
-        (43, -60, 3, 2), // Ixupi Captured Oil -3B Bit 4
-        (44, -60, 8, 2), // Ixupi Captured Cloth -3B Bit 9
-        (45, -60, 4, 2), // Ixupi Captured Wood -3B Bit 5
-        (46, -60, 1, 2), // Ixupi Captured Crystal -3B Bit 2
-        (47, -60, 0, 2), // Ixupi Captured Sand -3B Bit 1
-        (48, -60, 2, 2), // Ixupi Captured Metal -3B Bit 3
-        (49, 377, 2, 1), // Final Riddle: Fortune Teller +179 Bit 3
-        (50, 377, 1, 1), // Final Riddle: Planets Aligned +179 Bit 2
-        (52, 376, 7, 1), // Final Riddle: Beth's Body Page 17 +178 Bit 8
-        (53, 376, 6, 1), // Final Riddle: Guillotine Dropped +178 Bit 7
-        (54, 369, 6, 1), // Puzzle Hint Found: Mailbox +171 Bit 7
-        (113, -60, 5, 2), // Ixupi Captured Lightning -3B Bit 6
-        (114, 372, 1, 1), // Puzzle Solved Combination Lock +174 Bit 2
+        (0, Flags.PuzzleSolvedGears, 1), // Puzzle Solved Gears +169 Bit 8
+        (1, Flags.PuzzleSolvedStonehenge, 1), // Puzzle Solved Stonehenge +169 Bit 7
+        (2, Flags.PuzzleSolvedWorkshopDrawers, 1), // Puzzle Solved Workshop Drawers +179 Bit 8
+        (3, Flags.PuzzleSolvedLibraryStatue, 1), // Puzzle Solved Library Statue +170 Bit 8
+        (4, Flags.PuzzleSolvedTheaterDoor, 1), // Puzzle Solved Theater Door +16C Bit 4
+        (5, Flags.PuzzleSolvedClocktowerDoor, 1), // Puzzle Solved Clock Tower Door +16C Bit 2
+        (6, Flags.PuzzleSolvedClockChains, 1), // Puzzle Solved Clock Chains +17C Bit 6
+        (7, Flags.PuzzleSolvedAtlantis, 1), // Puzzle Solved Atlantis +168 Bit 6
+        (8, Flags.PuzzleSolvedOrgan, 1), // Puzzle Solved Organ +168 Bit 7
+        (9, Flags.PuzzleSolvedMazeDoor, 1), // Puzzle Solved Maze Door +16C Bit 1
+        (10, Flags.PuzzleSolvedColumnsOfRA, 1), // Puzzle Solved Columns of RA +16D Bit 7
+        (11, Flags.PuzzleSolvedBurialDoor, 1), // Puzzle Solved Burial Door +16D Bit 
+        (12, Flags.PuzzleSolvedChineseSolitaire, 1), // Puzzle Solved Chinese Solitaire +17D Bit 5
+        (13, Flags.PuzzleSolvedShamanDrums, 1), // Puzzle Solved Shaman Drums +16D Bit 2
+        (14, Flags.PuzzleSolvedLyre, 1), // Puzzle Solved Lyre +16D Bit 1
+        (15, Flags.PuzzleSolvedRedDoor, 1), // Puzzle Solved Red Door +16C Bit 8
+        (16, Flags.PuzzleSolvedFortuneTellerDoor, 1), // Puzzle Solved Fortune Teller Door +16C Bit 6
+        (17, Flags.PuzzleSolvedAlchemy, 1), // Puzzle Solved Alchemy +174 Bit 6
+        (18, Flags.PuzzleSolvedUFO, 1), // Puzzle Solved UFO Symbols +179 Bit 4
+        (19, Flags.AnansiMusicBoxOpen, 1), // Puzzle Solved Anansi Music Box +17C Bit 8
+        (20, Flags.PuzzleSolvedGallows, 1), // Puzzle Solved Gallows +17D Bit 7
+        (21, Flags.PuzzleSolvedMasermind, 1), // Puzzle Solved Mastermind +179 Bit 7
+        (22, Flags.PuzzleSolvedMarblePinball, 1), // Puzzle Solved Marble Pinball +168 Bit 5
+        (23, Flags.PuzzleSolvedSkullDialDoor, 1), // Puzzle Solved Skull Dial Door +178 Bit 2
+        (24, Flags.FlashbackBethGhost, 1), // Flashback Memory Obtained Beth's Ghost +16C Bit 3
+        (25, Flags.FlashbackMerrickGhost, 1), // Flashback Memory Obtained Merrick's Ghost +16C Bit 5
+        (26, Flags.FlashbackWindlenotGhost, 1), // Flashback Memory Obtained Windlenot's Ghost +169 Bit 3
+        (27, Flags.FlashbackAncientAstrology, 1), // Flashback Memory Obtained Ancient Astrology +170 Bit 2
+        (28, Flags.FlashbackScrapbook, 1), // Flashback Memory Obtained Scrapbook +170 Bit 1
+        (29, Flags.FlashbackMuseumBrochure, 1), // Flashback Memory Obtained Museum Brochure +175 Bit 8
+        (30, Flags.FlashbackInSearchOfTheUnexplained, 1), // Flashback Memory Obtained In Search of the Unexplained +178 Bit 6
+        (31, Flags.FlashbackEgyptionHieroglyphics, 1), // Flashback Memory Obtained Egyptian Hieroglyphics Explained +169 Bit 4
+        (32, Flags.FlashbackSouthAmericanPictographs, 1), // Flashback Memory Obtained South American Pictographs +175 Bit 7
+        (33, Flags.FlashbackMythologyOfTheStars, 1), // Flashback Memory Obtained Mythology of the Stars +175 Bit 6
+        (34, Flags.FlashbackBlackBook, 1), // Flashback Memory Obtained Black Book +175 Bit 5
+        (35, Flags.FlashbackTheaterMovie, 1), // Flashback Memory Obtained Theater Movie +175 Bit 4
+        (36, Flags.FlashbackMuseumBlueprints, 1), // Flashback Memory Obtained Museum Blueprints +175 Bit 3
+        (37, Flags.FlashbackBethAddressBook, 1), // Flashback Memory Obtained Beth's Address Book +175 Bit 2
+        (38, Flags.FlashbackMerrickNotebook, 1), // Flashback Memory Obtained Merrick's Notebook +175 Bit 1
+        (39, Flags.FlashbackWindlenotDiary, 1), // Flashback Memory Obtained Professor Windlenot's Diary +174 Bit 8
+        (40, Flags.IxupiCapturedWater, 2), // Ixupi Captured Water -3B Bit 8
+        (41, Flags.IxupiCapturedWax, 2), // Ixupi Captured Wax -3B Bit 10
+        (42, Flags.IxupiCapturedAsh, 2), // Ixupi Captured Ash -3B Bit 7
+        (43, Flags.IxupiCapturedOil, 2), // Ixupi Captured Oil -3B Bit 4
+        (44, Flags.IxupiCapturedCloth, 2), // Ixupi Captured Cloth -3B Bit 9
+        (45, Flags.IxupiCapturedWood, 2), // Ixupi Captured Wood -3B Bit 5
+        (46, Flags.IxupiCapturedCrystal, 2), // Ixupi Captured Crystal -3B Bit 2
+        (47, Flags.IxupiCapturedSand, 2), // Ixupi Captured Sand -3B Bit 1
+        (48, Flags.IxupiCapturedMetal, 2), // Ixupi Captured Metal -3B Bit 3
+        (49, Flags.FinalRiddleFortuneTeller, 1), // Final Riddle: Fortune Teller +179 Bit 3
+        (50, Flags.FinalRiddlePlanetsAligned, 1), // Final Riddle: Planets Aligned +179 Bit 2
+        (52, Flags.FinalRiddleBethBodyPage17, 1), // Final Riddle: Beth's Body Page 17 +178 Bit 8
+        (53, Flags.FinalRiddleGuillotine, 1), // Final Riddle: Guillotine Dropped +178 Bit 7
+        (54, Flags.MailboxOpen, 1), // Puzzle Hint Found: Mailbox +171 Bit 7
+        (113, Flags.IxupiCapturedLightning, 2), // Ixupi Captured Lightning -3B Bit 6
+        (114, Flags.PuzzleSolvedComboLock, 1), // Puzzle Solved Combination Lock +174 Bit 2
     };
 
     static readonly List<(int, int)> pointsMemoryList = new() // (Archipelago ID, Memory offset)
@@ -2511,47 +2516,47 @@ public partial class App : Application
         (115, 1340), // Puzzle Hint Found: Beth's Note +53C
     };
 
-    static readonly List<(int, int)> informationPlaqueMemoryList = new() // (Memory offset, Archipelago ID)
+    static readonly List<(int, int)> informationPlaqueMemoryList = new() // (Archipelago ID, Memory offset,)
     {
-        (1012, 70),  // Information Plaque: (Lobby) Transforming Masks
-        (1016, 71),  // Information Plaque: (Lobby) Jade Skull
-        (1020, 72),  // Information Plaque: (Prehistoric) Bronze Unicorn
-        (1024, 73),  // Information Plaque: (Prehistoric) Griffin
-        (1028, 74),  // Information Plaque: (Prehistoric) Eagles Nest
-        (1032, 75),  // Information Plaque: (Prehistoric) Large Spider
-        (1036, 76),  // Information Plaque: (Prehistoric) Starfish
-        (1040, 77),  // Information Plaque: (Ocean) Quartz Crystal
-        (1044, 78),  // Information Plaque: (Ocean) Poseidon
-        (1052, 79),  // Information Plaque: (Ocean) Colossus of Rhodes
-        (1056, 80),  // Information Plaque: (Ocean) Poseidon's Temple
-        (1060, 81),  // Information Plaque: (Underground Maze) Subterranean World
-        (1064, 82),  // Information Plaque: (Underground Maze) Dero
-        (1068, 83),  // Information Plaque: (Egypt) Tomb of the Ixupi
-        (1072, 84),  // Information Plaque: (Egypt) The Sphinx
-        (1080, 85),  // Information Plaque: (Egypt) Curse of Anubis
-        (1084, 86),  // Information Plaque: (Burial) Norse Burial Ship
-        (1088, 87),  // Information Plaque: (Burial) Paracas Burial Bundles
-        (1092, 88),  // Information Plaque: (Burial) Spectacular Coffins of Ghana
-        (1096, 89),  // Information Plaque: (Burial) Cremation
-        (1100, 90),  // Information Plaque: (Burial) Animal Crematorium
-        (1104, 91),  // Information Plaque: (Shaman) Witch Doctors of the Congo
-        (1112, 92),  // Information Plaque: (Shaman) Sarombe doctor of Mozambique
-        (1116, 93),  // Information Plaque: (Gods) Fisherman's Canoe God
-        (1120, 94),  // Information Plaque: (Gods) Mayan Gods
-        (1124, 95),  // Information Plaque: (Gods) Thor
-        (1128, 96),  // Information Plaque: (Gods) Celtic Janus Sculpture
-        (1132, 97),  // Information Plaque: (Gods) Sumerian Bull God - An
-        (1136, 98),  // Information Plaque: (Gods) Sumerian Lyre
-        (1140, 99),  // Information Plaque: (Gods) Chuen
-        (1144, 100),  // Information Plaque: (Anansi) African Creation Myth
-        (1148, 101),  // Information Plaque: (Anansi) Apophis the Serpent
-        (1152, 102),  // Information Plaque: (Anansi) Death
-        (1156, 103),  // Information Plaque: (Pegasus) Cyclops
-        (1160, 104),  // Information Plaque: (Werewolf) Lycanthropy
-        (1164, 105),  // Information Plaque: (UFO) Coincidence or Extraterrestrial Visits?
-        (1168, 106),  // Information Plaque: (UFO) Planets
-        (1172, 107),  // Information Plaque: (UFO) Astronomical Construction
-        (1180, 108)   // Information Plaque: (Torture) Guillotine
+        (70, Points.InformationPlaque.TRANSFORMING_MASKS),                             //Lobby
+        (71, Points.InformationPlaque.JADE_SKULL),                                     //Lobby
+        (72, Points.InformationPlaque.BRONZE_UNICORN),                                 //Prehistoric
+        (73, Points.InformationPlaque.GRIFFIN),                                        //Prehistoric
+        (74, Points.InformationPlaque.EAGLES_NEST),                                    //Prehistoric
+        (75, Points.InformationPlaque.LARGE_SPIDER),                                   //Prehistoric
+        (76, Points.InformationPlaque.STARFISH),                                       //Prehistoric
+        (77, Points.InformationPlaque.QUARTZ_CRYSTAL),                                 //Ocean
+        (78, Points.InformationPlaque.POSEIDON),                                       //Ocean
+        (79, Points.InformationPlaque.COLOSSUS_OF_RHODES),                             //Ocean
+        (80, Points.InformationPlaque.POSEIDONS_TEMPLE),                               //Ocean
+        (81, Points.InformationPlaque.SUBTERRANEON_WORLD),                             //Underground Maze)
+        (82, Points.InformationPlaque.DERO),                                           //Underground Maze)
+        (83, Points.InformationPlaque.TOMB_OF_THE_IXUPI),                              //Egypt
+        (84, Points.InformationPlaque.THE_SPHINX),                                     //Egypt
+        (85, Points.InformationPlaque.CURSE_OF_ANUBIS),                                //Egypt
+        (86, Points.InformationPlaque.NORSE_BURIAL_SHIP),                              //Burial
+        (87, Points.InformationPlaque.PARACAS_BURIAL_BUNDLES),                         //Burial
+        (88, Points.InformationPlaque.SPECTACULAR_COFFINS_OF_GHANA),                   //Burial
+        (89, Points.InformationPlaque.CREMATION),                                      //Burial
+        (90, Points.InformationPlaque.ANIMAL_CREMATORIUM),                             //Burial
+        (91, Points.InformationPlaque.SWITCH_DOCTORS_OF_THE_CONGO),                    //Shaman
+        (92, Points.InformationPlaque.SAROMBE_DOCTOR_OF_MOZAMBIQUE),                   //Shaman
+        (93, Points.InformationPlaque.FISHERMANS_CANOE_GOD),                           //Gods
+        (94, Points.InformationPlaque.MAYAN_GODS),                                     //Gods
+        (95, Points.InformationPlaque.THOR),                                           //Gods
+        (96, Points.InformationPlaque.CELTIC_JANUS_SCULPTURE),                         //Gods
+        (97, Points.InformationPlaque.SUMERIAN_BULL_GOD_AN),                           //Gods
+        (98, Points.InformationPlaque.SUMERIAN_LYRE),                                  //Gods
+        (99, Points.InformationPlaque.CHUEN),                                          //Gods
+        (100, Points.InformationPlaque.AFRICAN_CREATION_MYTH),                         //Anansi 
+        (101, Points.InformationPlaque.APOPHIS_THE_SERPENT),                           //Anansi 
+        (102, Points.InformationPlaque.DEATH),                                         //Anansi
+        (103, Points.InformationPlaque.CYCLOPS),                                       //Pegasus
+        (104, Points.InformationPlaque.LYCANTHROPY),                                   //Werewolf
+        (105, Points.InformationPlaque.COINCIDENCE_OR_EXTRATERRESTRIAL_VISITS),        //UFO
+        (106, Points.InformationPlaque.PLANETS),                                       //UFO
+        (107, Points.InformationPlaque.ASTRONOMICAL_CONTRUCTION),                      //UFO
+        (108, Points.InformationPlaque.GUILLOTINE)                                     //Torture
     };
 
     private void ArchipelagoSendChecks()
@@ -2773,7 +2778,7 @@ public partial class App : Application
                     currentValue = SetKthBit(currentValue, 4, !archipelagoReceivedItems?.Contains((int)APItemID.KEYS.UFO) ?? true); // Set this to false when key obtained
                     WriteMemory(368, currentValue);
                     // Reload the screen
-                    WriteMemory(-432, 990);
+                    WriteMemory(Addresses.PLAYER_PREVIOUS_LOCATION, 990);
 
                     scriptAlreadyModified = true;
                     lastScriptModified = 30010;
@@ -2837,17 +2842,17 @@ public partial class App : Application
             }
 
             // Force a script reload by setting the previous room again
-            WriteMemory(-432, roomNumberPrevious);
+            WriteMemory(Addresses.PLAYER_PREVIOUS_LOCATION, roomNumberPrevious);
             Thread.Sleep(10);
-            WriteMemory(-432, roomNumberPrevious);
+            WriteMemory(Addresses.PLAYER_PREVIOUS_LOCATION, roomNumberPrevious);
             Thread.Sleep(10);
-            WriteMemory(-432, roomNumberPrevious);
+            WriteMemory(Addresses.PLAYER_PREVIOUS_LOCATION, roomNumberPrevious);
             Thread.Sleep(10);
-            WriteMemory(-432, roomNumberPrevious);
+            WriteMemory(Addresses.PLAYER_PREVIOUS_LOCATION, roomNumberPrevious);
 
             // Force a screen redraw as well to fix health meter every time we reach a door. This is a very band-aid fix, rather get a list of screens we are allowed to redraw on
             // and then force a redraw when health meter is adjusted
-            WriteMemory(-432, 922);
+            WriteMemory(Addresses.PLAYER_PREVIOUS_LOCATION, 922);
 
             scriptAlreadyModified = true;
             lastScriptModified = scriptNumber;
@@ -2859,7 +2864,7 @@ public partial class App : Application
         // Monitor Room Number
         if (MyAddress != UIntPtr.Zero && processHandle != UIntPtr.Zero) // Throws an exception if not checked in release mode.
         {
-            int tempRoomNumber = ReadMemory(-424, 2);
+            int tempRoomNumber = ReadMemory(Addresses.PLAYER_LOCATION, 2);
 
             if (tempRoomNumber != roomNumber)
             {
@@ -2884,7 +2889,7 @@ public partial class App : Application
         // If looking at pot then set the previous room to the menu to force a screen redraw on the pot
         if (POT_ROOMS.Contains(roomNumber) || roomNumber == 24380 && IsKthBitSet(ReadMemory(380,1),8)) // Anansi and anansi is open
         {
-            WriteMemory(-432, 990);
+            WriteMemory(Addresses.PLAYER_PREVIOUS_LOCATION, 990);
         }
     }
 
@@ -3138,7 +3143,7 @@ public partial class App : Application
                     // Set previous room to menu to force a redraw on elevator
                     currentElevatorState = SetKthBit(currentElevatorState, 1, true);
                     WriteMemory(361, currentElevatorState);
-                    WriteMemory(-432, 990);
+                    WriteMemory(Addresses.PLAYER_PREVIOUS_LOCATION, 990);
                 }
             }
             else
@@ -3151,7 +3156,7 @@ public partial class App : Application
                 {
                     currentElevatorState = SetKthBit(currentElevatorState, 1, false);
                     WriteMemory(361, currentElevatorState);
-                    WriteMemory(-432, 990);
+                    WriteMemory(Addresses.PLAYER_PREVIOUS_LOCATION, 990);
                 }
             }
         }
@@ -3185,7 +3190,7 @@ public partial class App : Application
         {
             // If moved properly to final cutscene, disable the trigger for final cutscene
             finalCutsceneTriggered = true;
-            WriteMemory(-424, 935);
+            WriteMemory(Addresses.PLAYER_LOCATION, 935);
         }
     }
 
@@ -3241,29 +3246,29 @@ public partial class App : Application
         // Kill Tunnel Music
         int oilLocation = ReadMemory((int)IxupiLocationOffsets.OIL, 2); // Record where tar currently is
         WriteMemory((int)IxupiLocationOffsets.OIL, 11000); // Move Oil to Plants
-        WriteMemory(-424, 11170); // Move Player to Plants
-        WriteMemory(-432, 11180); // Set Player Previous Room to trigger oil nearby sound
+        WriteMemory(Addresses.PLAYER_LOCATION, 11170); // Move Player to Plants
+        WriteMemory(Addresses.PLAYER_PREVIOUS_LOCATION, 11180); // Set Player Previous Room to trigger oil nearby sound
         Thread.Sleep(30);
         WriteMemoryTwoBytes((int)IxupiLocationOffsets.OIL, oilLocation);
 
         // Trigger Intro cutscene to stop audio
         while (tempRoomNumber != 930)
         {
-            WriteMemory(-424, 930);
+            WriteMemory(Addresses.PLAYER_LOCATION, 930);
             Thread.Sleep(20);
 
-            tempRoomNumber = ReadMemory(-424, 2);
+            tempRoomNumber = ReadMemory(Addresses.PLAYER_LOCATION, 2);
         }
 
         // Set previous room so outside audio does not play at conclusion of cutscene
-        WriteMemory(-432, 922);
+        WriteMemory(Addresses.PLAYER_PREVIOUS_LOCATION, 922);
 
         // Force a mouse click to skip cutscene. Keep trying until it succeeds.
         int sleepTimer = 10;
         while (tempRoomNumber == 930)
         {
             Thread.Sleep(sleepTimer);
-            tempRoomNumber = ReadMemory(-424, 2);
+            tempRoomNumber = ReadMemory(Addresses.PLAYER_LOCATION, 2);
             PostMessage((UIntPtr)(long)shiversProcess?.MainWindowHandle, WM_LBUTTON, 1, MakeLParam(580, 320));
             PostMessage((UIntPtr)(long)shiversProcess?.MainWindowHandle, WM_LBUTTON, 0, MakeLParam(580, 320));
             sleepTimer += 10; // Make sleep timer longer every attempt so the user doesn't get stuck in a soft lock
@@ -3271,9 +3276,9 @@ public partial class App : Application
 
         while (true)
         {
-            WriteMemory(-424, destination);
+            WriteMemory(Addresses.PLAYER_LOCATION, destination);
             Thread.Sleep(10);
-            tempRoomNumber = ReadMemory(-432, 2);
+            tempRoomNumber = ReadMemory(Addresses.PLAYER_PREVIOUS_LOCATION, 2);
             if (tempRoomNumber == destination)
             {
                 break;
@@ -3477,9 +3482,9 @@ public partial class App : Application
     {
         // Force the ixupi behavior script to load in
         WriteMemory((int)IxupiLocationOffsets.ASH, 6000); // Spawn ash in fireplace
-        WriteMemory(-424, 6280); // Move to fireplace
+        WriteMemory(Addresses.PLAYER_LOCATION, 6280); // Move to fireplace
         Thread.Sleep(30);
-        WriteMemory(-424, roomNumber); // Move player back
+        WriteMemory(Addresses.PLAYER_LOCATION, roomNumber); // Move player back
 
         
         UIntPtr? tempAddress = LoadedScriptAddress(processHandle, scriptsFound, 925);
@@ -3557,6 +3562,10 @@ public partial class App : Application
     private void SetKthBitMemoryOneByte(int memoryOffset, int k, bool set)
     {
         WriteMemory(memoryOffset, SetKthBit(ReadMemory(memoryOffset, 1), k, set));
+    }
+    private void SetKthBitMemoryOneByte(FlagBit flag, bool set)
+    {
+        SetKthBitMemoryOneByte(flag.Offset, flag.Bit, set);
     }
 
     private void CheckAttachState()

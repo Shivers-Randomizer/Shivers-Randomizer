@@ -594,23 +594,20 @@ public partial class Archipelago_Client : Window
         session?.DataStorage[Scope.Slot, "NumItemsReceived"].Initialize(0);
     }
 
-    public SolidColorBrush GetElementColor(int potID)
+
+    public static readonly SolidColorBrush[] ElementBrushes =
     {
-        return potID switch
-        {
-            0 => new SolidColorBrush(System.Windows.Media.Color.FromRgb(5, 168, 252)),
-            1 => new SolidColorBrush(System.Windows.Media.Color.FromRgb(255, 250, 205)),
-            2 => new SolidColorBrush(System.Windows.Media.Color.FromRgb(180, 180, 180)),
-            3 => new SolidColorBrush(System.Windows.Media.Color.FromRgb(255, 174, 201)),
-            4 => new SolidColorBrush(System.Windows.Media.Color.FromRgb(255, 0, 0)),
-            5 => new SolidColorBrush(System.Windows.Media.Color.FromRgb(50, 205, 50)),
-            6 => new SolidColorBrush(System.Windows.Media.Color.FromRgb(173, 216, 230)),
-            7 => new SolidColorBrush(System.Windows.Media.Color.FromRgb(255, 255, 51)),
-            8 => new SolidColorBrush(System.Windows.Media.Color.FromRgb(244, 164, 96)),
-            9 => new SolidColorBrush(System.Windows.Media.Color.FromRgb(255, 255, 255)),
-            _ => new SolidColorBrush(System.Windows.Media.Color.FromRgb(255, 255, 255))
-        };
-    }
+        new SolidColorBrush(System.Windows.Media.Color.FromRgb(5, 168, 252)),   // 0
+        new SolidColorBrush(System.Windows.Media.Color.FromRgb(255, 250, 205)), // 1
+        new SolidColorBrush(System.Windows.Media.Color.FromRgb(180, 180, 180)), // 2
+        new SolidColorBrush(System.Windows.Media.Color.FromRgb(255, 174, 201)), // 3
+        new SolidColorBrush(System.Windows.Media.Color.FromRgb(255, 0, 0)),     // 4
+        new SolidColorBrush(System.Windows.Media.Color.FromRgb(50, 205, 50)),   // 5
+        new SolidColorBrush(System.Windows.Media.Color.FromRgb(173, 216, 230)), // 6
+        new SolidColorBrush(System.Windows.Media.Color.FromRgb(255, 255, 51)),  // 7
+        new SolidColorBrush(System.Windows.Media.Color.FromRgb(244, 164, 96)),  // 8
+        new SolidColorBrush(System.Windows.Media.Color.FromRgb(255, 255, 255))  // 9
+    };
 
     void UpdateLabelContentAndColor(Label label, int memoryOffset, bool connected)
     {
@@ -618,13 +615,15 @@ public partial class Archipelago_Client : Window
         {
             int potID = app.ReadMemory(memoryOffset, 1);
             label.Content = ConvertPotNumberToString(potID);
-            label.Foreground = GetElementColor(potID % 10);
+            label.Foreground = ElementBrushes[potID % 10];
         }
         else
         {
             label.Content = "";
         }
     }
+
+
 
 
     public void ArchipelagoUpdateWindow(int roomNumber, List<int> items)

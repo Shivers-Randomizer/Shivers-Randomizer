@@ -31,7 +31,6 @@ public partial class DevMenu : Window
             {
                 app.StopAudio(location);
             }
-
         }
     }
 }
