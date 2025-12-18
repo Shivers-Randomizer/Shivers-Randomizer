@@ -541,16 +541,33 @@ public partial class App : Application
                         int setSelected = rng.Next(0, setsAvailable.Count);
                         Ixupi ixupiSelected = setsAvailable[setSelected];
 
+                        //Roll how many red herrings of each set will be added
+                        int herringAmmount = rng.Next(0, 3);
+
                         //Roll for if red herring is tops or bottoms
                         if(rng.Next(0, 2) == 0)
                         {
-                            piecesNeededToBePlaced.Add((IxupiPot)((int)ixupiSelected + POT_BOTTOM_OFFSET));
-                            piecesNeededToBePlaced.Add((IxupiPot)((int)ixupiSelected + POT_BOTTOM_OFFSET));
+                            if(herringAmmount == 1)
+                            {
+                                piecesNeededToBePlaced.Add((IxupiPot)((int)ixupiSelected + POT_BOTTOM_OFFSET));
+                            }
+                            if(herringAmmount == 2)
+                            {
+                                piecesNeededToBePlaced.Add((IxupiPot)((int)ixupiSelected + POT_BOTTOM_OFFSET));
+                                piecesNeededToBePlaced.Add((IxupiPot)((int)ixupiSelected + POT_BOTTOM_OFFSET));
+                            }
                         }
                         else
                         {
-                            piecesNeededToBePlaced.Add((IxupiPot)((int)ixupiSelected + POT_TOP_OFFSET));
-                            piecesNeededToBePlaced.Add((IxupiPot)((int)ixupiSelected + POT_TOP_OFFSET));
+                            if (herringAmmount == 1)
+                            {
+                                piecesNeededToBePlaced.Add((IxupiPot)((int)ixupiSelected + POT_TOP_OFFSET));
+                            }
+                            if (herringAmmount == 2)
+                            {
+                                piecesNeededToBePlaced.Add((IxupiPot)((int)ixupiSelected + POT_TOP_OFFSET));
+                                piecesNeededToBePlaced.Add((IxupiPot)((int)ixupiSelected + POT_TOP_OFFSET));
+                            }
                         }
 
                         setsAvailable.RemoveAt(setSelected);
@@ -1349,6 +1366,10 @@ public partial class App : Application
         {
             archipelago_Client?.CheckConnection();
         }
+
+
+        //Dev Menu
+        dev_Menu?.update_Pot_Locations();
     }
 
     private void ArchipelagoReleaseDisabled()

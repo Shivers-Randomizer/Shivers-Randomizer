@@ -75,42 +75,98 @@
 
     </Window.Resources>
 
-    <Grid Height="Auto">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-        </Grid.RowDefinitions>
-        <StackPanel Grid.Row="0" Margin="20,20,20,20">
-            <Button x:Name="button_MainMenu" Content="Main Menu" HorizontalAlignment="Left" VerticalAlignment="Center" Tag="910" Click="button_Teleport_Click"/>
-            <Button x:Name="button_Anansi" Content="Anansi" HorizontalAlignment="Left" VerticalAlignment="Center" Tag="24410" Click="button_Teleport_Click"/>
-            <Button x:Name="button_Bedroom" Content="Bedroom" HorizontalAlignment="Left" VerticalAlignment="Center" Tag="37010" Click="button_Teleport_Click"/>
-            <Button x:Name="button_BlueHallways" Content="Blue Hallways" HorizontalAlignment="Left" VerticalAlignment="Center" Tag="27070" Click="button_Teleport_Click"/>
-            <Button x:Name="button_Burial" Content="Burial" HorizontalAlignment="Left" VerticalAlignment="Center" Tag="21190" Click="button_Teleport_Click"/>
-            <Button x:Name="button_ClockTower" Content="Clock Tower" HorizontalAlignment="Left" VerticalAlignment="Center" Tag="35110" Click="button_Teleport_Click"/>
-            <Button x:Name="button_Egypt" Content="Egypt" HorizontalAlignment="Left" VerticalAlignment="Center" Tag="20060" Click="button_Teleport_Click"/>
-            <Button x:Name="button_FortuneTeller" Content="Fortune Teller" HorizontalAlignment="Left" VerticalAlignment="Center" Tag="28000" Click="button_Teleport_Click"/>
-            <Button x:Name="button_Generator" Content="Generator" HorizontalAlignment="Left" VerticalAlignment="Center" Tag="39010" Click="button_Teleport_Click"/>
-            <Button x:Name="button_Gods" Content="Gods" HorizontalAlignment="Left" VerticalAlignment="Center" Tag="23800" Click="button_Teleport_Click"/>
-            <Button x:Name="button_Greenhouse" Content="Greenhouse" HorizontalAlignment="Left" VerticalAlignment="Center" Tag="19040" Click="button_Teleport_Click"/>
-            <Button x:Name="button_Inventions" Content="Inventions" HorizontalAlignment="Left" VerticalAlignment="Center" Tag="30170" Click="button_Teleport_Click"/>
-            <Button x:Name="button_JanitorCloset" Content="Janitor Closet" HorizontalAlignment="Left" VerticalAlignment="Center" Tag="25010" Click="button_Teleport_Click"/>
-            <Button x:Name="button_Library" Content="Library" HorizontalAlignment="Left" VerticalAlignment="Center" Tag="8000" Click="button_Teleport_Click"/>
-            <Button x:Name="button_Lobby" Content="Lobby" HorizontalAlignment="Left" VerticalAlignment="Center" Tag="9020" Click="button_Teleport_Click"/>
-            <Button x:Name="button_Ocean" Content="Ocean" HorizontalAlignment="Left" VerticalAlignment="Center" Tag="12010" Click="button_Teleport_Click"/>
-            <Button x:Name="button_Office" Content="Office" HorizontalAlignment="Left" VerticalAlignment="Center" Tag="6130" Click="button_Teleport_Click"/>
-            <Button x:Name="button_Outside" Content="Outside" HorizontalAlignment="Left" VerticalAlignment="Center" Tag="1012" Click="button_Teleport_Click"/>
-            <Button x:Name="button_Prehistoric" Content="Prehistoric" HorizontalAlignment="Left" VerticalAlignment="Center" Tag="11020" Click="button_Teleport_Click"/>
-            <Button x:Name="button_Projector" Content="Projector" HorizontalAlignment="Left" VerticalAlignment="Center" Tag="17010" Click="button_Teleport_Click"/>
-            <Button x:Name="button_Puzzle" Content="Puzzle" HorizontalAlignment="Left" VerticalAlignment="Center" Tag="31020" Click="button_Teleport_Click"/>
-            <Button x:Name="button_Shaman" Content="Shaman" HorizontalAlignment="Left" VerticalAlignment="Center" Tag="22020" Click="button_Teleport_Click"/>
-            <Button x:Name="button_SubterraneanMaze" Content="Subterranean Maze" HorizontalAlignment="Left" VerticalAlignment="Center" Tag="13012" Click="button_Teleport_Click"/>
-            <Button x:Name="button_TarRiver" Content="Tar River" HorizontalAlignment="Left" VerticalAlignment="Center" Tag="13344" Click="button_Teleport_Click"/>
-            <Button x:Name="button_Theater" Content="Theater" HorizontalAlignment="Left" VerticalAlignment="Center" Tag="16000" Click="button_Teleport_Click"/>
-            <Button x:Name="button_Torture" Content="Torture" HorizontalAlignment="Left" VerticalAlignment="Center" Tag="32010" Click="button_Teleport_Click"/>
-            <Button x:Name="button_UFO" Content="UFO" HorizontalAlignment="Left" VerticalAlignment="Center" Tag="29010" Click="button_Teleport_Click"/>
-            <Button x:Name="button_UndergroundLake" Content="Underground Lake" HorizontalAlignment="Left" VerticalAlignment="Center" Tag="3020" Click="button_Teleport_Click"/>
-            <Button x:Name="button_UndergroundTunnel" Content="Underground Tunnel" HorizontalAlignment="Left" VerticalAlignment="Center" Tag="2010" Click="button_Teleport_Click"/>
-            <Button x:Name="button_Workshop" Content="Workshop" HorizontalAlignment="Left" VerticalAlignment="Center" Tag="7010" Click="button_Teleport_Click"/>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="Auto" />
+        </Grid.ColumnDefinitions>
+
+        <StackPanel Grid.Column="0" Margin="20">
+            <Button x:Name="button_MainMenu" Content="Main Menu" Tag="910" Click="button_Teleport_Click"/>
+            <Button x:Name="button_Anansi" Content="Anansi" Tag="24410" Click="button_Teleport_Click"/>
+            <Button x:Name="button_Bedroom" Content="Bedroom" Tag="37010" Click="button_Teleport_Click"/>
+            <Button x:Name="button_BlueHallways" Content="Blue Hallways" Tag="27070" Click="button_Teleport_Click"/>
+            <Button x:Name="button_Burial" Content="Burial" Tag="21190" Click="button_Teleport_Click"/>
+            <Button x:Name="button_ClockTower" Content="Clock Tower" Tag="35110" Click="button_Teleport_Click"/>
+            <Button x:Name="button_Egypt" Content="Egypt" Tag="20060" Click="button_Teleport_Click"/>
+            <Button x:Name="button_FortuneTeller" Content="Fortune Teller" Tag="28000" Click="button_Teleport_Click"/>
+            <Button x:Name="button_Generator" Content="Generator" Tag="39010" Click="button_Teleport_Click"/>
+            <Button x:Name="button_Gods" Content="Gods" Tag="23800" Click="button_Teleport_Click"/>
+            <Button x:Name="button_Greenhouse" Content="Greenhouse" Tag="19040" Click="button_Teleport_Click"/>
+            <Button x:Name="button_Inventions" Content="Inventions" Tag="30170" Click="button_Teleport_Click"/>
+            <Button x:Name="button_JanitorCloset" Content="Janitor Closet" Tag="25010" Click="button_Teleport_Click"/>
+            <Button x:Name="button_Library" Content="Library" Tag="8000" Click="button_Teleport_Click"/>
+            <Button x:Name="button_Lobby" Content="Lobby" Tag="9020" Click="button_Teleport_Click"/>
+            <Button x:Name="button_Ocean" Content="Ocean" Tag="12010" Click="button_Teleport_Click"/>
+            <Button x:Name="button_Office" Content="Office" Tag="6130" Click="button_Teleport_Click"/>
+            <Button x:Name="button_Outside" Content="Outside" Tag="1012" Click="button_Teleport_Click"/>
+            <Button x:Name="button_Prehistoric" Content="Prehistoric" Tag="11020" Click="button_Teleport_Click"/>
+            <Button x:Name="button_Projector" Content="Projector" Tag="17010" Click="button_Teleport_Click"/>
+            <Button x:Name="button_Puzzle" Content="Puzzle" Tag="31020" Click="button_Teleport_Click"/>
+            <Button x:Name="button_Shaman" Content="Shaman" Tag="22020" Click="button_Teleport_Click"/>
+            <Button x:Name="button_SubterraneanMaze" Content="Subterranean Maze" Tag="13012" Click="button_Teleport_Click"/>
+            <Button x:Name="button_TarRiver" Content="Tar River" Tag="13344" Click="button_Teleport_Click"/>
+            <Button x:Name="button_Theater" Content="Theater" Tag="16000" Click="button_Teleport_Click"/>
+            <Button x:Name="button_Torture" Content="Torture" Tag="32010" Click="button_Teleport_Click"/>
+            <Button x:Name="button_UFO" Content="UFO" Tag="29010" Click="button_Teleport_Click"/>
+            <Button x:Name="button_UndergroundLake" Content="Underground Lake" Tag="3020" Click="button_Teleport_Click"/>
+            <Button x:Name="button_UndergroundTunnel" Content="Underground Tunnel" Tag="2010" Click="button_Teleport_Click"/>
+            <Button x:Name="button_Workshop" Content="Workshop" Tag="7010" Click="button_Teleport_Click"/>
+        </StackPanel>
+
+        <StackPanel Grid.Column="1" Margin="20">
+            <Label Content="Desk Drawer: "/>
+            <Label Content="Workshop Drawers: "/>
+            <Label Content="Library Cabinet: "/>
+            <Label Content="Library Statue: "/>
+            <Label Content="Slide: "/>
+            <Label Content="Transforming Mask: "/>
+            <Label Content="Eagle's Nest: "/>
+            <Label Content="Ocean: "/>
+            <Label Content="Tar River: "/>
+            <Label Content="Theater: "/>
+            <Label Content="Greenhouse: "/>
+            <Label Content="Egypt: "/>
+            <Label Content="Chinese Solitaire: "/>
+            <Label Content="Shaman Hut: "/>
+            <Label Content="Lyre: "/>
+            <Label Content="Skeleton: "/>
+            <Label Content="Anansi Music Box: "/>
+            <Label Content="Janitor Closet: "/>
+            <Label Content="UFO: "/>
+            <Label Content="Alchemy: "/>
+            <Label Content="Skull Bridge: "/>
+            <Label Content="Gallows: "/>
+            <Label Content="Clock Tower: "/>
+        </StackPanel>
+        
+        <StackPanel Grid.Column="2" Margin="20">
+            <Label Content="" Name="LabelStorageDeskDrawer"/>
+            <Label Content="" Name="LabelStorageWorkshopDrawers"/>
+            <Label Content="" Name="LabelStorageLibraryCabinet"/>
+            <Label Content="" Name="LabelStorageLibraryStatue"/>
+            <Label Content="" Name="LabelStorageSlide"/>
+            <Label Content="" Name="LabelStorageTransformingMask"/>
+            <Label Content="" Name="LabelStorageEaglesNest"/>
+            <Label Content="" Name="LabelStorageOcean"/>
+            <Label Content="" Name="LabelStorageTarRiver"/>
+            <Label Content="" Name="LabelStorageTheater"/>
+            <Label Content="" Name="LabelStorageGreenhouse"/>
+            <Label Content="" Name="LabelStorageEgypt"/>
+            <Label Content="" Name="LabelStorageChineseSolitaire"/>
+            <Label Content="" Name="LabelStorageShamanHut"/>
+            <Label Content="" Name="LabelStorageLyre"/>
+            <Label Content="" Name="LabelStorageSkeleton"/>
+            <Label Content="" Name="LabelStorageAnansiMusicBox"/>
+            <Label Content="" Name="LabelStorageJanitorCloset"/>
+            <Label Content="" Name="LabelStorageUFO"/>
+            <Label Content="" Name="LabelStorageAlchemy"/>
+            <Label Content="" Name="LabelStorageSkullBridge"/>
+            <Label Content="" Name="LabelStorageGallows"/>
+            <Label Content="" Name="LabelStorageClockTower"/>
         </StackPanel>
     </Grid>
+
 
 </Window>
