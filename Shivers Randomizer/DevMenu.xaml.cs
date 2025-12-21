@@ -1,9 +1,7 @@
-﻿using Shivers_Randomizer.utils;
+﻿using Shivers_Randomizer.enums;
 using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Threading;
+using System.Reflection;
+using System.Runtime.Serialization;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -22,6 +20,17 @@ public partial class DevMenu : Window
     {
         InitializeComponent();
         this.app = app;
+    }
+
+    protected override async void OnClosed(EventArgs e)
+    {
+        base.OnClosed(e);
+        if (app.dev_Menu != null)
+        {
+            MainWindow.isDevMenuOpen = false;
+            app.dev_Menu = null;
+            Close();
+        }
     }
 
     private void button_Teleport_Click(object sender, RoutedEventArgs e)
@@ -89,5 +98,52 @@ public partial class DevMenu : Window
         {
             label.Content = "";
         }
+    }
+
+    internal static class EnumHelper
+    {
+        public static int? GetIxupiPotValue(string enumMemberValue)
+        {
+            var type = typeof(IxupiPot);
+            foreach (var field in type.GetFields(BindingFlags.Public | BindingFlags.Static))
+            {
+                var attr = field.GetCustomAttribute<EnumMemberAttribute>();
+                if (attr != null && attr.Value == enumMemberValue)
+                {
+                    return (int)field.GetValue(null)!;
+                }
+            }
+            return null;
+        }
+    }
+
+    private void StorageComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+    {
+        if (sender is not ComboBox combo)
+            return;
+
+        if (combo.SelectedItem is not string selectedText)
+            return;
+
+        // Convert selected string to IxupiPot int value
+        int? potValue = EnumHelper.GetIxupiPotValue(selectedText);
+        if (potValue == null)
+            return;
+
+        // Get label name from ComboBox.Tag
+        if (combo.Tag is not string labelName)
+            return;
+
+        // Find the Label by its Name
+        if (FindName(labelName) is not Label label)
+            return;
+
+        // Parse Label.Tag to int
+        if (int.TryParse(label.Tag?.ToString(), out int labelId))
+        {
+            app.WriteMemory(labelId, potValue.Value);
+        }
+
+        combo.SelectedIndex = -1;
     }
 }

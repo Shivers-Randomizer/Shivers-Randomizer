@@ -3,6 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:enums="clr-namespace:Shivers_Randomizer.enums"
         mc:Ignorable="d"
         Title="Dev Menu"
         SizeToContent="WidthAndHeight"
@@ -73,13 +74,62 @@
             </Style.Triggers>
         </Style>
 
+
+        <ObjectDataProvider x:Key="IxupiPotValues"
+                        MethodName="GetValues"
+                        ObjectType="{x:Type sys:Enum}"
+                        xmlns:sys="clr-namespace:System;assembly=mscorlib">
+            <ObjectDataProvider.MethodParameters>
+                <x:Type TypeName="enums:IxupiPot"/>
+            </ObjectDataProvider.MethodParameters>
+        </ObjectDataProvider>
+
+        <!-- Pot Options -->
+        <x:Array x:Key="PotOptions"
+             Type="sys:String"
+             xmlns:sys="clr-namespace:System;assembly=mscorlib">
+            <sys:String>Water Pot Bottom</sys:String>
+            <sys:String>Wax Pot Bottom</sys:String>
+            <sys:String>Ash Pot Bottom</sys:String>
+            <sys:String>Oil Pot Bottom</sys:String>
+            <sys:String>Cloth Pot Bottom</sys:String>
+            <sys:String>Wood Pot Bottom</sys:String>
+            <sys:String>Crystal Pot Bottom</sys:String>
+            <sys:String>Lightning Pot Bottom</sys:String>
+            <sys:String>Sand Pot Bottom</sys:String>
+            <sys:String>Metal Pot Bottom</sys:String>
+
+            <sys:String>Water Pot Top</sys:String>
+            <sys:String>Wax Pot Top</sys:String>
+            <sys:String>Ash Pot Top</sys:String>
+            <sys:String>Oil Pot Top</sys:String>
+            <sys:String>Cloth Pot Top</sys:String>
+            <sys:String>Wood Pot Top</sys:String>
+            <sys:String>Crystal Pot Top</sys:String>
+            <sys:String>Lightning Pot Top</sys:String>
+            <sys:String>Sand Pot Top</sys:String>
+            <sys:String>Metal Pot Top</sys:String>
+
+            <sys:String>Water Pot Complete</sys:String>
+            <sys:String>Wax Pot Complete</sys:String>
+            <sys:String>Ash Pot Complete</sys:String>
+            <sys:String>Oil Pot Complete</sys:String>
+            <sys:String>Cloth Pot Complete</sys:String>
+            <sys:String>Wood Pot Complete</sys:String>
+            <sys:String>Crystal Pot Complete</sys:String>
+            <sys:String>Lightning Pot Complete</sys:String>
+            <sys:String>Sand Pot Complete</sys:String>
+            <sys:String>Metal Pot Complete</sys:String>
+        </x:Array>
+
     </Window.Resources>
 
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto" />
-            <ColumnDefinition Width="Auto" />
-            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="Auto"/>
         </Grid.ColumnDefinitions>
 
         <StackPanel Grid.Column="0" Margin="20">
@@ -142,30 +192,57 @@
         </StackPanel>
         
         <StackPanel Grid.Column="2" Margin="20">
-            <Label Content="" Name="LabelStorageDeskDrawer"/>
-            <Label Content="" Name="LabelStorageWorkshopDrawers"/>
-            <Label Content="" Name="LabelStorageLibraryCabinet"/>
-            <Label Content="" Name="LabelStorageLibraryStatue"/>
-            <Label Content="" Name="LabelStorageSlide"/>
-            <Label Content="" Name="LabelStorageTransformingMask"/>
-            <Label Content="" Name="LabelStorageEaglesNest"/>
-            <Label Content="" Name="LabelStorageOcean"/>
-            <Label Content="" Name="LabelStorageTarRiver"/>
-            <Label Content="" Name="LabelStorageTheater"/>
-            <Label Content="" Name="LabelStorageGreenhouse"/>
-            <Label Content="" Name="LabelStorageEgypt"/>
-            <Label Content="" Name="LabelStorageChineseSolitaire"/>
-            <Label Content="" Name="LabelStorageShamanHut"/>
-            <Label Content="" Name="LabelStorageLyre"/>
-            <Label Content="" Name="LabelStorageSkeleton"/>
-            <Label Content="" Name="LabelStorageAnansiMusicBox"/>
-            <Label Content="" Name="LabelStorageJanitorCloset"/>
-            <Label Content="" Name="LabelStorageUFO"/>
-            <Label Content="" Name="LabelStorageAlchemy"/>
-            <Label Content="" Name="LabelStorageSkullBridge"/>
-            <Label Content="" Name="LabelStorageGallows"/>
-            <Label Content="" Name="LabelStorageClockTower"/>
+            <Label Content="" Name="LabelStorageDeskDrawer" Tag="0"/>
+            <Label Content="" Name="LabelStorageWorkshopDrawers" Tag="8"/>
+            <Label Content="" Name="LabelStorageLibraryCabinet" Tag="16"/>
+            <Label Content="" Name="LabelStorageLibraryStatue" Tag="24"/>
+            <Label Content="" Name="LabelStorageSlide" Tag="32"/>
+            <Label Content="" Name="LabelStorageTransformingMask" Tag="40"/>
+            <Label Content="" Name="LabelStorageEaglesNest" Tag="48"/>
+            <Label Content="" Name="LabelStorageOcean" Tag="56"/>
+            <Label Content="" Name="LabelStorageTarRiver" Tag="64"/>
+            <Label Content="" Name="LabelStorageTheater" Tag="72"/>
+            <Label Content="" Name="LabelStorageGreenhouse" Tag="80"/>
+            <Label Content="" Name="LabelStorageEgypt" Tag="88"/>
+            <Label Content="" Name="LabelStorageChineseSolitaire" Tag="96"/>
+            <Label Content="" Name="LabelStorageShamanHut" Tag="104"/>
+            <Label Content="" Name="LabelStorageLyre" Tag="112"/>
+            <Label Content="" Name="LabelStorageSkeleton" Tag="120"/>
+            <Label Content="" Name="LabelStorageAnansiMusicBox" Tag="128"/>
+            <Label Content="" Name="LabelStorageJanitorCloset" Tag="136"/>
+            <Label Content="" Name="LabelStorageUFO" Tag="144"/>
+            <Label Content="" Name="LabelStorageAlchemy" Tag="152"/>
+            <Label Content="" Name="LabelStorageSkullBridge" Tag="160"/>
+            <Label Content="" Name="LabelStorageGallows" Tag="168"/>
+            <Label Content="" Name="LabelStorageClockTower" Tag="176"/>
         </StackPanel>
+
+        <StackPanel Grid.Column="3" Margin="20">
+            <ComboBox ItemsSource="{StaticResource PotOptions}" Width="160" Height="18.5" Tag="LabelStorageDeskDrawer" SelectionChanged="StorageComboBox_SelectionChanged"/>
+            <ComboBox ItemsSource="{StaticResource PotOptions}" Width="160" Height="18.5" Tag="LabelStorageWorkshopDrawers" SelectionChanged="StorageComboBox_SelectionChanged"/>
+            <ComboBox ItemsSource="{StaticResource PotOptions}" Width="160" Height="18.5" Tag="LabelStorageLibraryCabinet" SelectionChanged="StorageComboBox_SelectionChanged"/>
+            <ComboBox ItemsSource="{StaticResource PotOptions}" Width="160" Height="18.5" Tag="LabelStorageLibraryStatue" SelectionChanged="StorageComboBox_SelectionChanged"/>
+            <ComboBox ItemsSource="{StaticResource PotOptions}" Width="160" Height="18.5" Tag="LabelStorageSlide" SelectionChanged="StorageComboBox_SelectionChanged"/>
+            <ComboBox ItemsSource="{StaticResource PotOptions}" Width="160" Height="18.5" Tag="LabelStorageTransformingMask" SelectionChanged="StorageComboBox_SelectionChanged"/>
+            <ComboBox ItemsSource="{StaticResource PotOptions}" Width="160" Height="18.5" Tag="LabelStorageEaglesNest" SelectionChanged="StorageComboBox_SelectionChanged"/>
+            <ComboBox ItemsSource="{StaticResource PotOptions}" Width="160" Height="18.5" Tag="LabelStorageOcean" SelectionChanged="StorageComboBox_SelectionChanged"/>
+            <ComboBox ItemsSource="{StaticResource PotOptions}" Width="160" Height="18.5" Tag="LabelStorageTarRiver" SelectionChanged="StorageComboBox_SelectionChanged"/>
+            <ComboBox ItemsSource="{StaticResource PotOptions}" Width="160" Height="18.5" Tag="LabelStorageTheater" SelectionChanged="StorageComboBox_SelectionChanged"/>
+            <ComboBox ItemsSource="{StaticResource PotOptions}" Width="160" Height="18.5" Tag="LabelStorageGreenhouse" SelectionChanged="StorageComboBox_SelectionChanged"/>
+            <ComboBox ItemsSource="{StaticResource PotOptions}" Width="160" Height="18.5" Tag="LabelStorageEgypt" SelectionChanged="StorageComboBox_SelectionChanged"/>
+            <ComboBox ItemsSource="{StaticResource PotOptions}" Width="160" Height="18.5" Tag="LabelStorageChineseSolitaire" SelectionChanged="StorageComboBox_SelectionChanged"/>
+            <ComboBox ItemsSource="{StaticResource PotOptions}" Width="160" Height="18.5" Tag="LabelStorageShamanHut" SelectionChanged="StorageComboBox_SelectionChanged"/>
+            <ComboBox ItemsSource="{StaticResource PotOptions}" Width="160" Height="18.5" Tag="LabelStorageLyre" SelectionChanged="StorageComboBox_SelectionChanged"/>
+            <ComboBox ItemsSource="{StaticResource PotOptions}" Width="160" Height="18.5" Tag="LabelStorageSkeleton" SelectionChanged="StorageComboBox_SelectionChanged"/>
+            <ComboBox ItemsSource="{StaticResource PotOptions}" Width="160" Height="18.5" Tag="LabelStorageAnansiMusicBox" SelectionChanged="StorageComboBox_SelectionChanged"/>
+            <ComboBox ItemsSource="{StaticResource PotOptions}" Width="160" Height="18.5" Tag="LabelStorageJanitorCloset" SelectionChanged="StorageComboBox_SelectionChanged"/>
+            <ComboBox ItemsSource="{StaticResource PotOptions}" Width="160" Height="18.5" Tag="LabelStorageUFO" SelectionChanged="StorageComboBox_SelectionChanged"/>
+            <ComboBox ItemsSource="{StaticResource PotOptions}" Width="160" Height="18.5" Tag="LabelStorageAlchemy" SelectionChanged="StorageComboBox_SelectionChanged"/>
+            <ComboBox ItemsSource="{StaticResource PotOptions}" Width="160" Height="18.5" Tag="LabelStorageSkullBridge" SelectionChanged="StorageComboBox_SelectionChanged"/>
+            <ComboBox ItemsSource="{StaticResource PotOptions}" Width="160" Height="18.5" Tag="LabelStorageGallows" SelectionChanged="StorageComboBox_SelectionChanged"/>
+            <ComboBox ItemsSource="{StaticResource PotOptions}" Width="160" Height="18.5" Tag="LabelStorageClockTower" SelectionChanged="StorageComboBox_SelectionChanged"/>
+        </StackPanel>
+
     </Grid>
 
 

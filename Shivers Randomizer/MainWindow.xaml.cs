@@ -16,6 +16,7 @@ public partial class MainWindow : Window
 {
     private readonly App app;
     public static bool isArchipelagoClientOpen;
+    public static bool isDevMenuOpen;
     private readonly string? version = Assembly.GetExecutingAssembly().GetName().Version?.ToString(3);
 
     public MainWindow(App app)
@@ -551,8 +552,15 @@ public partial class MainWindow : Window
 
     private void Button_devMenu_Click(object sender, RoutedEventArgs e)
     {
+        if (!isDevMenuOpen)
+        {
             app.dev_Menu = new(app);
             app.dev_Menu.Show();
-
+            isDevMenuOpen = true;
+        }
+        if (app.dev_Menu != null)
+        {
+            app.dev_Menu.Activate();
+        }
     }
 }
