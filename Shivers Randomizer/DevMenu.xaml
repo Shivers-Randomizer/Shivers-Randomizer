@@ -120,6 +120,8 @@
             <sys:String>Lightning Pot Complete</sys:String>
             <sys:String>Sand Pot Complete</sys:String>
             <sys:String>Metal Pot Complete</sys:String>
+
+            <sys:String>Nothing</sys:String>
         </x:Array>
 
     </Window.Resources>

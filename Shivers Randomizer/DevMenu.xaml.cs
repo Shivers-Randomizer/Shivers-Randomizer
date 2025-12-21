@@ -122,26 +122,29 @@ public partial class DevMenu : Window
         if (sender is not ComboBox combo)
             return;
 
-        if (combo.SelectedItem is not string selectedText)
-            return;
+        int? potValue = null;
 
-        // Convert selected string to IxupiPot int value
-        int? potValue = EnumHelper.GetIxupiPotValue(selectedText);
-        if (potValue == null)
-            return;
-
-        // Get label name from ComboBox.Tag
-        if (combo.Tag is not string labelName)
-            return;
-
-        // Find the Label by its Name
-        if (FindName(labelName) is not Label label)
-            return;
-
-        // Parse Label.Tag to int
-        if (int.TryParse(label.Tag?.ToString(), out int labelId))
+        if (combo.SelectedItem is string selectedText)
         {
-            app.WriteMemory(labelId, potValue.Value);
+            if (selectedText == "Nothing")
+            {
+                potValue = 0;
+            }
+            else
+            {
+                potValue = EnumHelper.GetIxupiPotValue(selectedText);
+            }
+
+            if (potValue != null)
+            {
+                if (combo.Tag is string labelName && FindName(labelName) is Label label)
+                {
+                    if (int.TryParse(label.Tag?.ToString(), out int labelId))
+                    {
+                        app.WriteMemory(labelId, potValue.Value);
+                    }
+                }
+            }
         }
 
         combo.SelectedIndex = -1;
