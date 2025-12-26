@@ -33,7 +33,7 @@ public partial class DevMenu : Window
         }
     }
 
-    private void button_Teleport_Click(object sender, RoutedEventArgs e)
+    private void Button_Teleport_Click(object sender, RoutedEventArgs e)
     {
         if (sender is Button button && int.TryParse(button.Tag?.ToString(), out int location))
         {
@@ -44,7 +44,7 @@ public partial class DevMenu : Window
         }
     }
 
-    public void update_Pot_Locations()
+    public void Update_Pot_Locations()
     {
         UpdateLabelContentAndColor(LabelStorageDeskDrawer, 0);
         UpdateLabelContentAndColor(LabelStorageWorkshopDrawers, 8);
@@ -74,16 +74,16 @@ public partial class DevMenu : Window
 
     public static readonly SolidColorBrush[] ElementBrushes =
 {
-        new SolidColorBrush(System.Windows.Media.Color.FromRgb(5, 168, 252)),   // 0
-        new SolidColorBrush(System.Windows.Media.Color.FromRgb(255, 250, 205)), // 1
-        new SolidColorBrush(System.Windows.Media.Color.FromRgb(180, 180, 180)), // 2
-        new SolidColorBrush(System.Windows.Media.Color.FromRgb(255, 174, 201)), // 3
-        new SolidColorBrush(System.Windows.Media.Color.FromRgb(255, 0, 0)),     // 4
-        new SolidColorBrush(System.Windows.Media.Color.FromRgb(50, 205, 50)),   // 5
-        new SolidColorBrush(System.Windows.Media.Color.FromRgb(173, 216, 230)), // 6
-        new SolidColorBrush(System.Windows.Media.Color.FromRgb(255, 255, 51)),  // 7
-        new SolidColorBrush(System.Windows.Media.Color.FromRgb(244, 164, 96)),  // 8
-        new SolidColorBrush(System.Windows.Media.Color.FromRgb(255, 255, 255))  // 9
+        new (Color.FromRgb(5, 168, 252)),   // 0
+        new (Color.FromRgb(255, 250, 205)), // 1
+        new (Color.FromRgb(180, 180, 180)), // 2
+        new (Color.FromRgb(255, 174, 201)), // 3
+        new (Color.FromRgb(255, 0, 0)),     // 4 
+        new (Color.FromRgb(50, 205, 50)),   // 5
+        new (Color.FromRgb(173, 216, 230)), // 6
+        new (Color.FromRgb(255, 255, 51)),  // 7
+        new (Color.FromRgb(244, 164, 96)),  // 8
+        new (Color.FromRgb(255, 255, 255))  // 9
     };
 
     void UpdateLabelContentAndColor(Label label, int memoryOffset)
@@ -122,7 +122,7 @@ public partial class DevMenu : Window
         if (sender is not ComboBox combo)
             return;
 
-        int? potValue = null;
+        int? potValue;
 
         if (combo.SelectedItem is string selectedText)
         {
@@ -139,9 +139,9 @@ public partial class DevMenu : Window
             {
                 if (combo.Tag is string labelName && FindName(labelName) is Label label)
                 {
-                    if (int.TryParse(label.Tag?.ToString(), out int labelId))
+                    if (int.TryParse(label.Tag?.ToString(), out int offset))
                     {
-                        app.WriteMemory(labelId, potValue.Value);
+                        app.WriteMemory(offset, potValue.Value);
                     }
                 }
             }

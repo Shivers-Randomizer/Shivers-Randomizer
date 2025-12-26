@@ -450,7 +450,7 @@ public partial class MainWindow : Window
         UpdateFlagset(sender, e);
     }
 
-    private void checkBoxFirstToTheOnlyFive_Click(object sender, RoutedEventArgs e)
+    private void CheckBoxFirstToTheOnlyFive_Click(object sender, RoutedEventArgs e)
     {
         if (checkBoxFirstToTheOnlyFive.IsChecked == true)
         {

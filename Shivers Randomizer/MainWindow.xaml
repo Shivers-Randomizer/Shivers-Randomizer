@@ -218,7 +218,7 @@
                     <CheckBox x:Name="checkBoxFullPots" Content="Full Pots In Scramble" Click="CheckBoxFullPotsAndExtraLocations_Click"
                               ToolTip="Fully assembled pots will be included in the initial scramble. The amount is randomized."/>
                     <StackPanel Orientation="Horizontal">
-                        <CheckBox x:Name="checkBoxFirstToTheOnlyFive" Content="First To The Only X" VerticalAlignment="Center" Click="checkBoxFirstToTheOnlyFive_Click"
+                        <CheckBox x:Name="checkBoxFirstToTheOnlyFive" Content="First To The Only X" VerticalAlignment="Center" Click="CheckBoxFirstToTheOnlyFive_Click"
                                   ToolTip="Only X amount of pot sets will be in the scramble. Upon capturing the X'th Ixupi the generator explosion cutscene will play"/>
                         <TextBox x:Name="txtBox_FirstToTheOnlyX" Height="20" Width="20" Text="5" Margin="20,0,0,0" VerticalAlignment="Center" MaxLength="1"
                                  PreviewTextInput="FirstToTheOnlyX_NumberValidation" TextChanged="FirstToTheOnlyX_TextChanged" />

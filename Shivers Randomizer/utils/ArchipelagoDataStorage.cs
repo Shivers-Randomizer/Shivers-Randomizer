@@ -41,7 +41,7 @@ public record ArchipelagoDataStorage
     ArchipelagoPuzzlesSolved PuzzlesSolved,
     Dictionary<string, AddressedValue> SkullDials,
     Dictionary<string, AddressedValue> IxupiDamage,
-    int PlayerLocation = 1012,
+    int PlayerLocation = 930,
     bool Jukebox = false,
     bool TarRiverShortcut = false,
     int Health = 100,

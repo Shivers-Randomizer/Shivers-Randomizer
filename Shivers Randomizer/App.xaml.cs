@@ -1369,7 +1369,7 @@ public partial class App : Application
 
 
         //Dev Menu
-        dev_Menu?.update_Pot_Locations();
+        dev_Menu?.Update_Pot_Locations();
     }
 
     private void ArchipelagoReleaseDisabled()
@@ -1509,7 +1509,7 @@ public partial class App : Application
         }
         else
         {
-            WriteMemory(Addresses.PLAYER_LOCATION, 1012);
+            WriteMemory(Addresses.PLAYER_LOCATION, 930);
         }
 
         // Load skull dials

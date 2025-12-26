@@ -84,7 +84,7 @@
             </ObjectDataProvider.MethodParameters>
         </ObjectDataProvider>
 
-        <!-- Pot Options -->
+        
         <x:Array x:Key="PotOptions"
              Type="sys:String"
              xmlns:sys="clr-namespace:System;assembly=mscorlib">
@@ -135,36 +135,36 @@
         </Grid.ColumnDefinitions>
 
         <StackPanel Grid.Column="0" Margin="20">
-            <Button x:Name="button_MainMenu" Content="Main Menu" Tag="910" Click="button_Teleport_Click"/>
-            <Button x:Name="button_Anansi" Content="Anansi" Tag="24410" Click="button_Teleport_Click"/>
-            <Button x:Name="button_Bedroom" Content="Bedroom" Tag="37010" Click="button_Teleport_Click"/>
-            <Button x:Name="button_BlueHallways" Content="Blue Hallways" Tag="27070" Click="button_Teleport_Click"/>
-            <Button x:Name="button_Burial" Content="Burial" Tag="21190" Click="button_Teleport_Click"/>
-            <Button x:Name="button_ClockTower" Content="Clock Tower" Tag="35110" Click="button_Teleport_Click"/>
-            <Button x:Name="button_Egypt" Content="Egypt" Tag="20060" Click="button_Teleport_Click"/>
-            <Button x:Name="button_FortuneTeller" Content="Fortune Teller" Tag="28000" Click="button_Teleport_Click"/>
-            <Button x:Name="button_Generator" Content="Generator" Tag="39010" Click="button_Teleport_Click"/>
-            <Button x:Name="button_Gods" Content="Gods" Tag="23800" Click="button_Teleport_Click"/>
-            <Button x:Name="button_Greenhouse" Content="Greenhouse" Tag="19040" Click="button_Teleport_Click"/>
-            <Button x:Name="button_Inventions" Content="Inventions" Tag="30170" Click="button_Teleport_Click"/>
-            <Button x:Name="button_JanitorCloset" Content="Janitor Closet" Tag="25010" Click="button_Teleport_Click"/>
-            <Button x:Name="button_Library" Content="Library" Tag="8000" Click="button_Teleport_Click"/>
-            <Button x:Name="button_Lobby" Content="Lobby" Tag="9020" Click="button_Teleport_Click"/>
-            <Button x:Name="button_Ocean" Content="Ocean" Tag="12010" Click="button_Teleport_Click"/>
-            <Button x:Name="button_Office" Content="Office" Tag="6130" Click="button_Teleport_Click"/>
-            <Button x:Name="button_Outside" Content="Outside" Tag="1012" Click="button_Teleport_Click"/>
-            <Button x:Name="button_Prehistoric" Content="Prehistoric" Tag="11020" Click="button_Teleport_Click"/>
-            <Button x:Name="button_Projector" Content="Projector" Tag="17010" Click="button_Teleport_Click"/>
-            <Button x:Name="button_Puzzle" Content="Puzzle" Tag="31020" Click="button_Teleport_Click"/>
-            <Button x:Name="button_Shaman" Content="Shaman" Tag="22020" Click="button_Teleport_Click"/>
-            <Button x:Name="button_SubterraneanMaze" Content="Subterranean Maze" Tag="13012" Click="button_Teleport_Click"/>
-            <Button x:Name="button_TarRiver" Content="Tar River" Tag="13344" Click="button_Teleport_Click"/>
-            <Button x:Name="button_Theater" Content="Theater" Tag="16000" Click="button_Teleport_Click"/>
-            <Button x:Name="button_Torture" Content="Torture" Tag="32010" Click="button_Teleport_Click"/>
-            <Button x:Name="button_UFO" Content="UFO" Tag="29010" Click="button_Teleport_Click"/>
-            <Button x:Name="button_UndergroundLake" Content="Underground Lake" Tag="3020" Click="button_Teleport_Click"/>
-            <Button x:Name="button_UndergroundTunnel" Content="Underground Tunnel" Tag="2010" Click="button_Teleport_Click"/>
-            <Button x:Name="button_Workshop" Content="Workshop" Tag="7010" Click="button_Teleport_Click"/>
+            <Button x:Name="button_MainMenu" Content="Main Menu" Tag="910" Click="Button_Teleport_Click"/>
+            <Button x:Name="button_Anansi" Content="Anansi" Tag="24410" Click="Button_Teleport_Click"/>
+            <Button x:Name="button_Bedroom" Content="Bedroom" Tag="37010" Click="Button_Teleport_Click"/>
+            <Button x:Name="button_BlueHallways" Content="Blue Hallways" Tag="27070" Click="Button_Teleport_Click"/>
+            <Button x:Name="button_Burial" Content="Burial" Tag="21190" Click="Button_Teleport_Click"/>
+            <Button x:Name="button_ClockTower" Content="Clock Tower" Tag="35110" Click="Button_Teleport_Click"/>
+            <Button x:Name="button_Egypt" Content="Egypt" Tag="20060" Click="Button_Teleport_Click"/>
+            <Button x:Name="button_FortuneTeller" Content="Fortune Teller" Tag="28000" Click="Button_Teleport_Click"/>
+            <Button x:Name="button_Generator" Content="Generator" Tag="39010" Click="Button_Teleport_Click"/>
+            <Button x:Name="button_Gods" Content="Gods" Tag="23800" Click="Button_Teleport_Click"/>
+            <Button x:Name="button_Greenhouse" Content="Greenhouse" Tag="19040" Click="Button_Teleport_Click"/>
+            <Button x:Name="button_Inventions" Content="Inventions" Tag="30170" Click="Button_Teleport_Click"/>
+            <Button x:Name="button_JanitorCloset" Content="Janitor Closet" Tag="25010" Click="Button_Teleport_Click"/>
+            <Button x:Name="button_Library" Content="Library" Tag="8000" Click="Button_Teleport_Click"/>
+            <Button x:Name="button_Lobby" Content="Lobby" Tag="9020" Click="Button_Teleport_Click"/>
+            <Button x:Name="button_Ocean" Content="Ocean" Tag="12010" Click="Button_Teleport_Click"/>
+            <Button x:Name="button_Office" Content="Office" Tag="6130" Click="Button_Teleport_Click"/>
+            <Button x:Name="button_Outside" Content="Outside" Tag="1012" Click="Button_Teleport_Click"/>
+            <Button x:Name="button_Prehistoric" Content="Prehistoric" Tag="11020" Click="Button_Teleport_Click"/>
+            <Button x:Name="button_Projector" Content="Projector" Tag="17010" Click="Button_Teleport_Click"/>
+            <Button x:Name="button_Puzzle" Content="Puzzle" Tag="31020" Click="Button_Teleport_Click"/>
+            <Button x:Name="button_Shaman" Content="Shaman" Tag="22020" Click="Button_Teleport_Click"/>
+            <Button x:Name="button_SubterraneanMaze" Content="Subterranean Maze" Tag="13012" Click="Button_Teleport_Click"/>
+            <Button x:Name="button_TarRiver" Content="Tar River" Tag="13344" Click="Button_Teleport_Click"/>
+            <Button x:Name="button_Theater" Content="Theater" Tag="16000" Click="Button_Teleport_Click"/>
+            <Button x:Name="button_Torture" Content="Torture" Tag="32010" Click="Button_Teleport_Click"/>
+            <Button x:Name="button_UFO" Content="UFO" Tag="29010" Click="Button_Teleport_Click"/>
+            <Button x:Name="button_UndergroundLake" Content="Underground Lake" Tag="3020" Click="Button_Teleport_Click"/>
+            <Button x:Name="button_UndergroundTunnel" Content="Underground Tunnel" Tag="2010" Click="Button_Teleport_Click"/>
+            <Button x:Name="button_Workshop" Content="Workshop" Tag="7010" Click="Button_Teleport_Click"/>
         </StackPanel>
 
         <StackPanel Grid.Column="1" Margin="20">
@@ -192,7 +192,7 @@
             <Label Content="Gallows: "/>
             <Label Content="Clock Tower: "/>
         </StackPanel>
-        
+
         <StackPanel Grid.Column="2" Margin="20">
             <Label Content="" Name="LabelStorageDeskDrawer" Tag="0"/>
             <Label Content="" Name="LabelStorageWorkshopDrawers" Tag="8"/>
@@ -244,8 +244,5 @@
             <ComboBox ItemsSource="{StaticResource PotOptions}" Width="160" Height="18.5" Tag="LabelStorageGallows" SelectionChanged="StorageComboBox_SelectionChanged"/>
             <ComboBox ItemsSource="{StaticResource PotOptions}" Width="160" Height="18.5" Tag="LabelStorageClockTower" SelectionChanged="StorageComboBox_SelectionChanged"/>
         </StackPanel>
-
     </Grid>
-
-
 </Window>

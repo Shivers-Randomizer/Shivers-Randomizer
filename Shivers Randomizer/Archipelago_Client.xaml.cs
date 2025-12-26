@@ -159,7 +159,7 @@ public partial class Archipelago_Client : Window
                     slotDataIxupiCapturesNeeded = TryGetIntSetting(jsonObject, "IxupiCapturesNeeded", 10);
 
                     //Enable YAML Settings button
-                    buttonYAMLSettings.Visibility = Visibility.Visible;
+                    ButtonYAMLSettings.Visibility = Visibility.Visible;
                     finishedConnecting = true;
 
                     //If release is disabled set flag to prevent exploring museum
@@ -368,7 +368,7 @@ public partial class Archipelago_Client : Window
             {
                 buttonConnect.Content = "Connect";
                 buttonConnect.IsDefault = true;
-                buttonYAMLSettings.Visibility = Visibility.Hidden;
+                ButtonYAMLSettings.Visibility = Visibility.Hidden;
             });
 
             app.StopArchipelago();
@@ -597,16 +597,16 @@ public partial class Archipelago_Client : Window
 
     public static readonly SolidColorBrush[] ElementBrushes =
     {
-        new SolidColorBrush(System.Windows.Media.Color.FromRgb(5, 168, 252)),   // 0
-        new SolidColorBrush(System.Windows.Media.Color.FromRgb(255, 250, 205)), // 1
-        new SolidColorBrush(System.Windows.Media.Color.FromRgb(180, 180, 180)), // 2
-        new SolidColorBrush(System.Windows.Media.Color.FromRgb(255, 174, 201)), // 3
-        new SolidColorBrush(System.Windows.Media.Color.FromRgb(255, 0, 0)),     // 4
-        new SolidColorBrush(System.Windows.Media.Color.FromRgb(50, 205, 50)),   // 5
-        new SolidColorBrush(System.Windows.Media.Color.FromRgb(173, 216, 230)), // 6
-        new SolidColorBrush(System.Windows.Media.Color.FromRgb(255, 255, 51)),  // 7
-        new SolidColorBrush(System.Windows.Media.Color.FromRgb(244, 164, 96)),  // 8
-        new SolidColorBrush(System.Windows.Media.Color.FromRgb(255, 255, 255))  // 9
+        new (System.Windows.Media.Color.FromRgb(5, 168, 252)),   // 0
+        new (System.Windows.Media.Color.FromRgb(255, 250, 205)), // 1
+        new (System.Windows.Media.Color.FromRgb(180, 180, 180)), // 2
+        new (System.Windows.Media.Color.FromRgb(255, 174, 201)), // 3
+        new (System.Windows.Media.Color.FromRgb(255, 0, 0)),     // 4
+        new (System.Windows.Media.Color.FromRgb(50, 205, 50)),   // 5
+        new (System.Windows.Media.Color.FromRgb(173, 216, 230)), // 6
+        new (System.Windows.Media.Color.FromRgb(255, 255, 51)),  // 7
+        new (System.Windows.Media.Color.FromRgb(244, 164, 96)),  // 8
+        new (System.Windows.Media.Color.FromRgb(255, 255, 255))  // 9
     };
 
     void UpdateLabelContentAndColor(Label label, int memoryOffset, bool connected)
@@ -793,7 +793,7 @@ public partial class Archipelago_Client : Window
         }
     }
 
-    private void buttonYAMLSettings_Click(object sender, RoutedEventArgs e)
+    private void ButtonYAMLSettings_Click(object sender, RoutedEventArgs e)
     {
         new Message(
             $"YAML Settings" +
