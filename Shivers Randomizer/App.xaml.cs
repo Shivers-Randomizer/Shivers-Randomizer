@@ -2096,6 +2096,7 @@ public partial class App : Application
                 dataStorage?.PuzzlesSolved.Gallows == true)
             {
                 ArchipelagoSetFlagBit(Flags.PuzzleSolvedGallows);
+                ArchipelagoSetFlagBit(Flags.GallowsPanelOpen);
             }
         }
         if (LocationsChecked.Contains(ARCHIPELAGO_BASE_LOCATION_ID + 21)) // Puzzle Solved Mastermind +179 Bit 7
