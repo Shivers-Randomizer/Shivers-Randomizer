@@ -44,6 +44,8 @@ public partial class Archipelago_Client : Window
     public CollectBehavior slotDataCollectBehavior;
     public int slotDataIxupiCapturesNeeded = 10;
     public ArchipelagoDataStorage? dataStorage;
+    private List<string> commandBuffer = new();
+    private int commandPointer = 0;
     private bool userHasScrolledUp;
     private bool userManuallyReconnected;
     private bool userManuallyDisconnected;
@@ -758,9 +760,19 @@ public partial class Archipelago_Client : Window
         userHasScrolledUp = e.VerticalOffset < e.ExtentHeight - e.ViewportHeight;
     }
 
+    private void InsertToCommandBuffer(string CommandMessage)
+    {
+        if (CommandMessage != "")
+        {
+            commandBuffer.Insert(0, CommandMessage);
+        }
+    }
+
     private void ButtonCommands_Click(object sender, RoutedEventArgs e)
     {
+        commandPointer = 0;
         string CommandMessage = commandBox.Text;
+        InsertToCommandBuffer(CommandMessage);
         commandBox.Text = "";
         Commands(CommandMessage);
     }
@@ -768,9 +780,27 @@ public partial class Archipelago_Client : Window
     {
         if (e.Key == Key.Enter)
         {
+            commandPointer = 0;
             string CommandMessage = commandBox.Text;
+            InsertToCommandBuffer(CommandMessage);
             commandBox.Text = "";
             Commands(CommandMessage);
+        }
+        else if (e.Key == Key.Up)
+        {
+            if (commandPointer != commandBuffer.Count)
+            {
+                commandPointer ++;
+            }
+            commandBox.Text = commandBuffer[commandPointer - 1];
+        }
+        else if (e.Key == Key.Down)
+        {
+            if (commandPointer > 0)
+            {
+                commandPointer -- ;
+            }
+            commandBox.Text = commandBuffer[commandPointer];
         }
     }
 
