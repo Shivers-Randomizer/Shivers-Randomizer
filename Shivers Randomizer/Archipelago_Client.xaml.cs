@@ -44,7 +44,7 @@ public partial class Archipelago_Client : Window
     public CollectBehavior slotDataCollectBehavior;
     public int slotDataIxupiCapturesNeeded = 10;
     public ArchipelagoDataStorage? dataStorage;
-    private List<string> commandBuffer = new();
+    private List<string> commandBuffer = new List<string> {""};
     private int commandPointer = 0;
     private bool userHasScrolledUp;
     private bool userManuallyReconnected;
