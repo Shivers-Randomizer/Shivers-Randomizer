@@ -788,11 +788,11 @@ public partial class Archipelago_Client : Window
         }
         else if (e.Key == Key.Up)
         {
-            if (commandPointer != commandBuffer.Count)
+            if (commandPointer < commandBuffer.Count - 1)
             {
                 commandPointer ++;
             }
-            commandBox.Text = commandBuffer[commandPointer - 1];
+            commandBox.Text = commandBuffer[commandPointer];
         }
         else if (e.Key == Key.Down)
         {
