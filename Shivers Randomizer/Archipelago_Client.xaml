@@ -47,7 +47,7 @@
         <RichTextBox x:Name="ServerMessageBox" Background="#FF333333" FontSize="16" Foreground="White" IsReadOnly="True" Margin="0,0,0,0" Block.LineHeight="1" VerticalScrollBarVisibility="Visible" ScrollViewer.ScrollChanged="ServerMessageBox_ScrollChanged" Grid.Row="1" MinWidth="21" IsUndoEnabled="False" UndoLimit="0"/>
 
         <Button x:Name="buttonCommands" Content="Command:" FontSize="16" Foreground="White" Height="28" Width="100" HorizontalAlignment="Left" VerticalAlignment="Center" VerticalContentAlignment="Center" Background="#FF585858" Grid.Row="2" Click="ButtonCommands_Click"/>
-        <TextBox x:Name="commandBox" FontSize="16" Background="#FFF0F0F0" VerticalContentAlignment="Center" Height="30" Margin="100,0,0,0" TextWrapping="Wrap" VerticalAlignment="Center" Grid.Row="2" KeyDown="CommandBox_KeyDown"/>
+        <TextBox x:Name="commandBox" FontSize="16" Background="#FFF0F0F0" VerticalContentAlignment="Center" Height="30" Margin="100,0,0,0" TextWrapping="Wrap" VerticalAlignment="Center" Grid.Row="2" PreviewKeyDown="CommandBox_KeyDown"/>
 
         <Border Grid.Column="1" Grid.Row="1" BorderThickness="0.5" BorderBrush="Black" Grid.RowSpan="2"/>
         <Label Content="Desk Drawer: " FontSize="16" Foreground="#FFA0BE82" Height="31" HorizontalAlignment="Left" Margin="0,0,0,0" VerticalAlignment="Top" Grid.Column="1" Grid.Row="1"/>
