@@ -44,6 +44,8 @@ public partial class Archipelago_Client : Window
     public CollectBehavior slotDataCollectBehavior;
     public int slotDataIxupiCapturesNeeded = 10;
     public ArchipelagoDataStorage? dataStorage;
+    private List<string> commandBuffer = new List<string> {""};
+    private int commandPointer = 0;
     private bool userHasScrolledUp;
     private bool userManuallyReconnected;
     private bool userManuallyDisconnected;
@@ -758,9 +760,26 @@ public partial class Archipelago_Client : Window
         userHasScrolledUp = e.VerticalOffset < e.ExtentHeight - e.ViewportHeight;
     }
 
+    private void InsertToCommandBuffer(string CommandMessage)
+    {
+        if (!string.IsNullOrEmpty(CommandMessage))
+        {
+            // Insert newest command at the front
+            commandBuffer.Insert(0, CommandMessage);
+
+            // Remove oldest command if buffer exceeds max size
+            if (commandBuffer.Count > 10)
+            {
+                commandBuffer.RemoveAt(commandBuffer.Count - 1); // remove last (oldest)
+            }
+        }
+    }
+
     private void ButtonCommands_Click(object sender, RoutedEventArgs e)
     {
+        commandPointer = -1;
         string CommandMessage = commandBox.Text;
+        InsertToCommandBuffer(CommandMessage);
         commandBox.Text = "";
         Commands(CommandMessage);
     }
@@ -768,9 +787,34 @@ public partial class Archipelago_Client : Window
     {
         if (e.Key == Key.Enter)
         {
+            commandPointer = -1;
             string CommandMessage = commandBox.Text;
+            InsertToCommandBuffer(CommandMessage);
             commandBox.Text = "";
             Commands(CommandMessage);
+
+            e.Handled = true;
+        }
+        else if (e.Key == Key.Up)
+        {
+            if (commandPointer < commandBuffer.Count - 1)
+            {
+                commandPointer ++;
+            }
+            commandBox.Text = commandBuffer[commandPointer];
+        }
+        else if (e.Key == Key.Down)
+        {
+            if (commandPointer > 0)
+            {
+                commandPointer--;
+                commandBox.Text = commandBuffer[commandPointer];
+            }
+            else if(commandPointer <= 0)
+            {
+                commandPointer = -1;
+                commandBox.Text = "";
+            }
         }
     }
 
