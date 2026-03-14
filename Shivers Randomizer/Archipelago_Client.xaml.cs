@@ -762,15 +762,22 @@ public partial class Archipelago_Client : Window
 
     private void InsertToCommandBuffer(string CommandMessage)
     {
-        if (CommandMessage != "")
+        if (!string.IsNullOrEmpty(CommandMessage))
         {
+            // Insert newest command at the front
             commandBuffer.Insert(0, CommandMessage);
+
+            // Remove oldest command if buffer exceeds max size
+            if (commandBuffer.Count > 10)
+            {
+                commandBuffer.RemoveAt(commandBuffer.Count - 1); // remove last (oldest)
+            }
         }
     }
 
     private void ButtonCommands_Click(object sender, RoutedEventArgs e)
     {
-        commandPointer = 0;
+        commandPointer = -1;
         string CommandMessage = commandBox.Text;
         InsertToCommandBuffer(CommandMessage);
         commandBox.Text = "";
@@ -780,11 +787,13 @@ public partial class Archipelago_Client : Window
     {
         if (e.Key == Key.Enter)
         {
-            commandPointer = 0;
+            commandPointer = -1;
             string CommandMessage = commandBox.Text;
             InsertToCommandBuffer(CommandMessage);
             commandBox.Text = "";
             Commands(CommandMessage);
+
+            e.Handled = true;
         }
         else if (e.Key == Key.Up)
         {
@@ -798,9 +807,14 @@ public partial class Archipelago_Client : Window
         {
             if (commandPointer > 0)
             {
-                commandPointer -- ;
+                commandPointer--;
+                commandBox.Text = commandBuffer[commandPointer];
             }
-            commandBox.Text = commandBuffer[commandPointer];
+            else if(commandPointer <= 0)
+            {
+                commandPointer = -1;
+                commandBox.Text = "";
+            }
         }
     }
 
