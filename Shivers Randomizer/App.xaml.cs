@@ -130,6 +130,9 @@ public partial class App : Application
     readonly List<int> archipelagoChecksReadyToSend = new();
     public bool archipelagoReleaseDisabled = false;
 
+    private Matrix? _transformFromDevice = null;
+    private bool _dpiInitialized = false;
+
     public App()
     {
         mainWindow = new(this);
@@ -843,8 +846,14 @@ public partial class App : Application
         var windowExists = GetWindowRect((UIntPtr)(long)(shiversProcess?.MainWindowHandle ?? IntPtr.Zero), ref ShiversWindowDimensions);
         var windowIconic = IsIconic((UIntPtr)(long)(shiversProcess?.MainWindowHandle ?? IntPtr.Zero));
 
-        overlay.Left = ShiversWindowDimensions.Left;
-        overlay.Top = ShiversWindowDimensions.Top + (int)SystemParameters.WindowCaptionHeight;
+        //Move overlay
+        if (_transformFromDevice.HasValue)
+        {
+            var pt = _transformFromDevice.Value.Transform(new Point(ShiversWindowDimensions.Left, ShiversWindowDimensions.Top));
+
+            overlay.Left = pt.X;
+            overlay.Top = pt.Y + SystemParameters.WindowCaptionHeight;
+        }
         overlay.labelOverlay.Foreground = windowExists && windowIconic ? overlay.brushTransparent : overlay.brushLime;
 
         if(shiversProcess?.MainWindowHandle != null)
@@ -879,6 +888,18 @@ public partial class App : Application
             if (windowExists)
             {
                 overlay.Show();
+
+
+                // Initialize DPI transform once when overlay first becomes visible
+                if (!_dpiInitialized)
+                {
+                    var source = PresentationSource.FromVisual(overlay);
+                    if (source?.CompositionTarget != null)
+                    {
+                        _transformFromDevice = source.CompositionTarget.TransformFromDevice;
+                        _dpiInitialized = true;
+                    }
+                }
             }
             else
             {
