@@ -545,7 +545,7 @@ public partial class App : Application
                         Ixupi ixupiSelected = setsAvailable[setSelected];
 
                         //Roll how many red herrings of each set will be added
-                        int herringAmmount = rng.Next(0, 3);
+                        int herringAmmount = rng.Next(1, 3);
 
                         //Roll for if red herring is tops or bottoms
                         if(rng.Next(0, 2) == 0)
