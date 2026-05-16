@@ -11,6 +11,7 @@ using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Interop;
 using System.Windows.Media;
@@ -30,6 +31,7 @@ public partial class App : Application
     public Overlay overlay;
     public LiveSplit? liveSplit = null;
     public Multiplayer_Client? multiplayer_Client = null;
+    public TwitchIntegrationMain? twitchIntegrationMain = null;
     public Archipelago_Client? archipelago_Client = null;
     public DevMenu? dev_Menu = null;
     private DispatcherTimer appTimer = new()
@@ -1193,7 +1195,7 @@ public partial class App : Application
 
         // ---------Archipelago----------
         
-        mainWindow.button_Archipelago.IsEnabled = MyAddress != UIntPtr.Zero;
+        mainWindow.button_Archipelago.IsEnabled = (MyAddress != UIntPtr.Zero) && !(twitchIntegrationMain != null && twitchIntegrationMain.IsVisible);
 
         // Update client window to show pot locations
         archipelago_Client?.ArchipelagoUpdateWindow(roomNumber, archipelagoReceivedItems);
@@ -1388,6 +1390,8 @@ public partial class App : Application
             archipelago_Client?.CheckConnection();
         }
 
+        //Twitch integration
+        mainWindow.button_TwitchIntegration.IsEnabled = (MyAddress != UIntPtr.Zero) && !(archipelago_Client != null && archipelago_Client.IsVisible);
 
         //Dev Menu
         dev_Menu?.Update_Pot_Locations();
@@ -3573,6 +3577,38 @@ public partial class App : Application
         }
     }
 
+    public void TwitchIntegrationPlacePotPieces(int PotBaseId)
+    {
+        List<int> emptyLocations = new List<int>();
+
+        //Check each location in memory for empty
+        for (int i = 0; i < POT_LOCATIONS.Count; i++)
+        {
+            // Skip banned locations
+            if (i == (int)PotLocation.TAR_RIVER || i == (int)PotLocation.JANITOR_CLOSET)
+                continue;
+
+            // Check if empty
+            if (ReadMemory(i * 8, 1) == 0)
+                emptyLocations.Add(i);
+        }
+
+
+        //Pick two random locations
+        int bottomIndex = emptyLocations[rng.Next(emptyLocations.Count)];
+        emptyLocations.Remove(bottomIndex);
+
+        int topIndex = emptyLocations[rng.Next(emptyLocations.Count)];
+
+        //Calculate bottom/top enum values
+        int bottomPiece = PotBaseId;
+        int topPiece = PotBaseId + 10;
+
+        //Write pieces to memory
+        WriteMemory(bottomIndex * 8, bottomPiece);
+        WriteMemory(topIndex * 8, topPiece);
+    }
+
     public void WriteMemory(int offset, int value)
     {
         AppHelpers.WriteMemoryAnyAddress(processHandle, MyAddress, offset, value);
@@ -3602,7 +3638,7 @@ public partial class App : Application
     }
 
     // Sets the kth bit on Memory with the specified offset. 0 indexed
-    private void SetKthBitMemoryOneByte(int memoryOffset, int k, bool set)
+    internal void SetKthBitMemoryOneByte(int memoryOffset, int k, bool set)
     {
         WriteMemory(memoryOffset, SetKthBit(ReadMemory(memoryOffset, 1), k, set));
     }
@@ -3613,8 +3649,25 @@ public partial class App : Application
 
     private void CheckAttachState()
     {
-        // Check that the process is still Shivers, if so disconnect archipelago and livesplit
-        Process tempProcess = Process.GetProcessById(shiversProcess?.Id ?? 0);
+        if (shiversProcess == null)
+            return;
+
+        Process tempProcess;
+
+        try
+        {
+            tempProcess = Process.GetProcessById(shiversProcess.Id);
+        }
+        catch
+        {
+            // Process no longer exists
+            tempProcess = null;
+        }
+
+        if (tempProcess == null)
+            return;
+
+        string title = tempProcess.MainWindowTitle ?? "";
 
         if (shiversProcess != null && !tempProcess.MainWindowTitle.Contains("Shivers") && !tempProcess.MainWindowTitle.Contains("Status"))
         {

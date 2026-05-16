@@ -285,6 +285,8 @@
             <StackPanel Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Right">
                 <Button Visibility="{x:Static utils:DebugSettings.Visibility}" x:Name="button_Multiplayer" Content="Multiplayer"
                         HorizontalAlignment="Center" Click="Button_Multiplayer_Click" IsEnabled="True"/>
+                <Button Visibility="{x:Static utils:DebugSettings.Visibility}" x:Name="button_TwitchIntegration" Content="Twitch Integration"
+                        HorizontalAlignment="Center" Click="Button_TwitchIntegration_Click" IsEnabled="False"/>
                 <Label Visibility="{x:Static utils:DebugSettings.Visibility}" x:Name="label_slowCounter" Content="Label"
                        HorizontalAlignment="Center" Margin="0,10,0,0"/>
                 <Label Visibility="{x:Static utils:DebugSettings.Visibility}" x:Name="label_fastCounter" Content="Label"

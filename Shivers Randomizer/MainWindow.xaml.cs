@@ -17,6 +17,7 @@ public partial class MainWindow : Window
     private readonly App app;
     public static bool isArchipelagoClientOpen;
     public static bool isDevMenuOpen;
+    public static bool isTwitchIntegrationOpen;
     private readonly string? version = Assembly.GetExecutingAssembly().GetName().Version?.ToString(3);
 
     public MainWindow(App app)
@@ -544,6 +545,19 @@ public partial class MainWindow : Window
         app.multiplayer_Client.Show();
     }
 
+    private void Button_TwitchIntegration_Click(object sender, RoutedEventArgs e)
+    {
+        if (!isTwitchIntegrationOpen)
+        {
+            app.twitchIntegrationMain = new(app);
+            app.twitchIntegrationMain.Show();
+            isTwitchIntegrationOpen = true;
+        }
+        if (app.twitchIntegrationMain != null)
+        {
+            app.twitchIntegrationMain.Activate();
+        }
+    }
     private void Button_teleportOffice_Click(object sender, RoutedEventArgs e)
     {
         app.WriteMemory(-424, 6500);
