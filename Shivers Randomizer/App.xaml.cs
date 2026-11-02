@@ -3614,7 +3614,7 @@ public partial class App : Application
         AppHelpers.WriteMemoryAnyAddress(processHandle, MyAddress, offset, value);
     }
 
-    private void WriteMemoryTwoBytes(int offset, int value)
+    internal void WriteMemoryTwoBytes(int offset, int value)
     {
         uint bytesWritten = 0;
         uint numberOfBytes = 2;

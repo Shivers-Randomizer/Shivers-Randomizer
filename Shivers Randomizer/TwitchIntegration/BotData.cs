@@ -152,7 +152,7 @@ public static class BotData
         { "organ", (MemoryMap.Flags.PuzzleSolvedOrgan, 20) },
         { "red door", (MemoryMap.Flags.PuzzleSolvedRedDoor, 150) },
         { "shaman drums", (MemoryMap.Flags.PuzzleSolvedShamanDrums, 20) },
-        { "stonehenge", (MemoryMap.Flags.PuzzleSolvedStonehenge, 20) },
+        //{ "stonehenge", (MemoryMap.Flags.PuzzleSolvedStonehenge, 20) },
         { "ufo", (MemoryMap.Flags.PuzzleSolvedUFO, 35) },
         { "theater door", (MemoryMap.Flags.PuzzleSolvedTheaterDoor, 40) },
         { "workshop drawers", (MemoryMap.Flags.PuzzleSolvedWorkshopDrawers, 20) }

@@ -294,10 +294,10 @@ public class ChatUser : INotifyPropertyChanged
             }
             else if (chatMessage.TrimStart().StartsWith("!reset ", StringComparison.OrdinalIgnoreCase))
             {
-                if (!IsRoomBanned(username))
-                {
+                //if (!IsRoomBanned(username))
+                //{
                     Reset(username, chatMessage);
-                }
+                //}
             }
             else if (chatMessage.TrimStart().StartsWith("!release ", StringComparison.OrdinalIgnoreCase))
             {
@@ -421,7 +421,6 @@ public class ChatUser : INotifyPropertyChanged
                     {
                         app.SetKthBitMemoryOneByte(Flags.WorkshopDrawersOpen.Offset, Flags.WorkshopDrawersOpen.Bit, false);
                     }
-
                 }
             }
             else
@@ -443,7 +442,7 @@ public class ChatUser : INotifyPropertyChanged
             return;
 
         //Ixupi not captured
-        int memoryByte = app.ReadMemory(ixupi.Flag.Offset, 1);
+        int memoryByte = app.ReadMemory(ixupi.Flag.Offset, 2);
         if (!AppHelpers.IsKthBitSet(memoryByte, ixupi.Flag.Bit))
         {
             reply = $"@{username} {ixupiName} not captured.";
@@ -472,7 +471,9 @@ public class ChatUser : INotifyPropertyChanged
         }
 
         //Reset captured flag
-        app.SetKthBitMemoryOneByte(ixupi.Flag.Offset, ixupi.Flag.Bit, false);
+        //app.SetKthBitMemoryOneByte(ixupi.Flag.Offset, ixupi.Flag.Bit, false);
+        memoryByte = AppHelpers.SetKthBit(memoryByte, ixupi.Flag.Bit, false);
+        app.WriteMemoryTwoBytes(ixupi.Flag.Offset, memoryByte);
 
         //Place pot pieces back into game
         app.TwitchIntegrationPlacePotPieces((int)ixupi.PotBaseID);
@@ -524,17 +525,17 @@ public class ChatUser : INotifyPropertyChanged
 
         if (roomNumber >= 3120 && roomNumber <= 3320 || roomNumber == 12600 || roomNumber == 3500 || roomNumber == 3510)
         {
-            reply = $"@{username} cannot redeem points while on the boat.";
+            reply = $"@{username} cannot redeem this command while on the boat.";
             return true;
         }
         else if (BotData.BannedRooms.Contains(roomNumber))
         {
-            reply = $"@{username} cannot redeem points during a puzzle.";
+            reply = $"@{username} cannot redeem this command during a puzzle.";
             return true;
         }
         else if (roomNumber < 1000)
         {
-            reply = $"@{username} cannot redeem points on non museum screens.";
+            reply = $"@{username} cannot redeem this command on non museum screens.";
             return true;
         }
         
