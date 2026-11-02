@@ -39,6 +39,11 @@ public partial class TwitchIntegrationSettings : Window
         }
     }
 
+    private void chkAllowGivePoints_Checked(object sender, RoutedEventArgs e)
+    {
+        main.givePointsAllowed = chkAllowGivePoints.IsChecked == true;
+    }
+
     private void NumberOnly(object sender, System.Windows.Input.TextCompositionEventArgs e)
     {
         e.Handled = !int.TryParse(e.Text, out _);

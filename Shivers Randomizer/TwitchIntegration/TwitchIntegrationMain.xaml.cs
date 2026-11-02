@@ -36,6 +36,7 @@ public partial class TwitchIntegrationMain : Window
     private ObservableCollection<ChatUser> observableUsers = new ObservableCollection<ChatUser>();
     private DispatcherTimer pointsTimer;
     public int pointsPerMinute = 10;
+    public bool givePointsAllowed = true;
     private readonly TimeSpan timerInterval = TimeSpan.FromMinutes(1);
     private bool isGameRunning = false;
 
@@ -202,7 +203,7 @@ public class ChatUser : INotifyPropertyChanged
                 {
                     writer.WriteLine("PONG :tmi.twitch.tv");
                     writer.Flush();
-                    rtbMessage("Sent PONG reply\n");
+                    //rtbMessage("Sent PONG reply\n");
                     continue;
                 }
                 if (rawMessage.Contains(" PRIVMSG #"))
@@ -267,9 +268,6 @@ public class ChatUser : INotifyPropertyChanged
 
     private void ProcessCommand(string username, string chatMessage)
     {
-        if(!CanProcessCommand())
-            return;
-
         reply = null;
 
         if (chatMessage.Trim().Equals("!points", StringComparison.OrdinalIgnoreCase))
@@ -279,13 +277,13 @@ public class ChatUser : INotifyPropertyChanged
                 reply = $"@{username} your current points are {user.Points}.";
             }
         }
-        else if (chatMessage.TrimStart().StartsWith("!guide", StringComparison.OrdinalIgnoreCase))
+        else if (!CommandCooldown() && chatMessage.TrimStart().StartsWith("!guide", StringComparison.OrdinalIgnoreCase))
         {
             reply = $"@{username} https://tinyurl.com/37hj83te";
         }
         else if (isGameRunning)
         {
-            if (chatMessage.TrimStart().StartsWith("!teleport ", StringComparison.OrdinalIgnoreCase))
+            if (!CommandCooldown() && chatMessage.TrimStart().StartsWith("!teleport ", StringComparison.OrdinalIgnoreCase))
             {
                 if (!IsRoomBanned(username))
                 {
@@ -294,17 +292,18 @@ public class ChatUser : INotifyPropertyChanged
             }
             else if (chatMessage.TrimStart().StartsWith("!reset ", StringComparison.OrdinalIgnoreCase))
             {
-                //if (!IsRoomBanned(username))
-                //{
                     Reset(username, chatMessage);
-                //}
             }
-            else if (chatMessage.TrimStart().StartsWith("!release ", StringComparison.OrdinalIgnoreCase))
+            else if (!CommandCooldown() && chatMessage.TrimStart().StartsWith("!release ", StringComparison.OrdinalIgnoreCase))
             {
                 if (!IsRoomBanned(username))
                 {
                     Release(username, chatMessage);
                 }
+            }
+            else if (chatMessage.TrimStart().StartsWith("!givepoints ", StringComparison.OrdinalIgnoreCase))
+            {
+                GivePoints(username, chatMessage);
             }
         }
         else
@@ -519,6 +518,50 @@ public class ChatUser : INotifyPropertyChanged
         app.StopAudio(currentRoom);
     }
 
+    private void GivePoints(string username, string chatMessage)
+    {
+        if(!givePointsAllowed)
+        {
+            reply = $"@{username} giving points not allowed this game.";
+            return;
+        }
+
+        string[] parts = chatMessage.Split(' ', StringSplitOptions.RemoveEmptyEntries);
+        string targetUsername = parts[1];
+
+        if (!int.TryParse(parts[2], out int pointAmount) || pointAmount <= 0)
+        {
+            reply = $"@{username} invalid point amount.";
+            return;
+        }
+
+        if (!activeUsers.TryGetValue(username, out ChatUser user))
+            return;
+
+        if (user.Points < pointAmount)
+        {
+            reply = $"@{username} you do not have that many points.";
+            return;
+        }
+
+        if (!activeUsers.TryGetValue(targetUsername, out ChatUser targetUser))
+        {
+            reply = $"@{username} player {targetUsername} was not found.";
+            return;
+        }
+
+        if (username.Equals(targetUsername, StringComparison.OrdinalIgnoreCase))
+        {
+            reply = $"@{username} you cannot give points to yourself.";
+            return;
+        }
+
+        user.Points -= pointAmount;
+        targetUser.Points += pointAmount;
+
+        reply = $"@{username} gave {pointAmount} points to @{targetUsername}.";
+    }
+
     private bool IsRoomBanned(string username)
     {
         int roomNumber = app.roomNumber;
@@ -649,7 +692,7 @@ public class ChatUser : INotifyPropertyChanged
 
     private DateTime lastCommandTime = DateTime.MinValue;
     private readonly int globalCooldownSeconds = 1;
-    private bool CanProcessCommand()
+    private bool CommandCooldown()
     {
         if ((DateTime.UtcNow - lastCommandTime).TotalSeconds >= globalCooldownSeconds)
         {
