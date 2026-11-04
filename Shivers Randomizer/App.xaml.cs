@@ -11,7 +11,6 @@ using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Interop;
 using System.Windows.Media;
@@ -2931,7 +2930,7 @@ public partial class App : Application
         }
     }
 
-    private void PotSyncRedraw()
+    public void PotSyncRedraw()
     {
         // If looking at pot then set the previous room to the menu to force a screen redraw on the pot
         if (POT_ROOMS.Contains(roomNumber) || roomNumber == 24380 && IsKthBitSet(ReadMemory(380,1),8)) // Anansi and anansi is open
@@ -3607,6 +3606,78 @@ public partial class App : Application
         //Write pieces to memory
         WriteMemory(bottomIndex * 8, bottomPiece);
         WriteMemory(topIndex * 8, topPiece);
+    }
+
+    public bool TwitchIntegrationShufflePotPieces(int potBaseID, bool shuffleAll)
+    {
+        List<(int potID, int Location)> currentPots = new List<(int,int)>();
+
+        //Build list of all pot pieces currently in museum
+        for (int i = 0; i < POT_LOCATIONS.Count; i++)
+        {
+            // Skip banned locations
+            if ((i == (int)PotLocation.TAR_RIVER) || i == (int)PotLocation.JANITOR_CLOSET)
+                continue;
+
+            currentPots.Add((ReadMemory(i * 8, 1), i));
+        }
+
+        // Single pot shuffle
+        if (!shuffleAll)
+        {
+            // Find all pieces matching this pot type (bottom, top, complete)
+            var matchingPots = currentPots
+                .Where(p => p.potID == 200 + potBaseID ||
+                            p.potID == 210 + potBaseID ||
+                            p.potID == 220 + potBaseID)
+                .ToList();
+
+            if (matchingPots.Count == 0)
+                return false;
+
+            // Get all pieces that aren't part of the matching type
+            var otherPots = currentPots
+                .Where(p => !matchingPots.Any(m => m.Location == p.Location))
+                .OrderBy(p => rng.Next())
+                .Take(matchingPots.Count)
+                .ToList();
+
+            // Make sure there are enough other pieces to swap with
+            if (otherPots.Count < matchingPots.Count)
+                return false;
+
+            // Swap each matching piece with a random other piece
+            for (int i = 0; i < matchingPots.Count; i++)
+            {
+                WriteMemory(matchingPots[i].Location * 8, otherPots[i].potID);
+                WriteMemory(otherPots[i].Location * 8, matchingPots[i].potID);
+            }
+        }
+        //Shuffle all
+        else if (shuffleAll)
+        {
+            if (currentPots.All(p => p.potID == 0))
+                return false;
+
+            List<int> shuffledPots = currentPots.Select(p => p.potID).ToList();
+
+            for (int i = shuffledPots.Count - 1; i > 0; i--)
+            {
+                int j = rng.Next(i + 1);
+
+                int temp = shuffledPots[i];
+                shuffledPots[i] = shuffledPots[j];
+                shuffledPots[j] = temp;
+            }
+
+            // Write shuffled pot IDs to their new locations
+            for (int i = 0; i < currentPots.Count; i++)
+            {
+                WriteMemory(currentPots[i].Location * 8, shuffledPots[i]);
+            }
+        }
+
+        return true;
     }
 
     public void WriteMemory(int offset, int value)

@@ -1,4 +1,5 @@
-﻿using Shivers_Randomizer.enums;
+﻿using Newtonsoft.Json.Linq;
+using Shivers_Randomizer.enums;
 using Shivers_Randomizer.utils;
 using System;
 using System.Collections.Generic;
@@ -227,6 +228,20 @@ public static class BotData
         24170, // Skull Dial: Werewolf
         14170, // Skull Dial: Tar River
     };
+
+    public static Dictionary<string, int> PotPieceBaseID { get; set; } = new Dictionary<string, int>()
+{
+    { "water", 0 },
+    { "wax", 1 },
+    { "ash", 2 },
+    { "oil", 3 },
+    { "cloth", 4 },
+    { "wood", 5 },
+    { "crystal", 6 },
+    { "lightning", 7 },
+    { "sand", 8 },
+    { "metal", 9 }
+};
 
 
 }

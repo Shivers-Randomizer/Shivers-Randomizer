@@ -20,6 +20,10 @@ public partial class TwitchIntegrationSettings : Window
         dgPuzzles.ItemsSource = BotData.PuzzleFlags.Select(kvp => new PuzzleViewModel { Name = kvp.Key, Flag = kvp.Value.Flag, Cost = kvp.Value.Cost }).ToList();
 
         dgIxupi.ItemsSource = BotData.IxupiFlags.Select(kvp => new IxupiViewModel { Name = kvp.Key, Info = kvp.Value, Cost = kvp.Value.Cost }).ToList();
+
+        txtShuffleSpecificPotCost.Text = main.shuffleSpecificPotCost.ToString();
+
+        txtShuffleAllPotCost.Text = main.shuffleAllPotCost.ToString();
     }
 
     private void DataGrid_CellEditEnding(object sender, System.Windows.Controls.DataGridCellEditEndingEventArgs e)
@@ -54,6 +58,28 @@ public partial class TwitchIntegrationSettings : Window
         if (e.Key == System.Windows.Input.Key.Space)
         {
             e.Handled = true;
+        }
+    }
+
+    private void txtShuffleSpecificPotCost_TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e)
+    {
+        if (int.TryParse(txtShuffleSpecificPotCost.Text, out int value))
+        {
+            if (value >= 0)
+            {
+                main.shuffleSpecificPotCost = value;
+            }
+        }
+    }
+
+    private void txtShuffleAllPotCost_TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e)
+    {
+        if (int.TryParse(txtShuffleAllPotCost.Text, out int value))
+        {
+            if (value >= 0)
+            {
+                main.shuffleAllPotCost = value;
+            }
         }
     }
 }

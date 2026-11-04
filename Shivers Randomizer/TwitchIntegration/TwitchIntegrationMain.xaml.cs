@@ -36,6 +36,8 @@ public partial class TwitchIntegrationMain : Window
     private ObservableCollection<ChatUser> observableUsers = new ObservableCollection<ChatUser>();
     private DispatcherTimer pointsTimer;
     public int pointsPerMinute = 10;
+    public int shuffleSpecificPotCost = 60;
+    public int shuffleAllPotCost = 125;
     public bool givePointsAllowed = true;
     private readonly TimeSpan timerInterval = TimeSpan.FromMinutes(1);
     private bool isGameRunning = false;
@@ -305,6 +307,10 @@ public class ChatUser : INotifyPropertyChanged
             {
                 GivePoints(username, chatMessage);
             }
+            else if (chatMessage.TrimStart().StartsWith("!shuffle ", StringComparison.OrdinalIgnoreCase))
+            {
+                ShufflePot(username, chatMessage);
+            }
         }
         else
         {
@@ -527,7 +533,7 @@ public class ChatUser : INotifyPropertyChanged
         }
 
         string[] parts = chatMessage.Split(' ', StringSplitOptions.RemoveEmptyEntries);
-        string targetUsername = parts[1];
+        string targetUsername = parts[1].ToLower();
 
         if (!int.TryParse(parts[2], out int pointAmount) || pointAmount <= 0)
         {
@@ -560,6 +566,55 @@ public class ChatUser : INotifyPropertyChanged
         targetUser.Points += pointAmount;
 
         reply = $"@{username} gave {pointAmount} points to @{targetUsername}.";
+    }
+
+    private void ShufflePot(string username, string chatMessage)
+    {
+        if (chatMessage.Length <= 9)
+            return;
+
+        string potName = chatMessage.Substring(9).Trim().ToLower();
+
+        if (activeUsers.TryGetValue(username, out ChatUser user))
+        {
+            if (potName == "all")
+            {
+                int cost = shuffleAllPotCost;
+                if (user.Points < cost)
+                    return;
+
+                if(app.TwitchIntegrationShufflePotPieces(-1, true))
+                {
+                    user.Points -= cost;
+                    app.PotSyncRedraw();
+                }
+                else
+                {
+                    reply = $"@{username} unable to shuffle.";
+                }
+
+            }
+            else if (!BotData.PotPieceBaseID.TryGetValue(potName, out int baseID))
+            {
+                reply = $"@{username} invalid pot name.";
+            }
+            else
+            {
+                int cost = shuffleSpecificPotCost;
+                if (user.Points < cost)
+                    return;
+
+                if(app.TwitchIntegrationShufflePotPieces(baseID, false))
+                {
+                    user.Points -= cost;
+                    app.PotSyncRedraw();
+                }
+                else
+                {
+                    reply = $"@{username} unable to shuffle {potName}.";
+                }
+            }
+        }
     }
 
     private bool IsRoomBanned(string username)

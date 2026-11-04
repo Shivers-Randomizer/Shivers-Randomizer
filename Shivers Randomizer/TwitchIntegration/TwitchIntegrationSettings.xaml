@@ -67,7 +67,7 @@
         </TabItem>
 
         <!-- Ixupi -->
-        <TabItem Header="Ixupi">
+        <TabItem Header="Ixupi Release">
             <DataGrid x:Name="dgIxupi" AutoGenerateColumns="False" CanUserAddRows="False"
               HorizontalAlignment="Left" Width="250" HeadersVisibility="Column" Margin="10,0,0,0"
               ColumnWidth="SizeToHeader">
@@ -83,6 +83,23 @@
                     </DataGridTextColumn>
                 </DataGrid.Columns>
             </DataGrid>
+        </TabItem>
+
+        <!-- Pot Shuffle -->
+        <TabItem Header="Pot Shuffle">
+            <StackPanel Orientation="Vertical" Margin="10" VerticalAlignment="Top">
+                <StackPanel Orientation="Horizontal">
+                    <Label Content="Shuffle specific pot cost:" VerticalAlignment="Center" Width="160"/>
+                    <TextBox x:Name="txtShuffleSpecificPotCost" Width="100"
+                     PreviewTextInput="NumberOnly" TextChanged="txtShuffleSpecificPotCost_TextChanged"/>
+                </StackPanel>
+
+                <StackPanel Orientation="Horizontal">
+                    <Label Content="Shuffle all pots cost:" VerticalAlignment="Center" Width="160"/>
+                    <TextBox x:Name="txtShuffleAllPotCost" Width="100"
+                     PreviewTextInput="NumberOnly" TextChanged="txtShuffleAllPotCost_TextChanged"/>
+                </StackPanel>
+            </StackPanel>
         </TabItem>
 
     </TabControl>
