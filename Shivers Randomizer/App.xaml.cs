@@ -3616,7 +3616,7 @@ public partial class App : Application
         for (int i = 0; i < POT_LOCATIONS.Count; i++)
         {
             // Skip banned locations
-            if ((i == (int)PotLocation.TAR_RIVER) || i == (int)PotLocation.JANITOR_CLOSET)
+            if ((i == (int)PotLocation.TAR_RIVER) || i == (int)PotLocation.JANITOR_CLOSET || i == (int)PotLocation.SLIDE)
                 continue;
 
             currentPots.Add((ReadMemory(i * 8, 1), i));

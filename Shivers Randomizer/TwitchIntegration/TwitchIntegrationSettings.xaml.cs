@@ -15,6 +15,8 @@ public partial class TwitchIntegrationSettings : Window
 
         txtPointsPerMinute.Text = main.pointsPerMinute.ToString();
 
+        txtPointsPerMinuteIxupiCaptureBonus.Text = main.pointsPerMinuteIxupiCaptureBonus.ToString();
+
         dgTeleports.ItemsSource = BotData.TeleportLocations.Values.ToList();
 
         dgPuzzles.ItemsSource = BotData.PuzzleFlags.Select(kvp => new PuzzleViewModel { Name = kvp.Key, Flag = kvp.Value.Flag, Cost = kvp.Value.Cost }).ToList();
@@ -39,6 +41,17 @@ public partial class TwitchIntegrationSettings : Window
             if (value >= 0)
             {
                 main.pointsPerMinute = value;
+            }
+        }
+    }
+
+    private void txtPointsPerMinuteIxupiCaptureBonus_TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e)
+    {
+        if (int.TryParse(txtPointsPerMinuteIxupiCaptureBonus.Text, out int value))
+        {
+            if (value >= 0)
+            {
+                main.pointsPerMinuteIxupiCaptureBonus = value;
             }
         }
     }
@@ -82,4 +95,6 @@ public partial class TwitchIntegrationSettings : Window
             }
         }
     }
+
+
 }

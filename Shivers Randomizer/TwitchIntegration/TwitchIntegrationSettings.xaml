@@ -15,17 +15,19 @@
         <TabItem Header="General">
             <StackPanel Orientation="Vertical" Margin="10" VerticalAlignment="Top">
                 <StackPanel Orientation="Horizontal">
-                    <Label Content="Points Per Minute:" VerticalAlignment="Center" Width="110"/>
-                    <TextBox x:Name="txtPointsPerMinute" Width="100"
-                     TextChanged="txtPointsPerMinute_TextChanged"
-                     PreviewTextInput="NumberOnly"/>
+                    <Label Content="Points Per Minute:" VerticalAlignment="Center" Width="250" ToolTip="Determines how many points each player earns per minute."/>
+                    <TextBox x:Name="txtPointsPerMinute" Width="50" VerticalAlignment="Center" TextChanged="txtPointsPerMinute_TextChanged" PreviewTextInput="NumberOnly" ToolTip="Determines how many points each player earns per minute."/>
                 </StackPanel>
 
-                <CheckBox x:Name="chkAllowGivePoints"
-                  Content="Allow players to give points to each other with !givepoints"
-                  Margin="5,10,0,0"
-                  IsChecked="True"
-                  Click="chkAllowGivePoints_Checked"/>
+                <StackPanel Orientation="Horizontal">
+                    <Label Content="Points Per Minute Ixupi Capture Bonus % :" VerticalAlignment="Center" Width="250" ToolTip="Increase the points per minute payout by the specified percentage for EACH Ixupi captured."/>
+                    <TextBox x:Name="txtPointsPerMinuteIxupiCaptureBonus" Width="50" VerticalAlignment="Center" PreviewTextInput="NumberOnly" TextChanged="txtPointsPerMinuteIxupiCaptureBonus_TextChanged" ToolTip="Increase the points per minute payout by the specified percentage for EACH Ixupi captured."/>
+                </StackPanel>
+
+                <StackPanel Orientation="Horizontal">
+                    <CheckBox x:Name="chkAllowGivePoints" Content="Allow !givepoints" Margin="5,10,0,0" IsChecked="True" Click="chkAllowGivePoints_Checked" ToolTip="Allows players to transfer points to each other with !gifpoints."/>
+                </StackPanel>
+                
             </StackPanel>
         </TabItem>
 
@@ -90,14 +92,12 @@
             <StackPanel Orientation="Vertical" Margin="10" VerticalAlignment="Top">
                 <StackPanel Orientation="Horizontal">
                     <Label Content="Shuffle specific pot cost:" VerticalAlignment="Center" Width="160"/>
-                    <TextBox x:Name="txtShuffleSpecificPotCost" Width="100"
-                     PreviewTextInput="NumberOnly" TextChanged="txtShuffleSpecificPotCost_TextChanged"/>
+                    <TextBox x:Name="txtShuffleSpecificPotCost" Width="100" PreviewTextInput="NumberOnly" TextChanged="txtShuffleSpecificPotCost_TextChanged"/>
                 </StackPanel>
 
                 <StackPanel Orientation="Horizontal">
                     <Label Content="Shuffle all pots cost:" VerticalAlignment="Center" Width="160"/>
-                    <TextBox x:Name="txtShuffleAllPotCost" Width="100"
-                     PreviewTextInput="NumberOnly" TextChanged="txtShuffleAllPotCost_TextChanged"/>
+                    <TextBox x:Name="txtShuffleAllPotCost" Width="100" PreviewTextInput="NumberOnly" TextChanged="txtShuffleAllPotCost_TextChanged"/>
                 </StackPanel>
             </StackPanel>
         </TabItem>

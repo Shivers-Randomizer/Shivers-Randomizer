@@ -36,6 +36,7 @@ public partial class TwitchIntegrationMain : Window
     private ObservableCollection<ChatUser> observableUsers = new ObservableCollection<ChatUser>();
     private DispatcherTimer pointsTimer;
     public int pointsPerMinute = 10;
+    public int pointsPerMinuteIxupiCaptureBonus = 10;
     public int shuffleSpecificPotCost = 60;
     public int shuffleAllPotCost = 125;
     public bool givePointsAllowed = true;
@@ -683,12 +684,14 @@ public class ChatUser : INotifyPropertyChanged
 
     private void PointsTimer_Tick(object sender, EventArgs e)
     {
+        int payoutBonus = (int)Math.Round(((double)pointsPerMinuteIxupiCaptureBonus * app.numberIxupiCaptured / 100) * pointsPerMinute);
+
         foreach (var user in observableUsers)
         {
-            user.Points += pointsPerMinute;
+            user.Points += pointsPerMinute + payoutBonus;
         }
 
-        rtbMessage($"All players have been awarded {pointsPerMinute} points.\n");
+        rtbMessage($"All players have been awarded {pointsPerMinute + payoutBonus} points.\n");
     }
 
 
