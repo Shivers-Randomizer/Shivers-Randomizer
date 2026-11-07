@@ -398,6 +398,43 @@ public class ChatUser : INotifyPropertyChanged
                 user.Points -= cost;
                 //reply = $"@{username} redeemed teleport to {locationText}! [Remaining: {user.Points} pts]\n";
                 app.StopAudio(locationInt);
+
+
+                //If a telepor thappened during a capture it can delete ixupi without actually giving capture credit.
+                //Check if the ixupi capture flag is set but the pot isnt on the gui bar, if so unset the flag and respawn ixupi
+                var ixupiData = new (int Bit, IxupiLocationOffsets Location)[]
+                {
+                    (Flags.IxupiCapturedSand.Bit, IxupiLocationOffsets.SAND),
+                    (Flags.IxupiCapturedCrystal.Bit, IxupiLocationOffsets.CRYSTAL),
+                    (Flags.IxupiCapturedMetal.Bit, IxupiLocationOffsets.METAL),
+                    (Flags.IxupiCapturedOil.Bit, IxupiLocationOffsets.OIL),
+                    (Flags.IxupiCapturedWood.Bit, IxupiLocationOffsets.WOOD),
+                    (Flags.IxupiCapturedLightning.Bit, IxupiLocationOffsets.LIGHTNING),
+                    (Flags.IxupiCapturedAsh.Bit, IxupiLocationOffsets.ASH),
+                    (Flags.IxupiCapturedWater.Bit, IxupiLocationOffsets.WATER),
+                    (Flags.IxupiCapturedCloth.Bit, IxupiLocationOffsets.CLOTH),
+                    (Flags.IxupiCapturedWax.Bit, IxupiLocationOffsets.WAX)
+                };
+
+                //Grab the capture data, sand offset will work for all of them
+                int ixupiMemoryByte = app.ReadMemory(Flags.IxupiCapturedSand.Offset, 2);
+
+                foreach (var ixupi in ixupiData)
+                {
+                    bool isCaptured = AppHelpers.IsKthBitSet(ixupiMemoryByte, ixupi.Bit);
+
+                    if (!isCaptured)
+                    {
+                        int locationOffset = (int)ixupi.Location;
+                        int location = app.ReadMemory(locationOffset, 2);
+
+                        if (location == 0)
+                        {
+                            //Setting location to 1 works for all ixupi. the game will automatically reroll it at the next respawn location
+                            app.WriteMemory(locationOffset, 1);
+                        }
+                    }
+                }
             }
         }
     }
