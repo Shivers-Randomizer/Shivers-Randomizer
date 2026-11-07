@@ -36,7 +36,7 @@
         <Grid Grid.Column="0">
             <Button x:Name="buttonConnect" Content="Connect" FontSize="16" Foreground="White" Background="#FF585858" Height="24" Width="92" HorizontalAlignment="Left" VerticalAlignment="Top" IsDefault="True" Padding="0,0" Margin="10,10,0,0" Click="buttonConnect_Click"/>
             <Label Content="Twitch Channel:" FontSize="16" Foreground="White" Width="120" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="110,6,0,0"/>
-            <TextBox x:Name="txtBoxTwitchChannel" Text="GodlFire" FontSize="16" Background="#FFF0F0F0" Height="24" Width="150" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="235,10,0,0"/>
+            <TextBox x:Name="txtBoxTwitchChannel" FontSize="16" Background="#FFF0F0F0" Height="24" Width="150" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="235,10,0,0"/>
             <Label Content="OAuth Token:" FontSize="16" Foreground="White" Width="104" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="390,6,0,0"/>
             <TextBox x:Name="txtBoxToken" FontSize="16" Background="#FFF0F0F0" Height="24" Width="150" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="499,10,0,0"/>
 
