@@ -272,6 +272,7 @@ public class ChatUser : INotifyPropertyChanged
     private void ProcessCommand(string username, string chatMessage)
     {
         reply = null;
+        bool globalCooldownResults = CommandCooldown();
 
         if (chatMessage.Trim().Equals("!points", StringComparison.OrdinalIgnoreCase))
         {
@@ -280,13 +281,13 @@ public class ChatUser : INotifyPropertyChanged
                 reply = $"@{username} your current points are {user.Points}.";
             }
         }
-        else if (!CommandCooldown() && chatMessage.TrimStart().StartsWith("!guide", StringComparison.OrdinalIgnoreCase))
+        else if (globalCooldownResults && chatMessage.TrimStart().StartsWith("!guide", StringComparison.OrdinalIgnoreCase))
         {
             reply = $"@{username} https://tinyurl.com/37hj83te";
         }
         else if (isGameRunning)
         {
-            if (!CommandCooldown() && chatMessage.TrimStart().StartsWith("!teleport ", StringComparison.OrdinalIgnoreCase))
+            if (globalCooldownResults && chatMessage.TrimStart().StartsWith("!teleport ", StringComparison.OrdinalIgnoreCase))
             {
                 if (!IsRoomBanned(username))
                 {
@@ -297,7 +298,7 @@ public class ChatUser : INotifyPropertyChanged
             {
                     Reset(username, chatMessage);
             }
-            else if (!CommandCooldown() && chatMessage.TrimStart().StartsWith("!release ", StringComparison.OrdinalIgnoreCase))
+            else if (globalCooldownResults && chatMessage.TrimStart().StartsWith("!release ", StringComparison.OrdinalIgnoreCase))
             {
                 if (!IsRoomBanned(username))
                 {
