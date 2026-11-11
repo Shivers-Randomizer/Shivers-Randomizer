@@ -13,6 +13,8 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Threading;
 using static Shivers_Randomizer.utils.MemoryMap;
+using System.Windows.Documents;
+using System.Windows.Media;
 
 namespace Shivers_Randomizer;
 
@@ -399,7 +401,8 @@ public class ChatUser : INotifyPropertyChanged
             if (user.Points >= cost)
             {
                 user.Points -= cost;
-                //reply = $"@{username} redeemed teleport to {locationText}! [Remaining: {user.Points} pts]\n";
+                rtbRedemptionMessage(username, $"!teleport {locationText}", cost);
+
                 app.StopAudio(locationInt);
 
 
@@ -465,6 +468,8 @@ public class ChatUser : INotifyPropertyChanged
                 if (user.Points >= cost)
                 {
                     user.Points -= cost;
+                    rtbRedemptionMessage(username, $"!reset {puzzleName}", cost);
+
                     app.SetKthBitMemoryOneByte(puzzleData.Flag.Offset, puzzleData.Flag.Bit, false);
 
                     if (puzzleName == "workshop drawers")
@@ -508,6 +513,7 @@ public class ChatUser : INotifyPropertyChanged
 
         //Subtract points
         user.Points -= cost;
+        rtbRedemptionMessage(username, $"!release {ixupiName}", cost);
 
         //Get current room
         int currentRoom = app.roomNumber;
@@ -631,6 +637,8 @@ public class ChatUser : INotifyPropertyChanged
                 if(app.TwitchIntegrationShufflePotPieces(-1, true))
                 {
                     user.Points -= cost;
+                    rtbRedemptionMessage(username, "!shuffle all", cost);
+
                     app.PotSyncRedraw();
                 }
                 else
@@ -652,6 +660,8 @@ public class ChatUser : INotifyPropertyChanged
                 if(app.TwitchIntegrationShufflePotPieces(baseID, false))
                 {
                     user.Points -= cost;
+                    rtbRedemptionMessage(username, $"!shuffle {potName}", cost);
+
                     app.PotSyncRedraw();
                 }
                 else
@@ -800,7 +810,39 @@ public class ChatUser : INotifyPropertyChanged
     {
         Dispatcher.Invoke(() =>
         {
-            rtbReceivedMessages.AppendText(message);
+            TextRange range = new TextRange(
+                rtbReceivedMessages.Document.ContentEnd,
+                rtbReceivedMessages.Document.ContentEnd);
+
+            range.Text = message;
+
+            // Preserve your default white text
+            range.ApplyPropertyValue(
+                TextElement.ForegroundProperty, Brushes.White);
+
+            range.ApplyPropertyValue(
+                TextElement.FontWeightProperty, FontWeights.Normal);
+
+            rtbReceivedMessages.ScrollToEnd();
+        });
+    }
+
+    private void rtbRedemptionMessage(string username, string command, int points)
+    {
+        Dispatcher.Invoke(() =>
+        {
+            TextRange range = new TextRange(
+                rtbReceivedMessages.Document.ContentEnd,
+                rtbReceivedMessages.Document.ContentEnd);
+
+            range.Text = $"REDEMPTION: {username} redeemed {command} for {points} points.\n";
+
+            range.ApplyPropertyValue(
+                TextElement.ForegroundProperty, Brushes.LimeGreen);
+
+            range.ApplyPropertyValue(
+                TextElement.FontWeightProperty, FontWeights.Bold);
+
             rtbReceivedMessages.ScrollToEnd();
         });
     }
