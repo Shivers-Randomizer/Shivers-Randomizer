@@ -37,6 +37,7 @@ public partial class TwitchIntegrationMain : Window
     private DispatcherTimer pointsTimer;
     public int pointsPerMinute = 10;
     public int pointsPerMinuteIxupiCaptureBonus = 10;
+    public int startingPoints = 100;
     public int shuffleSpecificPotCost = 60;
     public int shuffleAllPotCost = 125;
     public bool givePointsAllowed = true;
@@ -260,7 +261,7 @@ public class ChatUser : INotifyPropertyChanged
 
         if (!activeUsers.ContainsKey(username))
         {
-            var newUser = new ChatUser(username) { Points = 100 };
+            var newUser = new ChatUser(username) { Points = startingPoints };
             activeUsers[username] = newUser;
 
             Dispatcher.Invoke(() =>
@@ -450,7 +451,11 @@ public class ChatUser : INotifyPropertyChanged
 
         if (!BotData.PuzzleFlags.TryGetValue(puzzleName, out var puzzleData))
             return;
-
+        if (puzzleName == "lyre" && app.settingsExcludeLyre == true) //Prevent reset of lyre if using Exclude lyre setting
+        {
+            reply = $"@{username} lyre has been excluded by the host.";
+            return;
+        }
 
         if (activeUsers.TryGetValue(username, out ChatUser user))
         {
@@ -721,7 +726,7 @@ public class ChatUser : INotifyPropertyChanged
             // Reset all users' points
             foreach (var user in observableUsers)
             {
-                user.Points = 100;
+                user.Points = startingPoints;
             }
 
             pointsTimer.Stop();

@@ -15,6 +15,11 @@
         <TabItem Header="General">
             <StackPanel Orientation="Vertical" Margin="10" VerticalAlignment="Top">
                 <StackPanel Orientation="Horizontal">
+                    <Label Content="Starting Points:" VerticalAlignment="Center" Width="250" ToolTip="Determines the starting points for a player."/>
+                    <TextBox x:Name="txtStartingPoints" Width="50" VerticalAlignment="Center" PreviewTextInput="NumberOnly" TextChanged="txtStartingPoints_TextChanged" ToolTip="Determines the starting points for a player." />
+                </StackPanel>
+                
+                <StackPanel Orientation="Horizontal">
                     <Label Content="Points Per Minute:" VerticalAlignment="Center" Width="250" ToolTip="Determines how many points each player earns per minute."/>
                     <TextBox x:Name="txtPointsPerMinute" Width="50" VerticalAlignment="Center" TextChanged="txtPointsPerMinute_TextChanged" PreviewTextInput="NumberOnly" ToolTip="Determines how many points each player earns per minute."/>
                 </StackPanel>

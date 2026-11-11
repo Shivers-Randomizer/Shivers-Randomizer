@@ -13,22 +13,20 @@ public partial class TwitchIntegrationSettings : Window
         InitializeComponent();
         this.main = main;
 
+        txtStartingPoints.Text = main.startingPoints.ToString();
         txtPointsPerMinute.Text = main.pointsPerMinute.ToString();
-
         txtPointsPerMinuteIxupiCaptureBonus.Text = main.pointsPerMinuteIxupiCaptureBonus.ToString();
+        chkAllowGivePoints.IsChecked = main.givePointsAllowed;
+        chkAllowTeleportOnIxupiScreen.IsChecked = main.allowTeleportsOnIxupiScreen;
 
         dgTeleports.ItemsSource = BotData.TeleportLocations.Values.ToList();
-
         dgPuzzles.ItemsSource = BotData.PuzzleFlags.Select(kvp => new PuzzleViewModel { Name = kvp.Key, Flag = kvp.Value.Flag, Cost = kvp.Value.Cost }).ToList();
-
         dgIxupi.ItemsSource = BotData.IxupiFlags.Select(kvp => new IxupiViewModel { Name = kvp.Key, Info = kvp.Value, Cost = kvp.Value.Cost }).ToList();
 
         txtShuffleSpecificPotCost.Text = main.shuffleSpecificPotCost.ToString();
-
         txtShuffleAllPotCost.Text = main.shuffleAllPotCost.ToString();
 
-        chkAllowGivePoints.IsChecked = main.givePointsAllowed;
-        chkAllowTeleportOnIxupiScreen.IsChecked = main.allowTeleportsOnIxupiScreen;
+
     }
 
     private void DataGrid_CellEditEnding(object sender, System.Windows.Controls.DataGridCellEditEndingEventArgs e)
@@ -69,6 +67,17 @@ public partial class TwitchIntegrationSettings : Window
         if (e.Key == System.Windows.Input.Key.Space)
         {
             e.Handled = true;
+        }
+    }
+
+    private void txtStartingPoints_TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e)
+    {
+        if (int.TryParse(txtStartingPoints.Text, out int value))
+        {
+            if (value >= 0)
+            {
+                main.startingPoints = value;
+            }
         }
     }
 
