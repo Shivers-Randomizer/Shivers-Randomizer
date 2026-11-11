@@ -40,6 +40,7 @@ public partial class TwitchIntegrationMain : Window
     public int shuffleSpecificPotCost = 60;
     public int shuffleAllPotCost = 125;
     public bool givePointsAllowed = true;
+    public bool allowTeleportsOnIxupiScreen = true;
     private readonly TimeSpan timerInterval = TimeSpan.FromMinutes(1);
     private bool isGameRunning = false;
 
@@ -289,7 +290,7 @@ public class ChatUser : INotifyPropertyChanged
         {
             if (globalCooldownResults && chatMessage.TrimStart().StartsWith("!teleport ", StringComparison.OrdinalIgnoreCase))
             {
-                if (!IsRoomBanned(username))
+                if (!IsRoomBanned(username) && !IsTeleportsBanned(username))
                 {
                     Teleport(username, chatMessage);
                 }
@@ -665,7 +666,7 @@ public class ChatUser : INotifyPropertyChanged
             reply = $"@{username} cannot redeem this command while on the boat.";
             return true;
         }
-        else if (BotData.BannedRooms.Contains(roomNumber))
+        else if (BotData.BannedRoomsPuzzles.Contains(roomNumber))
         {
             reply = $"@{username} cannot redeem this command during a puzzle.";
             return true;
@@ -675,7 +676,20 @@ public class ChatUser : INotifyPropertyChanged
             reply = $"@{username} cannot redeem this command on non museum screens.";
             return true;
         }
-        
+
+        return false;
+    }
+
+    private bool IsTeleportsBanned(string username)
+    {
+        int roomNumber = app.roomNumber;
+
+        if (BotData.BannedRoomsIxupi.Contains(roomNumber) && !allowTeleportsOnIxupiScreen)
+        {
+            reply = $"@{username} cannot redeem this command on Ixupi screen.";
+            return true;
+        }
+
         return false;
     }
 

@@ -189,7 +189,7 @@ public static class BotData
         { "metal", new[] { 11000, 17000, 37000 } }
     };
 
-    public static readonly HashSet<int> BannedRooms = new HashSet<int>
+    public static readonly HashSet<int> BannedRoomsPuzzles = new HashSet<int>
     {
         // Room numbers where !teleport, !reset, !release are disabled
         1162, // Combo Lock
@@ -200,6 +200,9 @@ public static class BotData
         38130, // Bedroom Elevator Bottom
         37360, // Bedroom Elevator Top
         7111, // Workshop Drawers
+        10101, // Three Floor Elevator (1st)
+        27211, // Three Floor Elevator (2nd)
+        33500, // Three Floor Elevator (3rd)
         9691, // Theater Door
         18250, // Geoffrey
         40260, // Clocktower Chains
@@ -227,6 +230,36 @@ public static class BotData
         23650, // Skull Dial: Gods
         24170, // Skull Dial: Werewolf
         14170, // Skull Dial: Tar River
+    };
+    public static readonly HashSet<int> BannedRoomsIxupi = new HashSet<int>
+    {
+        // Room numbers where !teleport, !reset, !release are disabled
+        6280,  // Ash Office
+        21050, // Ash Burial
+        20700, //Cloth Egypt
+        21430, // Cloth Burial
+        25050, // Cloth Janitor
+        9770, // Crystal Lobby
+        12500, // Crystal Ocean
+        32500, // Lightning Generator
+        29190, // Lightning UFO
+        39260, // Lightning Torture
+        11340, // Metal Prehistoric
+        17090, // Metal Projector
+        37291, // Metal Bedroom
+        19250, // Sand Greenhouse
+        12200, // Sand Ocean
+        11300, // Tar Prehistoric
+        14040, // Tar River
+        9700, // Water Lobby
+        25060, // Water Janitor
+        7180, // Wood Workshop
+        27081, // Wood Blue Hallways
+        23160, // Wood Gods
+        24190, // Wood Pegasus
+        8160, // Wax Library
+        22260, // Wax Shaman
+        24360 // Wax Anansi
     };
 
     public static Dictionary<string, int> PotPieceBaseID { get; set; } = new Dictionary<string, int>()

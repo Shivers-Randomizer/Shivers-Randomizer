@@ -26,6 +26,9 @@ public partial class TwitchIntegrationSettings : Window
         txtShuffleSpecificPotCost.Text = main.shuffleSpecificPotCost.ToString();
 
         txtShuffleAllPotCost.Text = main.shuffleAllPotCost.ToString();
+
+        chkAllowGivePoints.IsChecked = main.givePointsAllowed;
+        chkAllowTeleportOnIxupiScreen.IsChecked = main.allowTeleportsOnIxupiScreen;
     }
 
     private void DataGrid_CellEditEnding(object sender, System.Windows.Controls.DataGridCellEditEndingEventArgs e)
@@ -54,11 +57,6 @@ public partial class TwitchIntegrationSettings : Window
                 main.pointsPerMinuteIxupiCaptureBonus = value;
             }
         }
-    }
-
-    private void chkAllowGivePoints_Checked(object sender, RoutedEventArgs e)
-    {
-        main.givePointsAllowed = chkAllowGivePoints.IsChecked == true;
     }
 
     private void NumberOnly(object sender, System.Windows.Input.TextCompositionEventArgs e)
@@ -96,5 +94,14 @@ public partial class TwitchIntegrationSettings : Window
         }
     }
 
+    private void chkAllowGivePoints_Checked(object sender, RoutedEventArgs e)
+    {
+        main.givePointsAllowed = chkAllowGivePoints.IsChecked == true;
 
+    }
+
+    private void chkAllowTeleportOnIxupiScreen_Checked(object sender, RoutedEventArgs e)
+    {
+        main.allowTeleportsOnIxupiScreen = chkAllowTeleportOnIxupiScreen.IsChecked == true;
+    }
 }

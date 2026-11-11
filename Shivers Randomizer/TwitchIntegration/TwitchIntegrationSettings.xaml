@@ -25,9 +25,12 @@
                 </StackPanel>
 
                 <StackPanel Orientation="Horizontal">
-                    <CheckBox x:Name="chkAllowGivePoints" Content="Allow !givepoints" Margin="5,10,0,0" IsChecked="True" Click="chkAllowGivePoints_Checked" ToolTip="Allows players to transfer points to each other with !gifpoints."/>
+                    <CheckBox x:Name="chkAllowGivePoints" Content="Allow !givepoints" Margin="5,10,0,0" Click="chkAllowGivePoints_Checked" ToolTip="Allows players to transfer points to each other with !gifpoints."/>
                 </StackPanel>
-                
+                <StackPanel Orientation="Horizontal">
+                    <CheckBox x:Name="chkAllowTeleportOnIxupiScreen" Content="Allow teleports on Ixupi screens" Margin="5,10,0,0" Click="chkAllowTeleportOnIxupiScreen_Checked" ToolTip="Allows players to teleport when on a screen that can contain an Ixupi."/>
+                </StackPanel>
+
             </StackPanel>
         </TabItem>
 
